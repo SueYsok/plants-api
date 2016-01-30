@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateDataBusinessesTable extends Migration
+class CreateDataFamilyTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,15 +12,13 @@ class CreateDataBusinessesTable extends Migration
      */
     public function up()
     {
-        Schema::create('data_businesses', function (Blueprint $table) {
+        Schema::create('data_family', function (Blueprint $table) {
             $table->increments('id');
 
             $table->string('title');
-            $table->string('web_site')->nullable();
-            $table->string('country');
-            $table->string('description')->nullable();
-            
-            $table->timestamps();
+            $table->string('chinese_title');
+
+            $table->nullableTimestamps();
         });
     }
 
@@ -31,6 +29,6 @@ class CreateDataBusinessesTable extends Migration
      */
     public function down()
     {
-        Schema::drop('data_businesses');
+        Schema::drop('data_family');
     }
 }

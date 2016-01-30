@@ -26,7 +26,7 @@ class CreateDataBusinessesPlantsTable extends Migration
             $table->string('description')->nullable();
             $table->string('price')->nullable();
 
-            $table->timestamps();
+            $table->nullableTimestamps();
         });
     }
 

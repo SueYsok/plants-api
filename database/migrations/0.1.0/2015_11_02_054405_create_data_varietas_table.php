@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateDataSubspeciesTable extends Migration
+class CreateDataVarietasTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,16 +12,19 @@ class CreateDataSubspeciesTable extends Migration
      */
     public function up()
     {
-        Schema::create('data_subspecies', function (Blueprint $table) {
+        Schema::create('data_varietas', function (Blueprint $table) {
             $table->increments('id');
 
             $table->integer('species_id')->unsigned();
             $table->foreign('species_id')->references('id')->on('data_species');
 
+            $table->integer('subspecies_id')->unsigned()->nullable();
+            $table->foreign('subspecies_id')->references('id')->on('data_subspecies');
+
             $table->string('title');
             $table->string('chinese_title')->nullable();
 
-            $table->timestamps();
+            $table->nullableTimestamps();
         });
     }
 
@@ -32,6 +35,6 @@ class CreateDataSubspeciesTable extends Migration
      */
     public function down()
     {
-        Schema::drop('data_subspecies');
+        Schema::drop('data_varietas');
     }
 }

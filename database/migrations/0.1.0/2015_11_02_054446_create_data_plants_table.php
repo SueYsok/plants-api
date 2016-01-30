@@ -34,7 +34,7 @@ class CreateDataPlantsTable extends Migration
             $table->integer('varietas_id')->unsigned()->nullable();
             $table->foreign('varietas_id')->references('id')->on('data_varietas');
 
-            $table->timestamps();
+            $table->nullableTimestamps();
         });
     }
 
