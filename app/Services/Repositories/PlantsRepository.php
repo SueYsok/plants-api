@@ -32,6 +32,17 @@ class PlantsRepository extends Repository
             ->with('subspecies')
             ->with('varietas')
             ->with('images')
+            ->with([
+                'same' => function ($Model) {
+                    /** @var \App\Eloquent\PlantsSame $Model */
+                    $Model->with([
+                        'same' => function ($Model) {
+                            /** @var \App\Eloquent\PlantsSame $Model */
+                            $Model->with('plant');
+                        },
+                    ]);
+                },
+            ])
             ->find($id);
         if (is_null($Model)) {
             $this->modelNotFound();

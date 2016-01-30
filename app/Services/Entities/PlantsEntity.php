@@ -83,6 +83,10 @@ class PlantsEntity extends Entity
      * @var Collection
      */
     protected $images;
+    /**
+     * @var Collection
+     */
+    protected $plants;
 
     /**
      * @param ModelCollection|Model $Item
@@ -132,6 +136,16 @@ class PlantsEntity extends Entity
 
             if (isset($Item->images)) {
                 $this->images = (new PlantsImagesEntity)->create($Item->images);
+            }
+
+            if (isset($Item->same)) {
+                $SameCollection = new ModelCollection;
+
+                /** @var \App\Eloquent\PlantsSame $Same */
+                foreach ($Item->same->same as $Same) {
+                    $SameCollection->push($Same->plant);
+                }
+                $this->plants = (new self)->create($SameCollection);
             }
 
             return $this;
@@ -260,6 +274,14 @@ class PlantsEntity extends Entity
     public function getTitle()
     {
         return $this->title;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getPlants()
+    {
+        return $this->plants;
     }
 
 }
