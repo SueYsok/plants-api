@@ -51,7 +51,7 @@ class SubspeciesEntity extends Entity
     /**
      * @param ModelCollection|Model $Item
      *
-     * @return Entity|Collection
+     * @return SubspeciesEntity|Collection
      */
     public function create($Item)
     {

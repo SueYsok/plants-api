@@ -124,7 +124,17 @@ class Plants extends Eloquent
      */
     public function tags()
     {
-        return $this->belongsToMany(__NAMESPACE__ . '\\Tags', 'link_tags_plants', 'plants_id', 'tags_id');
+        return $this->belongsToMany(__NAMESPACE__ . '\\Tags',
+            'link_tags_plants', 'plants_id', 'tags_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function businesses()
+    {
+        return $this->belongsToMany(__NAMESPACE__ . '\\Businesses',
+            'data_businesses_plants', 'plants_id', 'businesses_id');
     }
 
     /**
@@ -133,6 +143,22 @@ class Plants extends Eloquent
     public function same()
     {
         return $this->hasOne(__NAMESPACE__ . '\\PlantsSame', 'plants_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function tagslink()
+    {
+        return $this->hasMany(__NAMESPACE__ . '\\TagsPlants', 'plants_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function businesseslink()
+    {
+        return $this->hasMany(__NAMESPACE__ . '\\BusinessesPlants', 'plants_id');
     }
 
 }

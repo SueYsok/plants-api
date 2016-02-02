@@ -8,9 +8,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Transformers\FamilyTransformer;
 use App\Services\Works\Family;
-use Illuminate\Http\Request;
-use Illuminate\Routing\ResponseFactory;
+use Dingo\Api\Http\Request;
 use Illuminate\Routing\Router;
 
 
@@ -29,14 +29,13 @@ class FamilyController extends Controller
     protected $Family;
 
     /**
-     * @param Request         $Request
-     * @param ResponseFactory $Response
-     * @param Router          $Route
-     * @param Family          $Family
+     * @param Request $Request
+     * @param Router  $Route
+     * @param Family  $Family
      */
-    public function __construct(Request $Request, ResponseFactory $Response, Router $Route, Family $Family)
+    public function __construct(Request $Request, Router $Route, Family $Family)
     {
-        parent::__construct($Request, $Response, $Route);
+        parent::__construct($Request, $Route);
 
         $this->Family = $Family;
     }
@@ -44,23 +43,23 @@ class FamilyController extends Controller
     /**
      * @return \Illuminate\Http\JsonResponse
      */
-    public function one()
+    public function oneFamily()
     {
         $familyId = $this->Route->input('family_id');
 
         $FamilyEntity = $this->Family->one($familyId);
 
-        return $this->Response->json($FamilyEntity);
+        return $this->response()->item($FamilyEntity, new FamilyTransformer);
     }
 
     /**
      * @return \Illuminate\Http\JsonResponse
      */
-    public function all()
+    public function allFamily()
     {
         $FamilyCollection = $this->Family->many();
 
-        return $this->Response->json($FamilyCollection);
+        return $this->response()->collection($FamilyCollection, new FamilyTransformer);
     }
 
 }

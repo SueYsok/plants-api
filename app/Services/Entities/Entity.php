@@ -167,15 +167,7 @@ abstract class Entity implements Arrayable, Jsonable, JsonSerializable
      */
     public function getCreatedAt($origin = false)
     {
-        if ($this->timestamps) {
-            if ($origin) {
-                return $this->createdAt;
-            } else {
-                return $this->createdAt->toRfc3339String();
-            }
-        } else {
-            return null;
-        }
+        return $this->formatCarbon('createdAt', $origin);
     }
 
     /**
@@ -185,15 +177,18 @@ abstract class Entity implements Arrayable, Jsonable, JsonSerializable
      */
     public function getUpdatedAt($origin = false)
     {
-        if ($this->timestamps) {
-            if ($origin) {
-                return $this->updatedAt;
-            } else {
-                return $this->updatedAt->toRfc3339String();
-            }
-        } else {
-            return null;
-        }
+        return $this->formatCarbon('updatedAt', $origin);
+    }
+
+    private function formatCarbon($key, $origin)
+    {
+        return $this->timestamps
+            ? ($origin
+                ? $this->{$key}
+                : ($this->{$key}
+                    ? $this->{$key}->toRfc3339String()
+                    : null))
+            : null;
     }
 
 }

@@ -19,7 +19,7 @@ use App\Services\Works\Resources\BusinessesRepositories;
  * @package App\Services\Works
  * @author  sueysok
  */
-class Businesses implements Selection
+class Businesses extends Work implements Selection
 {
 
     use BusinessesRepositories, BusinessesEntities;

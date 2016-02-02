@@ -19,7 +19,7 @@ use App\Services\Works\Resources\PlantsRepositories;
  * @package App\Services\Works
  * @author  sueysok
  */
-class Plants implements Selection
+class Plants extends Work implements Selection
 {
 
     use PlantsRepositories, PlantsEntities;
@@ -59,6 +59,12 @@ class Plants implements Selection
         }
         if ($input[4]) {
             $query['varietas_id'] = $input[4];
+        }
+        if ($input[5]) {
+            $query['tags_id'] = $input[5];
+        }
+        if ($input[6]) {
+            $query['businesses_id'] = $input[6];
         }
 
         $Collection = $this->plantsRepository()->manyByQuery($query);

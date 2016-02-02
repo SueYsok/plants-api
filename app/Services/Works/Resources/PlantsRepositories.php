@@ -34,31 +34,31 @@ trait PlantsRepositories
 {
 
     /**
-     * @var
+     * @var FamilyRepository
      */
     private $Family;
     /**
-     * @var
+     * @var GenusRepository
      */
     private $Genus;
     /**
-     * @var
+     * @var SpeciesRepository
      */
     private $Species;
     /**
-     * @var
+     * @var SubspeciesRepository
      */
     private $Subspecies;
     /**
-     * @var
+     * @var VarietasRepository
      */
     private $Varietas;
     /**
-     * @var
+     * @var PlantsRepository
      */
     private $Plants;
     /**
-     * @var
+     * @var PlantsImagesRepository
      */
     private $Images;
 

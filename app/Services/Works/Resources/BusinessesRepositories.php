@@ -24,11 +24,11 @@ trait BusinessesRepositories
 {
 
     /**
-     * @var
+     * @var BusinessesRepository
      */
     private $Businesses;
     /**
-     * @var
+     * @var BusinessesPlantsRepository
      */
     private $Plants;
 

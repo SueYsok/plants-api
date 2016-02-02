@@ -59,7 +59,7 @@ class BusinessesPlantsEntity extends Entity
     /**
      * @param ModelCollection|Model $Item
      *
-     * @return Entity|Collection
+     * @return BusinessesPlantsEntity|Collection
      */
     public function create($Item)
     {

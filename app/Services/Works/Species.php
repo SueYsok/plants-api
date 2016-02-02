@@ -19,7 +19,7 @@ use App\Services\Works\Resources\PlantsRepositories;
  * @package App\Services\Works
  * @author  sueysok
  */
-class Species implements Selection
+class Species extends Work implements Selection
 {
 
     use PlantsRepositories, PlantsEntities;
@@ -32,11 +32,9 @@ class Species implements Selection
      */
     public function one($id, ...$input)
     {
-        if (reset($input)) {
-            return $this->supraspecificBranch($id);
-        } else {
-            return $this->infraspecificBranch($id);
-        }
+        $Model = $this->speciesRepository()->oneById($id);
+
+        return $this->speciesEntity()->create($Model);
     }
 
     /**
