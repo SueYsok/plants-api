@@ -138,13 +138,9 @@ class PlantsEntity extends Entity
                 $this->varietas = (new VarietasEntity)->create($Item->varietas);
             }
 
-            if (isset($Item->images)) {
-                $this->images = (new PlantsImagesEntity)->create($Item->images);
-            }
+            $this->images = (new PlantsImagesEntity)->create($Item->images);
 
-            if (isset($Item->tags)) {
-                $this->tags = (new TagsEntity)->create($Item->tags);
-            }
+            $this->tags = (new TagsEntity)->create($Item->tags);
 
             $SameCollection = new ModelCollection;
             if (isset($Item->same)) {

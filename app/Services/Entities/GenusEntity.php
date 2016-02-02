@@ -88,9 +88,7 @@ class GenusEntity extends Entity
                 $this->typeSpecies = (new TypeSpeciesEntity)->create($Item->typeSpecies);
             }
 
-            if (isset($Item->species)) {
-                $this->species = (new TypeSpeciesEntity)->create($Item->species);
-            }
+            $this->species = (new TypeSpeciesEntity)->create($Item->species);
 
             return $this;
         } else {

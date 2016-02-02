@@ -66,9 +66,7 @@ class SubspeciesEntity extends Entity
                 $this->species = (new TypeSpeciesEntity)->create($Item->species);
             }
 
-            if (isset($Item->varietas)) {
-                $this->varietas = (new VarietasEntity)->create($Item->varietas);
-            }
+            $this->varietas = (new VarietasEntity)->create($Item->varietas);
 
             return $this;
         } else {

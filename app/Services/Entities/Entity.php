@@ -46,21 +46,22 @@ abstract class Entity implements Arrayable, Jsonable, JsonSerializable
     protected $Collection = null;
 
     /**
-     * @param ModelCollection $ModelCollection
+     * @param ModelCollection|null $ModelCollection
      */
-    protected function setCollection(ModelCollection $ModelCollection)
+    protected function setCollection($ModelCollection)
     {
         $this->collection();
 
-        if (!$ModelCollection->isEmpty()) {
-            foreach ($ModelCollection->all() as $Model) {
-                $this->makeCollection(function ($Collection) use ($Model) {
-                    /** @var Collection $Collection */
-                    $Collection->push((new static)->create($Model));
-                });
+        if ($ModelCollection instanceof ModelCollection) {
+
+            if (!$ModelCollection->isEmpty()) {
+                foreach ($ModelCollection->all() as $Model) {
+                    $this->makeCollection(function ($Collection) use ($Model) {
+                        /** @var Collection $Collection */
+                        $Collection->push((new static)->create($Model));
+                    });
+                }
             }
-        } else {
-            $this->Collection->make(null);
         }
     }
 
