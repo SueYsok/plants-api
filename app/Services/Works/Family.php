@@ -19,7 +19,7 @@ use App\Services\Works\Resources\PlantsRepositories;
  * @package App\Services\Works
  * @author  sueysok
  */
-class Family implements Selection
+class Family extends Work implements Selection
 {
 
     use PlantsRepositories, PlantsEntities;

@@ -2,39 +2,40 @@
 /**
  * Created by PhpStorm.
  * User: sueysok
- * Date: 15/11/20
- * Time: 下午1:56
+ * Date: 16/2/1
+ * Time: 下午1:04
  */
 
 namespace App\Services\Works;
 
 use App\Services\Contracts\Selection;
-use App\Services\Works\Resources\PlantsEntities;
-use App\Services\Works\Resources\PlantsRepositories;
+use App\Services\Works\Resources\TagsEntities;
+use App\Services\Works\Resources\TagsRepositories;
 
 
 /**
- * Class Genus
+ * Class Tags
  *
  * @package App\Services\Works
  * @author  sueysok
  */
-class Genus extends Work implements Selection
+class Tags extends Work implements Selection
 {
 
-    use PlantsRepositories, PlantsEntities;
+    use TagsRepositories, TagsEntities;
+
 
     /**
      * @param int   $id
      * @param mixed $input
      *
-     * @return \App\Services\Entities\GenusEntity
+     * @return \App\Services\Entities\TagsEntity
      */
     public function one($id, ...$input)
     {
-        $Model = $this->genusRepository()->oneById($id);
+        $Model = $this->tagsRepository()->oneById($id);
 
-        return $this->genusEntity()->create($Model);
+        return $this->tagsEntity()->create($Model);
     }
 
     /**
@@ -44,9 +45,9 @@ class Genus extends Work implements Selection
      */
     public function many(...$input)
     {
-        $Collection = $this->genusRepository()->manyByFamilyId(reset($input));
+        $Collection = $this->tagsRepository()->many();
 
-        return $this->genusEntity()->create($Collection);
+        return $this->tagsEntity()->create($Collection);
     }
 
     /**

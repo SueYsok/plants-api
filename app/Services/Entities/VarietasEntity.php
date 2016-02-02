@@ -55,7 +55,7 @@ class VarietasEntity extends Entity
     /**
      * @param ModelCollection|Model $Item
      *
-     * @return Entity|Collection
+     * @return VarietasEntity|Collection
      */
     public function create($Item)
     {

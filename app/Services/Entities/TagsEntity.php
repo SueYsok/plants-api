@@ -2,25 +2,25 @@
 /**
  * Created by PhpStorm.
  * User: sueysok
- * Date: 15/11/6
- * Time: 下午3:34
+ * Date: 16/1/31
+ * Time: 上午1:43
  */
 
 namespace App\Services\Entities;
 
-use App\Eloquent\PlantsImages;
+use App\Eloquent\Tags;
 use Illuminate\Database\Eloquent\Collection as ModelCollection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 
 
 /**
- * Class PlantsImagesEntity
+ * Class TagsEntity
  *
  * @package App\Services\Entities
  * @author  sueysok
  */
-class PlantsImagesEntity extends Entity
+class TagsEntity extends Entity
 {
 
     /**
@@ -28,27 +28,27 @@ class PlantsImagesEntity extends Entity
      */
     protected $id;
     /**
-     * @var int
-     */
-    protected $plantsId;
-    /**
      * @var string
      */
-    protected $image;
+    protected $title;
     /**
-     * @var PlantsEntity
+     * @var int
+     */
+    protected $count;
+    /**
+     * @var Collection
      */
     protected $plants;
 
     /**
      * @param ModelCollection|Model $Item
      *
-     * @return PlantsImagesEntity|Collection
+     * @return TagsEntity|Collection
      */
     public function create($Item)
     {
-        if ($Item instanceof PlantsImages) {
-            foreach (['id', 'plants_id', 'image', 'created_at', 'updated_at',] as $value) {
+        if ($Item instanceof Tags) {
+            foreach (['id', 'title', 'count', 'created_at', 'updated_at',] as $value) {
                 if (isset($Item->{$value})) {
                     $this->{camel_case($value)} = $Item->{$value};
                 }
@@ -75,23 +75,23 @@ class PlantsImagesEntity extends Entity
     }
 
     /**
-     * @return int
-     */
-    public function getPlantsId()
-    {
-        return $this->plantsId;
-    }
-
-    /**
      * @return string
      */
-    public function getImage()
+    public function getTitle()
     {
-        return $this->image;
+        return $this->title;
     }
 
     /**
-     * @return PlantsEntity
+     * @return int
+     */
+    public function getCount()
+    {
+        return $this->count;
+    }
+
+    /**
+     * @return Collection
      */
     public function getPlants()
     {

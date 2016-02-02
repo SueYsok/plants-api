@@ -59,7 +59,7 @@ class GenusEntity extends Entity
     /**
      * @param ModelCollection|Model $Item
      *
-     * @return Entity|Collection
+     * @return GenusEntity|Collection
      */
     public function create($Item)
     {

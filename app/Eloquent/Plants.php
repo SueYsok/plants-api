@@ -30,6 +30,8 @@ namespace App\Eloquent;
  * @property Subspecies                               subspecies
  * @property Varietas                                 varietas
  * @property \Illuminate\Database\Eloquent\Collection images
+ * @property \Illuminate\Database\Eloquent\Collection tags
+ * @property PlantsSame                               same
  */
 class Plants extends Eloquent
 {
@@ -115,6 +117,48 @@ class Plants extends Eloquent
     public function images()
     {
         return $this->hasMany(__NAMESPACE__ . '\\PlantsImages', 'plants_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function tags()
+    {
+        return $this->belongsToMany(__NAMESPACE__ . '\\Tags',
+            'link_tags_plants', 'plants_id', 'tags_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function businesses()
+    {
+        return $this->belongsToMany(__NAMESPACE__ . '\\Businesses',
+            'data_businesses_plants', 'plants_id', 'businesses_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function same()
+    {
+        return $this->hasOne(__NAMESPACE__ . '\\PlantsSame', 'plants_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function tagslink()
+    {
+        return $this->hasMany(__NAMESPACE__ . '\\TagsPlants', 'plants_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function businesseslink()
+    {
+        return $this->hasMany(__NAMESPACE__ . '\\BusinessesPlants', 'plants_id');
     }
 
 }

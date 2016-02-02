@@ -27,7 +27,10 @@ class BusinessesPlantsRepository extends Repository
     {
         $Collection = $this->many(function ($Model) use ($businessesId) {
             /** @var \App\Eloquent\BusinessesPlants|\Illuminate\Database\Eloquent\Builder $Model */
-            return $Model->where('businesses_id', '=', $businessesId)->orderBy('number');
+            return $Model
+                ->with('plants')
+                ->where('businesses_id', '=', $businessesId)
+                ->orderBy('number');
         });
 
         return $Collection;
