@@ -146,15 +146,14 @@ class PlantsEntity extends Entity
                 $this->tags = (new TagsEntity)->create($Item->tags);
             }
 
+            $SameCollection = new ModelCollection;
             if (isset($Item->same)) {
-                $SameCollection = new ModelCollection;
-
                 /** @var \App\Eloquent\PlantsSame $Same */
                 foreach ($Item->same->same as $Same) {
                     $SameCollection->push($Same->plant);
                 }
-                $this->plants = (new self)->create($SameCollection);
             }
+            $this->plants = (new self)->create($SameCollection);
 
             return $this;
         } else {

@@ -10,7 +10,6 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Routing\Router;
 
-
 /**
  * Class Controller
  *
@@ -32,6 +31,7 @@ abstract class Controller extends BaseController
 
     /**
      * @param Request $Request
+     * @param Router  $Route
      */
     public function __construct(Request $Request, Router $Route)
     {

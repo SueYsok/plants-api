@@ -21,6 +21,7 @@ use Illuminate\Routing\Router;
  *
  * @package App\Http\Controllers
  * @author  sueysok
+ * @Resource("Businesses")
  */
 class BusinessesController extends Controller
 {
@@ -29,31 +30,22 @@ class BusinessesController extends Controller
      * @var Businesses
      */
     protected $Businesses;
-    /**
-     * @var BusinessesPlants
-     */
-    protected $BusinessesPlants;
 
     /**
-     * @param Request          $Request
-     * @param Router           $Route
-     * @param Businesses       $Businesses
-     * @param BusinessesPlants $BusinessesPlants
+     * @param Request    $Request
+     * @param Router     $Route
+     * @param Businesses $Businesses
      */
-    public function __construct(
-        Request $Request,
-        Router $Route,
-        Businesses $Businesses,
-        BusinessesPlants $BusinessesPlants
-    ) {
+    public function __construct(Request $Request, Router $Route, Businesses $Businesses)
+    {
         parent::__construct($Request, $Route);
 
         $this->Businesses = $Businesses;
-        $this->BusinessesPlants = $BusinessesPlants;
     }
 
     /**
      * @return \Illuminate\Http\JsonResponse
+     * @Get("/")
      */
     public function oneBusiness()
     {
@@ -61,7 +53,7 @@ class BusinessesController extends Controller
 
         $BusinessesEntity = $this->Businesses->one($businessesId);
 
-        return $this->response()->item($BusinessesEntity, new BusinessesTransformer, ['key'=>'user']);
+        return $this->response()->item($BusinessesEntity, new BusinessesTransformer, ['key' => 'user']);
     }
 
     /**
@@ -72,18 +64,6 @@ class BusinessesController extends Controller
         $BusinessesCollection = $this->Businesses->many();
 
         return $this->response()->collection($BusinessesCollection, new BusinessesTransformer);
-    }
-
-    /**
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function allPlants()
-    {
-        $businessesId = $this->Route->input('businesses_id');
-
-        $BusinessesCollection = $this->BusinessesPlants->many($businessesId);
-
-        return $this->response()->collection($BusinessesCollection, new BusinessesPlantsTransformer);
     }
 
 }

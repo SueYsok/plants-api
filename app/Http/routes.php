@@ -105,7 +105,7 @@ $Router->version('v1', function ($Router) {
             ]);
 
             $Router->get('plants', [
-                'uses'        => 'App\Http\Controllers\BusinessesController@allPlants',
+                'uses'        => 'App\Http\Controllers\BusinessesPlantsController@allPlants',
                 'no'          => 'PLANTS_009',
                 'description' => '商家植物列表',
             ]);
