@@ -8,9 +8,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Transformers\PlantsTransformer;
 use App\Services\Works\Plants;
-use Illuminate\Http\Request;
-use Illuminate\Routing\ResponseFactory;
+use Dingo\Api\Http\Request;
 use Illuminate\Routing\Router;
 
 /**
@@ -28,14 +28,13 @@ class PlantsController extends Controller
     protected $Plants;
 
     /**
-     * @param Request         $Request
-     * @param ResponseFactory $Response
-     * @param Router          $Route
-     * @param Plants          $Plants
+     * @param Request $Request
+     * @param Router  $Route
+     * @param Plants  $Plants
      */
-    public function __construct(Request $Request, ResponseFactory $Response, Router $Route, Plants $Plants)
+    public function __construct(Request $Request, Router $Route, Plants $Plants)
     {
-        parent::__construct($Request, $Response, $Route);
+        parent::__construct($Request, $Route);
 
         $this->Plants = $Plants;
     }
@@ -43,29 +42,32 @@ class PlantsController extends Controller
     /**
      * @return \Illuminate\Http\JsonResponse
      */
-    public function one()
+    public function onePlant()
     {
         $plantsId = $this->Route->input('plants_id');
 
         $PlantsEntity = $this->Plants->one($plantsId);
 
-        return $this->Response->json($PlantsEntity);
+        return $this->response()->item($PlantsEntity, new PlantsTransformer);
     }
 
     /**
      * @return \Illuminate\Http\JsonResponse
      */
-    public function all()
+    public function allPlants()
     {
         $familyId = $this->Request->input('family_id');
         $genusId = $this->Request->input('genus_id');
         $speciesId = $this->Request->input('species_id');
         $subspeciesId = $this->Request->input('subspecies_id');
         $varietasId = $this->Request->input('varietas_id');
+        $tagsId = $this->Request->input('tags_id');
+        $businessesId = $this->Request->input('businesses_id');
 
-        $PlantsCollection = $this->Plants->many($familyId, $genusId, $speciesId, $subspeciesId, $varietasId);
+        $PlantsCollection = $this->Plants->many(
+            $familyId, $genusId, $speciesId, $subspeciesId, $varietasId, $tagsId, $businessesId);
 
-        return $this->Response->json($PlantsCollection);
+        return $this->response()->collection($PlantsCollection, new PlantsTransformer);
     }
 
 }

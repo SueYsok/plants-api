@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateDataPlantsImagesTable extends Migration
+class CreateIndexPlantsSameTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,15 +12,16 @@ class CreateDataPlantsImagesTable extends Migration
      */
     public function up()
     {
-        Schema::create('data_plants_images', function (Blueprint $table) {
+        Schema::create('index_plants_same', function (Blueprint $table) {
             $table->increments('id');
+
+            $table->integer('major_plants_id')->unsigned();
+            $table->foreign('major_plants_id')->references('id')->on('data_plants');
 
             $table->integer('plants_id')->unsigned();
             $table->foreign('plants_id')->references('id')->on('data_plants');
 
-            $table->string('image');
-
-            $table->timestamps();
+            $table->nullableTimestamps();
         });
     }
 
@@ -31,6 +32,6 @@ class CreateDataPlantsImagesTable extends Migration
      */
     public function down()
     {
-        Schema::drop('data_plants_images');
+        Schema::drop('index_plants_same');
     }
 }

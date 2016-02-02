@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use Dingo\Api\Http\Request;
+use Dingo\Api\Routing\Helpers;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use Illuminate\Routing\ResponseFactory;
 use Illuminate\Routing\Router;
 
 
@@ -19,29 +19,23 @@ use Illuminate\Routing\Router;
  */
 abstract class Controller extends BaseController
 {
-    use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+    use AuthorizesRequests, DispatchesJobs, ValidatesRequests, Helpers;
 
     /**
      * @var Request
      */
     protected $Request;
     /**
-     * @var ResponseFactory
-     */
-    protected $Response;
-    /**
      * @var Router
      */
     protected $Route;
 
     /**
-     * @param Request         $Request
-     * @param ResponseFactory $Response
+     * @param Request $Request
      */
-    public function __construct(Request $Request, ResponseFactory $Response, Router $Route)
+    public function __construct(Request $Request, Router $Route)
     {
         $this->Request = $Request;
-        $this->Response = $Response;
         $this->Route = $Route;
     }
 }

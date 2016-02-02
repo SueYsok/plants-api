@@ -8,9 +8,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Http\Transformers\SpeciesTransformer;
 use App\Services\Works\Species;
-use Illuminate\Routing\ResponseFactory;
+use Dingo\Api\Http\Request;
 use Illuminate\Routing\Router;
 
 
@@ -29,14 +29,13 @@ class SpeciesController extends Controller
     protected $Species;
 
     /**
-     * @param Request         $Request
-     * @param ResponseFactory $Response
-     * @param Router          $Route
-     * @param Species         $Species
+     * @param Request $Request
+     * @param Router  $Route
+     * @param Species $Species
      */
-    public function __construct(Request $Request, ResponseFactory $Response, Router $Route, Species $Species)
+    public function __construct(Request $Request, Router $Route, Species $Species)
     {
-        parent::__construct($Request, $Response, $Route);
+        parent::__construct($Request, $Route);
 
         $this->Species = $Species;
     }
@@ -44,26 +43,25 @@ class SpeciesController extends Controller
     /**
      * @return \Illuminate\Http\JsonResponse
      */
-    public function one()
+    public function oneSpecies()
     {
         $speciesId = $this->Route->input('species_id');
-        $mode = $this->Request->input('mode');
 
-        $SpeciesEntity = $this->Species->one($speciesId, $mode);
+        $SpeciesEntity = $this->Species->one($speciesId);
 
-        return $this->Response->json($SpeciesEntity);
+        return $this->response()->item($SpeciesEntity, new SpeciesTransformer);
     }
 
     /**
      * @return \Illuminate\Http\JsonResponse
      */
-    public function all()
+    public function allSpecies()
     {
         $genusId = $this->Route->input('genus_id');
 
         $SpeciesCollection = $this->Species->many($genusId);
 
-        return $this->Response->json($SpeciesCollection);
+        return $this->response()->collection($SpeciesCollection, new SpeciesTransformer);
     }
 
 }
