@@ -8,6 +8,7 @@
 
 namespace App\Services\Repositories;
 
+use App\Eloquent\Plants;
 use Illuminate\Database\Eloquent\Builder;
 
 
@@ -77,8 +78,8 @@ class PlantsRepository extends Repository
         if (isset($query['varietas_id'])) {
             $Model = $Model->where('varietas_id', '=', $query['varietas_id']);
         }
-        if (isset($query['tags_id'])) {
-            $Model = $this->tagsQuery($query['tags_id'], $Model);
+        if (isset($query['tags_id']) || isset($query['tags_title'])) {
+            $Model = $this->tagsQuery($query, $Model);
         }
         if (isset($query['businesses_id'])) {
             $Model = $this->businessesQuery($query['businesses_id'], $Model);
@@ -88,26 +89,30 @@ class PlantsRepository extends Repository
     }
 
     /**
-     * @param int     $tagsId
-     * @param Builder $Model
+     * @param array          $query
+     * @param Builder|Plants $Model
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    private function tagsQuery($tagsId, Builder $Model)
+    private function tagsQuery(array $query, $Model)
     {
-        return $Model->whereHas('tagslink', function ($Model) use ($tagsId) {
+        return $Model->whereHas('tagslink', function ($Model) use ($query) {
             /** @var \App\Eloquent\TagsPlants|\Illuminate\Database\Eloquent\Builder $Model */
-            $Model->where('tags_id', '=', $tagsId);
+            if (isset($query['tags_id'])) {
+                $Model->where('tags_id', '=', $query['tags_id']);
+            } else {
+                $Model->where('tags_title', '=', $query['tags_title']);
+            }
         });
     }
 
     /**
-     * @param int     $businessesId
-     * @param Builder $Model
+     * @param int            $businessesId
+     * @param Builder|Plants $Model
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    private function businessesQuery($businessesId, Builder $Model)
+    private function businessesQuery($businessesId, $Model)
     {
         return $Model->whereHas('businesseslink', function ($Model) use ($businessesId) {
             /** @var \App\Eloquent\BusinessesPlants|\Illuminate\Database\Eloquent\Builder $Model */

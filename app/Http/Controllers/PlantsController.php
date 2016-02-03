@@ -62,10 +62,11 @@ class PlantsController extends Controller
         $subspeciesId = $this->Request->input('subspecies_id');
         $varietasId = $this->Request->input('varietas_id');
         $tagsId = $this->Request->input('tags_id');
+        $tagsTitle = $this->Request->input('tags_title');
         $businessesId = $this->Request->input('businesses_id');
 
         $PlantsCollection = $this->Plants->many(
-            $familyId, $genusId, $speciesId, $subspeciesId, $varietasId, $tagsId, $businessesId);
+            $familyId, $genusId, $speciesId, $subspeciesId, $varietasId, $tagsId, $tagsTitle, $businessesId);
 
         return $this->response()->collection($PlantsCollection, new PlantsTransformer);
     }
