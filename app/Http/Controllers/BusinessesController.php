@@ -21,7 +21,6 @@ use Illuminate\Routing\Router;
  *
  * @package App\Http\Controllers
  * @author  sueysok
- * @Resource("Businesses")
  */
 class BusinessesController extends Controller
 {
@@ -45,7 +44,6 @@ class BusinessesController extends Controller
 
     /**
      * @return \Illuminate\Http\JsonResponse
-     * @Get("/")
      */
     public function oneBusiness()
     {

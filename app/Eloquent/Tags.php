@@ -14,11 +14,12 @@ namespace App\Eloquent;
  *
  * @package App\Eloquent
  * @author  sueysok
- * @property int            id
- * @property string         title
- * @property int            count
- * @property \Carbon\Carbon created_at
- * @property \Carbon\Carbon updated_at
+ * @property int                                      id
+ * @property string                                   title
+ * @property int                                      count
+ * @property \Carbon\Carbon                           created_at
+ * @property \Carbon\Carbon                           updated_at
+ * @property \Illuminate\Database\Eloquent\Collection plants
  */
 class Tags extends Eloquent
 {
