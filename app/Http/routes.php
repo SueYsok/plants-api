@@ -135,6 +135,30 @@ $Router->version('v1', function ($Router) {
                 'description' => '植物详细',
             ]);
 
+            $Router->post('images', [
+                'uses'        => 'App\Http\Controllers\ImagesController@addPlantsImages',
+                'middleware'  => 'api.auth',
+                'providers'   => ['oauth'],
+                'no'          => 'PLANTS_014',
+                'description' => '添加植物图片',
+            ]);
+
+        });
+
+        $Router->group([
+            'prefix' => 'images/{images_id}',
+            'where'  => ['images_id' => '[0-9]+'],
+        ], function ($Router) {
+            /** @var \Illuminate\Routing\Router $Router */
+
+            $Router->delete('/', [
+                'uses'        => 'App\Http\Controllers\ImagesController@destroyPlantsImages',
+                'middleware'  => 'api.auth',
+                'providers'   => ['oauth'],
+                'no'          => 'PLANTS_015',
+                'description' => '删除植物图片',
+            ]);
+
         });
 
     });

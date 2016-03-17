@@ -12,6 +12,7 @@ use App\Http\Transformers\GenusTransformer;
 use App\Services\Works\Genus;
 use Dingo\Api\Http\Request;
 use Illuminate\Routing\Router;
+use LucaDegasperi\OAuth2Server\Authorizer;
 
 
 /**
@@ -29,13 +30,14 @@ class GenusController extends Controller
     protected $Genus;
 
     /**
-     * @param Request $Request
-     * @param Router  $Route
-     * @param Genus   $Genus
+     * @param Request    $Request
+     * @param Router     $Route
+     * @param Authorizer $Authorizer
+     * @param Genus      $Genus
      */
-    public function __construct(Request $Request, Router $Route, Genus $Genus)
+    public function __construct(Request $Request, Router $Route, Authorizer $Authorizer, Genus $Genus)
     {
-        parent::__construct($Request, $Route);
+        parent::__construct($Request, $Route, $Authorizer);
 
         $this->Genus = $Genus;
     }

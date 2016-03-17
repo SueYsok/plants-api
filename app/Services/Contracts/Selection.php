@@ -13,6 +13,7 @@ namespace App\Services\Contracts;
  * Interface Selection
  *
  * @package App\Services\Contracts
+ * @author  sueysok
  */
 interface Selection
 {

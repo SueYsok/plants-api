@@ -12,6 +12,7 @@ use App\Http\Transformers\SpeciesTransformer;
 use App\Services\Works\Species;
 use Dingo\Api\Http\Request;
 use Illuminate\Routing\Router;
+use LucaDegasperi\OAuth2Server\Authorizer;
 
 
 /**
@@ -29,13 +30,14 @@ class SpeciesController extends Controller
     protected $Species;
 
     /**
-     * @param Request $Request
-     * @param Router  $Route
-     * @param Species $Species
+     * @param Request    $Request
+     * @param Router     $Route
+     * @param Authorizer $Authorizer
+     * @param Species    $Species
      */
-    public function __construct(Request $Request, Router $Route, Species $Species)
+    public function __construct(Request $Request, Router $Route, Authorizer $Authorizer, Species $Species)
     {
-        parent::__construct($Request, $Route);
+        parent::__construct($Request, $Route, $Authorizer);
 
         $this->Species = $Species;
     }

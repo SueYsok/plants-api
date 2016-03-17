@@ -12,6 +12,7 @@ use App\Http\Transformers\PlantsTransformer;
 use App\Services\Works\Plants;
 use Dingo\Api\Http\Request;
 use Illuminate\Routing\Router;
+use LucaDegasperi\OAuth2Server\Authorizer;
 
 /**
  * Class PlantsController
@@ -28,13 +29,14 @@ class PlantsController extends Controller
     protected $Plants;
 
     /**
-     * @param Request $Request
-     * @param Router  $Route
-     * @param Plants  $Plants
+     * @param Request    $Request
+     * @param Router     $Route
+     * @param Authorizer $Authorizer
+     * @param Plants     $Plants
      */
-    public function __construct(Request $Request, Router $Route, Plants $Plants)
+    public function __construct(Request $Request, Router $Route, Authorizer $Authorizer, Plants $Plants)
     {
-        parent::__construct($Request, $Route);
+        parent::__construct($Request, $Route, $Authorizer);
 
         $this->Plants = $Plants;
     }

@@ -11,33 +11,32 @@ namespace App\Services\Contracts;
 
 /**
  * Interface Storage
+ *
+ * @package App\Services\Contracts
+ * @author  sueysok
  */
 interface Storage
 {
 
     /**
-     * @param int   $belongId
-     * @param array $input
+     *
+     * @param mixed $input
      *
      * @return mixed
      */
-    public function add($belongId, array $input);
+    public function add(...$input);
 
     /**
-     * @param int   $belongId
      * @param int   $dataId
-     * @param array $input
+     * @param mixed $input
      *
      * @return mixed
      */
-    public function edit($belongId, $dataId, array $input);
+    public function edit($dataId, ...$input);
 
     /**
-     * @param int $belongId
      * @param int $dataId
-     *
-     * @return mixed
      */
-    public function delete($belongId, $dataId);
+    public function delete($dataId);
 
 }

@@ -10,6 +10,7 @@ namespace App\Http\Transformers;
 
 use App\Services\Entities\PlantsEntity;
 use App\Services\Entities\PlantsImagesEntity;
+use Illuminate\Support\Facades\Config;
 use League\Fractal\TransformerAbstract;
 
 
@@ -39,7 +40,7 @@ class PlantsImagesTransformer extends TransformerAbstract
         return [
             'kind' => 'plants_images',
             'id'   => $PlantsImagesEntity->getId(),
-            'url'  => $PlantsImagesEntity->getImage(),
+            'url'  => 'http://' . Config::get('path.images_domain') . $PlantsImagesEntity->getImage(),
         ];
     }
 

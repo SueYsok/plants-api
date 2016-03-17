@@ -56,6 +56,21 @@ class PlantsRepository extends Repository
     }
 
     /**
+     * @param $id
+     *
+     * @return \App\Eloquent\Plants
+     */
+    public function oneSimpleById($id)
+    {
+        $Model = $this->Model->find($id);
+        if (is_null($Model)) {
+            $this->modelNotFound();
+        }
+
+        return $Model;
+    }
+
+    /**
      * @param array $query
      *
      * @return \Illuminate\Database\Eloquent\Collection
