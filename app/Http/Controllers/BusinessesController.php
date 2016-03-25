@@ -45,12 +45,12 @@ class BusinessesController extends Controller
     }
 
     /**
+     * @param int $businessesId
+     *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function oneBusiness()
+    public function oneBusiness($businessesId)
     {
-        $businessesId = $this->Route->input('businesses_id');
-
         $BusinessesEntity = $this->Businesses->one($businessesId);
 
         return $this->response()->item($BusinessesEntity, new BusinessesTransformer, ['key' => 'user']);

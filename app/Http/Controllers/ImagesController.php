@@ -41,11 +41,12 @@ class ImagesController extends Controller
     }
 
     /**
+     * @param int $plantsId
+     *
      * @return \Dingo\Api\Http\Response
      */
-    public function addPlantsImages()
+    public function addPlantsImages($plantsId)
     {
-        $plantsId = $this->Route->input('plants_id');
         $userId = $this->Authorizer->getResourceOwnerId();
         $image = $this->Request->file('image');
 
@@ -73,12 +74,12 @@ class ImagesController extends Controller
     }
 
     /**
+     * @param int $imagesId
+     *
      * @return \Dingo\Api\Http\Response
      */
-    public function destroyPlantsImages()
+    public function destroyPlantsImages($imagesId)
     {
-        $imagesId = $this->Route->input('images_id');
-
         try {
             $this->Images->delete($imagesId);
         } catch (WorkException $e) {

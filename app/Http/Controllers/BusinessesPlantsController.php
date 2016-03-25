@@ -47,12 +47,12 @@ class BusinessesPlantsController extends Controller
     }
 
     /**
+     * @param int $businessesId
+     *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function allPlants()
+    public function allPlants($businessesId)
     {
-        $businessesId = $this->Route->input('businesses_id');
-
         $BusinessesCollection = $this->BusinessesPlants->many($businessesId);
 
         return $this->response()->collection($BusinessesCollection, new BusinessesPlantsTransformer);

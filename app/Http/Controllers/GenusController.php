@@ -43,24 +43,24 @@ class GenusController extends Controller
     }
 
     /**
+     * @param int $genusId
+     *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function oneGenus()
+    public function oneGenus($genusId)
     {
-        $genusId = $this->Route->input('genus_id');
-
         $GenusEntity = $this->Genus->one($genusId);
 
         return $this->response()->item($GenusEntity, new GenusTransformer);
     }
 
     /**
+     * @param int $familyId
+     *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function allGenus()
+    public function allGenus($familyId)
     {
-        $familyId = $this->Route->input('family_id');
-
         $GenusCollection = $this->Genus->many($familyId);
 
         return $this->response()->collection($GenusCollection, new GenusTransformer);

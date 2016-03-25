@@ -43,24 +43,24 @@ class SpeciesController extends Controller
     }
 
     /**
+     * @param int $speciesId
+     *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function oneSpecies()
+    public function oneSpecies($speciesId)
     {
-        $speciesId = $this->Route->input('species_id');
-
         $SpeciesEntity = $this->Species->one($speciesId);
 
         return $this->response()->item($SpeciesEntity, new SpeciesTransformer);
     }
 
     /**
+     * @param int $genusId
+     *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function allSpecies()
+    public function allSpecies($genusId)
     {
-        $genusId = $this->Route->input('genus_id');
-
         $SpeciesCollection = $this->Species->many($genusId);
 
         return $this->response()->collection($SpeciesCollection, new SpeciesTransformer);

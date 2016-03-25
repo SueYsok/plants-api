@@ -43,12 +43,12 @@ class TagsController extends Controller
     }
 
     /**
+     * @param int $tagsId
+     *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function oneTag()
+    public function oneTag($tagsId)
     {
-        $tagsId = $this->Route->input('tags_id');
-
         $TagsEntity = $this->Tags->one($tagsId);
 
         return $this->response()->item($TagsEntity, new TagsTransformer);

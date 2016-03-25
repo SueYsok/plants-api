@@ -42,12 +42,12 @@ class PlantsController extends Controller
     }
 
     /**
+     * @param int $plantsId
+     *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function onePlant()
+    public function onePlant($plantsId)
     {
-        $plantsId = $this->Route->input('plants_id');
-
         $PlantsEntity = $this->Plants->one($plantsId);
 
         return $this->response()->item($PlantsEntity, new PlantsTransformer);

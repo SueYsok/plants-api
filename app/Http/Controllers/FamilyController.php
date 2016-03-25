@@ -43,12 +43,12 @@ class FamilyController extends Controller
     }
 
     /**
+     * @param int $familyId
+     *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function oneFamily()
+    public function oneFamily($familyId)
     {
-        $familyId = $this->Route->input('family_id');
-
         $FamilyEntity = $this->Family->one($familyId);
 
         return $this->response()->item($FamilyEntity, new FamilyTransformer);
