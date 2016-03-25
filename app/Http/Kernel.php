@@ -15,6 +15,7 @@ class Kernel extends HttpKernel
         \Illuminate\Foundation\Http\Middleware\CheckForMaintenanceMode::class,
         \LucaDegasperi\OAuth2Server\Middleware\OAuthExceptionHandlerMiddleware::class,
         \App\Http\Middleware\ExceptionMiddleware::class,
+        \App\Http\Middleware\HttpHeaderMiddleware::class,
     ];
 
     /**
