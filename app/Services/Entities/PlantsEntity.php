@@ -34,6 +34,10 @@ class PlantsEntity extends Entity
     /**
      * @var string
      */
+    protected $alias;
+    /**
+     * @var string
+     */
     protected $description;
     /**
      * @var string
@@ -103,6 +107,7 @@ class PlantsEntity extends Entity
             foreach ([
                          'id',
                          'title',
+                         'alias',
                          'description',
                          'cover',
                          'family_id',
@@ -138,13 +143,9 @@ class PlantsEntity extends Entity
                 $this->varietas = (new VarietasEntity)->create($Item->varietas);
             }
 
-            if (isset($Item->images)) {
-                $this->images = (new PlantsImagesEntity)->create($Item->images);
-            }
+            $this->images = (new PlantsImagesEntity)->create(isset($Item->images) ? $Item->images : null);
 
-            if (isset($Item->tags)) {
-                $this->tags = (new TagsEntity)->create($Item->tags);
-            }
+            $this->tags = (new TagsEntity)->create(isset($Item->tags) ? $Item->tags : null);
 
             $SameCollection = new ModelCollection;
             if (isset($Item->same)) {
@@ -281,6 +282,14 @@ class PlantsEntity extends Entity
     public function getTitle()
     {
         return $this->title;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAlias()
+    {
+        return $this->alias;
     }
 
     /**

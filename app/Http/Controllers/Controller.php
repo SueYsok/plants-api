@@ -9,6 +9,7 @@ use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Routing\Router;
+use LucaDegasperi\OAuth2Server\Authorizer;
 
 /**
  * Class Controller
@@ -28,14 +29,26 @@ abstract class Controller extends BaseController
      * @var Router
      */
     protected $Route;
+    /**
+     * @var Authorizer
+     */
+    protected $Authorizer;
 
     /**
-     * @param Request $Request
-     * @param Router  $Route
+     * @var int
      */
-    public function __construct(Request $Request, Router $Route)
+    protected $myId;
+
+    /**
+     * @param Request    $Request
+     * @param Router     $Route
+     * @param Authorizer $Authorizer
+     */
+    public function __construct(Request $Request, Router $Route, Authorizer $Authorizer)
     {
         $this->Request = $Request;
         $this->Route = $Route;
+        $this->Authorizer = $Authorizer;
     }
+
 }

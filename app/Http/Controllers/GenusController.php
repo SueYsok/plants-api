@@ -12,6 +12,7 @@ use App\Http\Transformers\GenusTransformer;
 use App\Services\Works\Genus;
 use Dingo\Api\Http\Request;
 use Illuminate\Routing\Router;
+use LucaDegasperi\OAuth2Server\Authorizer;
 
 
 /**
@@ -29,36 +30,37 @@ class GenusController extends Controller
     protected $Genus;
 
     /**
-     * @param Request $Request
-     * @param Router  $Route
-     * @param Genus   $Genus
+     * @param Request    $Request
+     * @param Router     $Route
+     * @param Authorizer $Authorizer
+     * @param Genus      $Genus
      */
-    public function __construct(Request $Request, Router $Route, Genus $Genus)
+    public function __construct(Request $Request, Router $Route, Authorizer $Authorizer, Genus $Genus)
     {
-        parent::__construct($Request, $Route);
+        parent::__construct($Request, $Route, $Authorizer);
 
         $this->Genus = $Genus;
     }
 
     /**
+     * @param int $genusId
+     *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function oneGenus()
+    public function oneGenus($genusId)
     {
-        $genusId = $this->Route->input('genus_id');
-
         $GenusEntity = $this->Genus->one($genusId);
 
         return $this->response()->item($GenusEntity, new GenusTransformer);
     }
 
     /**
+     * @param int $familyId
+     *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function allGenus()
+    public function allGenus($familyId)
     {
-        $familyId = $this->Route->input('family_id');
-
         $GenusCollection = $this->Genus->many($familyId);
 
         return $this->response()->collection($GenusCollection, new GenusTransformer);

@@ -18,4 +18,13 @@ namespace App\Services\Works;
 abstract class Work
 {
 
+    /**
+     *
+     */
+    const PLANTS_MODEL_NOT_FOUND = 0;
+    /**
+     *
+     */
+    const NOT_DELETE_FILE = 1;
+
 }

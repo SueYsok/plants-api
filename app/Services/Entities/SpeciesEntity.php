@@ -25,7 +25,7 @@ class SpeciesEntity extends TypeSpeciesEntity
 {
 
     /**
-     * @var Collection|null
+     * @var Collection
      */
     protected $items;
 
@@ -92,7 +92,7 @@ class SpeciesEntity extends TypeSpeciesEntity
                     $this->items = (new VarietasEntity)->create($Item->varietas);
                 } else {
                     //种下无分类
-                    $this->items = null;
+                    $this->items = new Collection;
                 }
             }
 
@@ -103,7 +103,7 @@ class SpeciesEntity extends TypeSpeciesEntity
     }
 
     /**
-     * @return Collection|null
+     * @return Collection
      */
     public function getItems()
     {

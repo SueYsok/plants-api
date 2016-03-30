@@ -12,6 +12,7 @@ use App\Http\Transformers\FamilyTransformer;
 use App\Services\Works\Family;
 use Dingo\Api\Http\Request;
 use Illuminate\Routing\Router;
+use LucaDegasperi\OAuth2Server\Authorizer;
 
 
 /**
@@ -29,24 +30,25 @@ class FamilyController extends Controller
     protected $Family;
 
     /**
-     * @param Request $Request
-     * @param Router  $Route
-     * @param Family  $Family
+     * @param Request    $Request
+     * @param Router     $Route
+     * @param Authorizer $Authorizer
+     * @param Family     $Family
      */
-    public function __construct(Request $Request, Router $Route, Family $Family)
+    public function __construct(Request $Request, Router $Route, Authorizer $Authorizer, Family $Family)
     {
-        parent::__construct($Request, $Route);
+        parent::__construct($Request, $Route, $Authorizer);
 
         $this->Family = $Family;
     }
 
     /**
+     * @param int $familyId
+     *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function oneFamily()
+    public function oneFamily($familyId)
     {
-        $familyId = $this->Route->input('family_id');
-
         $FamilyEntity = $this->Family->one($familyId);
 
         return $this->response()->item($FamilyEntity, new FamilyTransformer);

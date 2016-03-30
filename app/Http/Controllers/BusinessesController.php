@@ -14,6 +14,7 @@ use App\Services\Works\Businesses;
 use App\Services\Works\BusinessesPlants;
 use Dingo\Api\Http\Request;
 use Illuminate\Routing\Router;
+use LucaDegasperi\OAuth2Server\Authorizer;
 
 
 /**
@@ -21,7 +22,6 @@ use Illuminate\Routing\Router;
  *
  * @package App\Http\Controllers
  * @author  sueysok
- * @Resource("Businesses")
  */
 class BusinessesController extends Controller
 {
@@ -34,23 +34,23 @@ class BusinessesController extends Controller
     /**
      * @param Request    $Request
      * @param Router     $Route
+     * @param Authorizer $Authorizer
      * @param Businesses $Businesses
      */
-    public function __construct(Request $Request, Router $Route, Businesses $Businesses)
+    public function __construct(Request $Request, Router $Route, Authorizer $Authorizer, Businesses $Businesses)
     {
-        parent::__construct($Request, $Route);
+        parent::__construct($Request, $Route, $Authorizer);
 
         $this->Businesses = $Businesses;
     }
 
     /**
+     * @param int $businessesId
+     *
      * @return \Illuminate\Http\JsonResponse
-     * @Get("/")
      */
-    public function oneBusiness()
+    public function oneBusiness($businessesId)
     {
-        $businessesId = $this->Route->input('businesses_id');
-
         $BusinessesEntity = $this->Businesses->one($businessesId);
 
         return $this->response()->item($BusinessesEntity, new BusinessesTransformer, ['key' => 'user']);

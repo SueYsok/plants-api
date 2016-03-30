@@ -16,6 +16,7 @@ namespace App\Eloquent;
  * @author  sueysok
  * @property int            id
  * @property int            plants_id
+ * @property int            user_id
  * @property string         image
  * @property \Carbon\Carbon created_at
  * @property \Carbon\Carbon updated_at
@@ -31,7 +32,7 @@ class PlantsImages extends Eloquent
     /**
      * @var array
      */
-    protected $fillable = ['plants_id', 'image',];
+    protected $fillable = ['plants_id', 'user_id', 'image',];
     /**
      * @var array
      */
@@ -42,7 +43,7 @@ class PlantsImages extends Eloquent
     protected $casts = [
         'id'        => 'integer',
         'plants_id' => 'integer',
-        'image'    => 'string',
+        'image'     => 'string',
     ];
 
     /**

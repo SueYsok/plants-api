@@ -7,7 +7,10 @@
     "require": {
         "php": ">=5.5.9",
         "laravel/framework": "5.2.*",
-        "dingo/api": "1.0.*@dev"
+        "dingo/api": "1.0.*@dev",
+        "doctrine/dbal": "~2.4",
+        "lucadegasperi/oauth2-server-laravel": "5.1.*",
+        "intervention/image": "*"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

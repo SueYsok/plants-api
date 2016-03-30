@@ -12,6 +12,7 @@ use App\Http\Transformers\TagsTransformer;
 use App\Services\Works\Tags;
 use Dingo\Api\Http\Request;
 use Illuminate\Routing\Router;
+use LucaDegasperi\OAuth2Server\Authorizer;
 
 
 /**
@@ -29,24 +30,25 @@ class TagsController extends Controller
     protected $Tags;
 
     /**
-     * @param Request $Request
-     * @param Router  $Route
-     * @param Tags    $Tags
+     * @param Request    $Request
+     * @param Router     $Route
+     * @param Authorizer $Authorizer
+     * @param Tags       $Tags
      */
-    public function __construct(Request $Request, Router $Route, Tags $Tags)
+    public function __construct(Request $Request, Router $Route, Authorizer $Authorizer, Tags $Tags)
     {
-        parent::__construct($Request, $Route);
+        parent::__construct($Request, $Route, $Authorizer);
 
         $this->Tags = $Tags;
     }
 
     /**
+     * @param int $tagsId
+     *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function oneTag()
+    public function oneTag($tagsId)
     {
-        $tagsId = $this->Route->input('tags_id');
-
         $TagsEntity = $this->Tags->one($tagsId);
 
         return $this->response()->item($TagsEntity, new TagsTransformer);

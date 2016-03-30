@@ -58,6 +58,8 @@ class PlantsTransformer extends TransformerAbstract
             'subspecies_id' => $PlantsEntity->getSubspeciesId(),
             'varietas'      => $PlantsEntity->getVarietasId(),
             'title'         => $PlantsEntity->getTitle(),
+            'alias'         => $PlantsEntity->getAlias(),
+            'description'   => $PlantsEntity->getDescription(),
         ];
     }
 

@@ -64,7 +64,10 @@ class Plants extends Work implements Selection
             $query['tags_id'] = $input[5];
         }
         if ($input[6]) {
-            $query['businesses_id'] = $input[6];
+            $query['tags_title'] = $input[6];
+        }
+        if ($input[7]) {
+            $query['businesses_id'] = $input[7];
         }
 
         $Collection = $this->plantsRepository()->manyByQuery($query);

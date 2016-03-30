@@ -54,9 +54,7 @@ class TagsEntity extends Entity
                 }
             }
 
-            if (isset($Item->plants)) {
-                $this->plants = (new PlantsEntity)->create($Item->plants);
-            }
+            $this->plants = (new PlantsEntity)->create(isset($Item->plants) ? $Item->plants : null);
 
             return $this;
         } else {

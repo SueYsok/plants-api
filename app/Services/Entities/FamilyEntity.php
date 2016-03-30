@@ -54,9 +54,7 @@ class FamilyEntity extends Entity
                 }
             }
 
-            if (isset($Item->genus)) {
-                $this->genus = (new GenusEntity)->create($Item->genus);
-            }
+            $this->genus = (new GenusEntity)->create(isset($Item->genus) ? $Item->genus : null);
 
             return $this;
         } else {
