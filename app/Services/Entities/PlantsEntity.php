@@ -34,6 +34,10 @@ class PlantsEntity extends Entity
     /**
      * @var string
      */
+    protected $alias;
+    /**
+     * @var string
+     */
     protected $description;
     /**
      * @var string
@@ -103,6 +107,7 @@ class PlantsEntity extends Entity
             foreach ([
                          'id',
                          'title',
+                         'alias',
                          'description',
                          'cover',
                          'family_id',
@@ -277,6 +282,14 @@ class PlantsEntity extends Entity
     public function getTitle()
     {
         return $this->title;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAlias()
+    {
+        return $this->alias;
     }
 
     /**
