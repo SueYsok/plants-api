@@ -15,6 +15,8 @@ namespace App\Eloquent;
  * @package App\Eloquent
  * @author  sueysok
  * @property int                                      id
+ * @property string                                   title
+ * @property string                                   alias
  * @property string                                   description
  * @property string                                   cover
  * @property int                                      family_id
@@ -62,6 +64,8 @@ class Plants extends Eloquent
      */
     protected $casts = [
         'id'            => 'integer',
+        'title'         => 'string',
+        'alias'         => 'string',
         'description'   => 'string',
         'cover'         => 'string',
         'family_id'     => 'integer',
