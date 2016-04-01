@@ -53,7 +53,7 @@ class BusinessesController extends Controller
     {
         $BusinessesEntity = $this->Businesses->one($businessesId);
 
-        return $this->response()->item($BusinessesEntity, new BusinessesTransformer, ['key' => 'user']);
+        return $this->response()->item($BusinessesEntity, new BusinessesTransformer);
     }
 
     /**

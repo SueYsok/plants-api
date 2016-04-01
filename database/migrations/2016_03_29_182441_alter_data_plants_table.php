@@ -13,7 +13,7 @@ class AlterDataPlantsTable extends Migration
     public function up()
     {
         Schema::table('data_plants', function (Blueprint $table) {
-            $table->string('alias')->after('title');
+            $table->string('alias')->nullable()->after('title');
         });
     }
 

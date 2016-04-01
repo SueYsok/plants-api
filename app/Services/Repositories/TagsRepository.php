@@ -26,7 +26,18 @@ class TagsRepository extends Repository
     public function oneById($id)
     {
         $Model = $this->Model
-            ->with('plants')
+            ->with([
+                'plants' => function ($Model) {
+                    /** @var \App\Eloquent\Plants $Model */
+                    $Model
+                        ->with('family')
+                        ->with('genus')
+                        ->with('species')
+                        ->with('subspecies')
+                        ->with('varietas')
+                        ->with('tags');
+                },
+            ])
             ->find($id);
         if (is_null($Model)) {
             $this->modelNotFound();

@@ -100,7 +100,14 @@ class PlantsRepository extends Repository
             $Model = $this->businessesQuery($query['businesses_id'], $Model);
         }
 
-        return $Model->get();
+        return $Model
+            ->with('family')
+            ->with('genus')
+            ->with('species')
+            ->with('subspecies')
+            ->with('varietas')
+            ->with('tags')
+            ->get();
     }
 
     /**
