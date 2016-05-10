@@ -25,6 +25,9 @@ use LucaDegasperi\OAuth2Server\Authorizer;
 class ImagesController extends Controller
 {
 
+    /**
+     * @var Images
+     */
     protected $Images;
 
     /**
@@ -47,6 +50,47 @@ class ImagesController extends Controller
      */
     public function addPlantsImages($plantsId)
     {
+        return $this->addImages($plantsId, 'plants');
+    }
+
+    /**
+     * @param int $imagesId
+     *
+     * @return \Dingo\Api\Http\Response
+     */
+    public function destroyPlantsImages($imagesId)
+    {
+        return $this->destroyImages($imagesId, 'plants');
+    }
+
+    /**
+     * @param int $hybridsId
+     *
+     * @return \Dingo\Api\Http\Response|null
+     */
+    public function addHybridsImages($hybridsId)
+    {
+        return $this->addImages($hybridsId, 'hybrids');
+    }
+
+    /**
+     * @param int $imagesId
+     *
+     * @return \Dingo\Api\Http\Response
+     */
+    public function destroyHybridsImages($imagesId)
+    {
+        return $this->destroyImages($imagesId, 'hybrids');
+    }
+
+    /**
+     * @param int    $objectId
+     * @param string $key
+     *
+     * @return \Dingo\Api\Http\Response|null
+     */
+    private function addImages($objectId, $key)
+    {
         $userId = $this->Authorizer->getResourceOwnerId();
         $image = $this->Request->file('image');
 
@@ -59,7 +103,7 @@ class ImagesController extends Controller
         }
 
         try {
-            $this->Images->add($plantsId, $userId, $ImageFile);
+            $this->Images->add($objectId, $userId, $ImageFile, $key);
         } catch (WorkException $e) {
             switch ($e->getCode()) {
                 case Work::PLANTS_MODEL_NOT_FOUND:
@@ -74,14 +118,15 @@ class ImagesController extends Controller
     }
 
     /**
-     * @param int $imagesId
+     * @param int    $imagesId
+     * @param string $key
      *
      * @return \Dingo\Api\Http\Response
      */
-    public function destroyPlantsImages($imagesId)
+    private function destroyImages($imagesId, $key)
     {
         try {
-            $this->Images->delete($imagesId);
+            $this->Images->delete($imagesId, $key);
         } catch (WorkException $e) {
             switch ($e->getCode()) {
                 case Work::NOT_DELETE_FILE:

@@ -188,4 +188,53 @@ $Router->version('v1', function ($Router) {
 
     });
 
+    $Router->group(['prefix' => 'hybrids'], function ($Router) {
+        /** @var \Illuminate\Routing\Router $Router */
+
+        $Router->get('/', [
+            'uses'        => 'App\Http\Controllers\HybridsController@allHybrids',
+            'no'          => 'PLANTS_016',
+            'description' => '杂交植物列表',
+        ]);
+
+        $Router->group([
+            'prefix' => '{hybrids_id}',
+            'where'  => ['hybrids_id' => '[0-9]+'],
+        ], function ($Router) {
+            /** @var \Illuminate\Routing\Router $Router */
+
+            $Router->get('/', [
+                'uses'        => 'App\Http\Controllers\HybridsController@oneHybrids',
+                'no'          => 'PLANTS_017',
+                'description' => '植物详细',
+            ]);
+
+            $Router->post('images', [
+                'uses'        => 'App\Http\Controllers\ImagesController@addHybridsImages',
+                'middleware'  => 'api.auth',
+                'providers'   => ['oauth'],
+                'no'          => 'PLANTS_018',
+                'description' => '添加植物图片',
+            ]);
+
+        });
+
+        $Router->group([
+            'prefix' => 'images/{images_id}',
+            'where'  => ['images_id' => '[0-9]+'],
+        ], function ($Router) {
+            /** @var \Illuminate\Routing\Router $Router */
+
+            $Router->delete('/', [
+                'uses'        => 'App\Http\Controllers\ImagesController@destroyHybridsImages',
+                'middleware'  => 'api.auth',
+                'providers'   => ['oauth'],
+                'no'          => 'PLANTS_019',
+                'description' => '删除植物图片',
+            ]);
+
+        });
+
+    });
+
 });

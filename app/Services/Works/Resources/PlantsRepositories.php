@@ -113,7 +113,7 @@ trait PlantsRepositories
     /**
      * @return PlantsImagesRepository
      */
-    protected function imagesRepository()
+    protected function plantsImagesRepository()
     {
         return $this->Images ?: $this->Images = new PlantsImagesRepository(new PlantsImages);
     }

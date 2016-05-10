@@ -35,8 +35,11 @@ interface Storage
     public function edit($dataId, ...$input);
 
     /**
-     * @param int $dataId
+     * @param int   $dataId
+     * @param mixed $input
+     *
+     * @return
      */
-    public function delete($dataId);
+    public function delete($dataId, ...$input);
 
 }
