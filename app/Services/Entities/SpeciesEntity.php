@@ -97,9 +97,11 @@ class SpeciesEntity extends TypeSpeciesEntity
             }
 
             return $this;
-        }
+        } else {
+            $this->setCollection($Item);
 
-        throw new EntityException(__CLASS__, get_class($Item), 'origin is unusable');
+            return $this->Collection;
+        }
     }
 
     /**

@@ -28,6 +28,14 @@ class GenusRepository extends Repository
         $Model = $this->Model
             ->with('family')
             ->with('typeSpecies')
+            ->with([
+                'species' => function ($Model) {
+                    /** @var \App\Eloquent\Genus $Model */
+                    $Model
+                        ->with('subspecies')
+                        ->with('varietas');
+                },
+            ])
             ->find($id);
         if (is_null($Model)) {
             $this->modelNotFound();
