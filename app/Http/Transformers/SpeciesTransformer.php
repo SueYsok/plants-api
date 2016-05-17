@@ -9,6 +9,7 @@
 namespace App\Http\Transformers;
 
 use App\Services\Entities\GenusEntity;
+use App\Services\Entities\PlantsEntity;
 use App\Services\Entities\SpeciesEntity;
 use App\Services\Entities\SubspeciesEntity;
 use App\Services\Entities\TypeSpeciesEntity;
@@ -32,6 +33,7 @@ class SpeciesTransformer extends TransformerAbstract
         'subspecies',
         'varietas',
         'genus',
+        'plants',
     ];
 
     /**
@@ -46,6 +48,7 @@ class SpeciesTransformer extends TransformerAbstract
             'id'            => $TypeSpeciesEntity->getId(),
             'title'         => $TypeSpeciesEntity->getTitle(),
             'chinese_title' => $TypeSpeciesEntity->getChineseTitle(),
+            'description'   => $TypeSpeciesEntity->getDescription(),
         ];
     }
 
@@ -59,6 +62,20 @@ class SpeciesTransformer extends TransformerAbstract
     {
         if ($TypeSpeciesEntity->getGenus() instanceof GenusEntity) {
             return $this->item($TypeSpeciesEntity->getGenus(), new GenusTransformer);
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * @param TypeSpeciesEntity $TypeSpeciesEntity
+     *
+     * @return \League\Fractal\Resource\Item|null
+     */
+    public function includePlants(TypeSpeciesEntity $TypeSpeciesEntity)
+    {
+        if ($TypeSpeciesEntity->getPlants() instanceof PlantsEntity) {
+            return $this->item($TypeSpeciesEntity->getPlants(), new PlantsTransformer);
         } else {
             return null;
         }

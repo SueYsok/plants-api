@@ -44,6 +44,10 @@ class PlantsEntity extends Entity
      */
     protected $cover;
     /**
+     * @var string
+     */
+    protected $content;
+    /**
      * @var int
      */
     protected $familyId;
@@ -110,6 +114,7 @@ class PlantsEntity extends Entity
                          'alias',
                          'description',
                          'cover',
+                         'content',
                          'family_id',
                          'genus_id',
                          'species_id',
@@ -306,6 +311,14 @@ class PlantsEntity extends Entity
     public function getTags()
     {
         return $this->tags;
+    }
+
+    /**
+     * @return string
+     */
+    public function getContent()
+    {
+        return $this->content;
     }
 
 }

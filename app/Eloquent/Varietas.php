@@ -17,12 +17,14 @@ namespace App\Eloquent;
  * @property int            id
  * @property int            species_id
  * @property int            subspecies_id
+ * @property int            plants_id
  * @property string         title
  * @property string         chinese_title
  * @property \Carbon\Carbon created_at
  * @property \Carbon\Carbon updated_at
  * @property Species        species
  * @property Subspecies     subspecies
+ * @property Plants         plants
  */
 class Varietas extends Eloquent
 {
@@ -34,7 +36,7 @@ class Varietas extends Eloquent
     /**
      * @var array
      */
-    protected $fillable = ['species_id', 'subspecies_id', 'title', 'chinese_title',];
+    protected $fillable = ['species_id', 'subspecies_id', 'plants_id', 'title', 'chinese_title',];
     /**
      * @var array
      */
@@ -46,6 +48,7 @@ class Varietas extends Eloquent
         'id'            => 'integer',
         'species_id'    => 'integer',
         'subspecies_id' => 'integer',
+        'plants_id'     => 'integer',
         'title'         => 'string',
         'chinese_title' => 'string',
     ];
@@ -64,6 +67,14 @@ class Varietas extends Eloquent
     public function subspecies()
     {
         return $this->belongsTo(__NAMESPACE__ . '\\Subspecies', 'subspecies_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function plants()
+    {
+        return $this->belongsTo(__NAMESPACE__ . '\\Plants', 'plants_id');
     }
 
 }

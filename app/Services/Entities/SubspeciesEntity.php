@@ -44,6 +44,10 @@ class SubspeciesEntity extends Entity
      */
     protected $species;
     /**
+     * @var PlantsEntity
+     */
+    protected $plants;
+    /**
      * @var Collection
      */
     protected $varietas;
@@ -64,6 +68,10 @@ class SubspeciesEntity extends Entity
 
             if (isset($Item->species)) {
                 $this->species = (new TypeSpeciesEntity)->create($Item->species);
+            }
+
+            if (isset($Item->plants)) {
+                $this->plants = (new PlantsEntity)->create($Item->plants);
             }
 
             $this->varietas = (new VarietasEntity)->create(isset($Item->varietas) ? $Item->varietas : null);
@@ -122,6 +130,14 @@ class SubspeciesEntity extends Entity
     public function getVarietas()
     {
         return $this->varietas;
+    }
+
+    /**
+     * @return PlantsEntity
+     */
+    public function getPlants()
+    {
+        return $this->plants;
     }
 
 }

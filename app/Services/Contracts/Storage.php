@@ -38,7 +38,7 @@ interface Storage
      * @param int   $dataId
      * @param mixed $input
      *
-     * @return
+     * @return mixed
      */
     public function delete($dataId, ...$input);
 

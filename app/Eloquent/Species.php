@@ -16,12 +16,15 @@ namespace App\Eloquent;
  * @author  sueysok
  * @property int                                      id
  * @property int                                      genus_id
+ * @property int                                      plants_id
  * @property string                                   title
  * @property string                                   chinese_title
+ * @property string                                   description
  * @property int                                      sub_process
  * @property \Carbon\Carbon                           created_at
  * @property \Carbon\Carbon                           updated_at
  * @property Genus                                    genus
+ * @property Plants                                   plants
  * @property \Illuminate\Database\Eloquent\Collection subspecies
  * @property \Illuminate\Database\Eloquent\Collection varietas
  */
@@ -35,7 +38,7 @@ class Species extends Eloquent
     /**
      * @var array
      */
-    protected $fillable = ['genus_id', 'title', 'chinese_title', 'sub_process'];
+    protected $fillable = ['genus_id', 'plants_id', 'title', 'chinese_title', 'description', 'sub_process'];
     /**
      * @var array
      */
@@ -46,8 +49,10 @@ class Species extends Eloquent
     protected $casts = [
         'id'            => 'integer',
         'genus_id'      => 'integer',
+        'plants_id'     => 'integer',
         'title'         => 'string',
         'chinese_title' => 'string',
+        'description'   => 'string',
         'sub_process'   => 'integer',
     ];
 
@@ -57,6 +62,14 @@ class Species extends Eloquent
     public function genus()
     {
         return $this->belongsTo(__NAMESPACE__ . '\\Genus', 'genus_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function plants()
+    {
+        return $this->belongsTo(__NAMESPACE__ . '\\Plants', 'plants_id');
     }
 
     /**

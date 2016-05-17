@@ -19,6 +19,7 @@ namespace App\Eloquent;
  * @property string                                   alias
  * @property string                                   description
  * @property string                                   cover
+ * @property string                                   content
  * @property int                                      family_id
  * @property int                                      genus_id
  * @property int                                      species_id
@@ -49,6 +50,7 @@ class Plants extends Eloquent
         'title',
         'description',
         'cover',
+        'content',
         'family_id',
         'genus_id',
         'species_id',
@@ -68,6 +70,7 @@ class Plants extends Eloquent
         'alias'         => 'string',
         'description'   => 'string',
         'cover'         => 'string',
+        'content'       => 'string',
         'family_id'     => 'integer',
         'genus_id'      => 'integer',
         'species_id'    => 'integer',

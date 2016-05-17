@@ -32,8 +32,19 @@ class GenusRepository extends Repository
                 'species' => function ($Model) {
                     /** @var \App\Eloquent\Genus $Model */
                     $Model
-                        ->with('subspecies')
-                        ->with('varietas');
+                        ->with([
+                            'subspecies' => function ($Model) {
+                                /** @var \App\Eloquent\Genus $Model */
+                                $Model->with('plants');
+                            },
+                        ])
+                        ->with([
+                            'varietas' => function ($Model) {
+                                /** @var \App\Eloquent\Genus $Model */
+                                $Model->with('plants');
+                            },
+                        ])
+                        ->with('plants');
                 },
             ])
             ->find($id);

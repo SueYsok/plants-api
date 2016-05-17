@@ -40,6 +40,10 @@ class TypeSpeciesEntity extends Entity
      */
     protected $chineseTitle;
     /**
+     * @var string
+     */
+    protected $description;
+    /**
      * @var boolean
      */
     protected $subProcess;
@@ -47,6 +51,10 @@ class TypeSpeciesEntity extends Entity
      * @var GenusEntity
      */
     protected $genus;
+    /**
+     * @var PlantsEntity
+     */
+    protected $plants;
 
     /**
      * @param ModelCollection|Model $Item
@@ -56,7 +64,15 @@ class TypeSpeciesEntity extends Entity
     public function create($Item)
     {
         if ($Item instanceof Species) {
-            foreach (['id', 'genus_id', 'title', 'chinese_title', 'created_at', 'updated_at',] as $value) {
+            foreach ([
+                         'id',
+                         'genus_id',
+                         'title',
+                         'chinese_title',
+                         'description',
+                         'created_at',
+                         'updated_at',
+                     ] as $value) {
                 if (isset($Item->{$value})) {
                     $this->{camel_case($value)} = $Item->{$value};
                 }
@@ -68,6 +84,10 @@ class TypeSpeciesEntity extends Entity
 
             if (isset($Item->genus)) {
                 $this->genus = (new GenusEntity)->create($Item->genus);
+            }
+
+            if (isset($Item->plants)) {
+                $this->plants = (new PlantsEntity)->create($Item->plants);
             }
 
             return $this;
@@ -124,6 +144,22 @@ class TypeSpeciesEntity extends Entity
     public function getGenus()
     {
         return $this->genus;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * @return PlantsEntities
+     */
+    public function getPlants()
+    {
+        return $this->plants;
     }
 
 }

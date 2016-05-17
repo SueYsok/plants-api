@@ -53,6 +53,10 @@ class SpeciesEntity extends TypeSpeciesEntity
                 $this->genus = (new GenusEntity)->create($Item->genus);
             }
 
+            if (isset($Item->plants)) {
+                $this->plants = (new PlantsEntity)->create($Item->plants);
+            }
+
             if ($this->subProcess) {
                 //有亚种
                 if (isset($Item->subspecies)) {

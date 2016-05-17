@@ -20,11 +20,27 @@ $Router->version('v1', function ($Router) {
     $Router->group(['prefix' => 'species'], function ($Router) {
         /** @var \Illuminate\Routing\Router $Router */
 
-        $Router->get('{species_id}', [
-            'uses'        => 'App\Http\Controllers\SpeciesController@oneSpecies',
-            'no'          => 'PLANTS_001',
-            'description' => '种详细',
-        ])->where('id', '[0-9]+');
+        $Router->group([
+            'prefix' => '{species_id}',
+            'where'  => ['species_id' => '[0-9]+'],
+        ], function ($Router) {
+            /** @var \Illuminate\Routing\Router $Router */
+
+            $Router->get('/', [
+                'uses'        => 'App\Http\Controllers\SpeciesController@oneSpecies',
+                'no'          => 'PLANTS_001',
+                'description' => '种详细',
+            ]);
+
+            $Router->put('/', [
+                'uses'        => 'App\Http\Controllers\SpeciesController@editSpecies',
+                'middleware'  => 'api.auth',
+                'providers'   => ['oauth'],
+                'no'          => 'PLANTS_020',
+                'description' => '编辑种',
+            ]);
+
+        });
 
     });
 
@@ -123,6 +139,14 @@ $Router->version('v1', function ($Router) {
             'description' => '植物列表',
         ]);
 
+        $Router->post('/', [
+            'uses'        => 'App\Http\Controllers\PlantsController@addPlant',
+            'middleware'  => 'api.auth',
+            'providers'   => ['oauth'],
+            'no'          => 'PLANTS_021',
+            'description' => '添加植物',
+        ]);
+
         $Router->group([
             'prefix' => '{plants_id}',
             'where'  => ['plants_id' => '[0-9]+'],
@@ -133,6 +157,22 @@ $Router->version('v1', function ($Router) {
                 'uses'        => 'App\Http\Controllers\PlantsController@onePlant',
                 'no'          => 'PLANTS_011',
                 'description' => '植物详细',
+            ]);
+
+            $Router->put('/', [
+                'uses'        => 'App\Http\Controllers\PlantsController@editPlant',
+                'middleware'  => 'api.auth',
+                'providers'   => ['oauth'],
+                'no'          => 'PLANTS_022',
+                'description' => '修改植物',
+            ]);
+
+            $Router->delete('/', [
+                'uses'        => 'App\Http\Controllers\PlantsController@destroyPlant',
+                'middleware'  => 'api.auth',
+                'providers'   => ['oauth'],
+                'no'          => 'PLANTS_023',
+                'description' => '删除植物',
             ]);
 
             $Router->post('images', [

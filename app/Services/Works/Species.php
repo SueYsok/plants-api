@@ -9,6 +9,7 @@
 namespace App\Services\Works;
 
 use App\Services\Contracts\Selection;
+use App\Services\Contracts\Storage;
 use App\Services\Works\Resources\PlantsEntities;
 use App\Services\Works\Resources\PlantsRepositories;
 
@@ -19,7 +20,7 @@ use App\Services\Works\Resources\PlantsRepositories;
  * @package App\Services\Works
  * @author  sueysok
  */
-class Species extends Work implements Selection
+class Species extends Work implements Selection, Storage
 {
 
     use PlantsRepositories, PlantsEntities;
@@ -60,27 +61,40 @@ class Species extends Work implements Selection
     }
 
     /**
-     * @param $id
      *
-     * @return \App\Services\Entities\TypeSpeciesEntity
+     * @param mixed $input
+     *
+     * @return mixed
      */
-    private function supraspecificBranch($id)
+    public function add(...$input)
     {
-        $Model = $this->speciesRepository()->oneWithSupById($id);
-
-        return $this->typeSpeciesEntity()->create($Model);
+        // TODO: Implement add() method.
     }
 
     /**
-     * @param $id
+     * @param int   $speciesId
+     * @param mixed $input
      *
-     * @return \App\Services\Entities\SpeciesEntity
+     * @return bool
      */
-    private function infraspecificBranch($id)
+    public function edit($speciesId, ...$input)
     {
-        $Model = $this->speciesRepository()->oneWithInfById($id);
+        $title = $input[0];
+        $chineseTitle = $input[1];
+        $description = $input[2];
 
-        return $this->speciesEntity()->create($Model);
+        return $this->speciesRepository()->edit($speciesId, $title, $chineseTitle, $description);
+    }
+
+    /**
+     * @param int   $dataId
+     * @param mixed $input
+     *
+     * @return mixed
+     */
+    public function delete($dataId, ...$input)
+    {
+        // TODO: Implement delete() method.
     }
 
 }

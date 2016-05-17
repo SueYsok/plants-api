@@ -73,4 +73,19 @@ class PlantsController extends Controller
         return $this->response()->collection($PlantsCollection, new PlantsTransformer);
     }
 
+    public function addPlant()
+    {
+        //todo
+    }
+
+    public function editPlant($plantId)
+    {
+        //todo
+    }
+
+    public function destroyPlant($plantId)
+    {
+        //todo
+    }
+
 }
