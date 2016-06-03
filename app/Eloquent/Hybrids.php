@@ -14,18 +14,22 @@ namespace App\Eloquent;
  *
  * @package App\Eloquent
  * @author  sueysok
- * @property int            id
- * @property string         title
- * @property string         alias
- * @property string         description
- * @property string         cover
- * @property int            left_plants_id
- * @property int            right_plants_id
- * @property \Carbon\Carbon created_at
- * @property \Carbon\Carbon updated_at
- * @property Plants         leftplants
- * @property Plants         rightplants
- *
+ * @property int                                      id
+ * @property string                                   title
+ * @property string                                   alias
+ * @property string                                   description
+ * @property string                                   content
+ * @property string                                   cover
+ * @property int                                      left_plants_id
+ * @property int                                      right_plants_id
+ * @property int                                      user_id
+ * @property \Carbon\Carbon                           created_at
+ * @property \Carbon\Carbon                           updated_at
+ * @property Plants                                   leftplants
+ * @property Plants                                   rightplants
+ * @property HybridsImages                            images
+ * @property \Illuminate\Database\Eloquent\Collection tagslink
+ * @property \Illuminate\Database\Eloquent\Collection tags
  */
 class Hybrids extends Eloquent
 {
@@ -40,9 +44,11 @@ class Hybrids extends Eloquent
     protected $fillable = [
         'title',
         'description',
+        'content',
         'cover',
         'left_plants_id',
         'right_plants_id',
+        'user_id',
     ];
     /**
      * @var array
@@ -56,9 +62,11 @@ class Hybrids extends Eloquent
         'title'           => 'string',
         'alias'           => 'string',
         'description'     => 'string',
+        'content'         => 'string',
         'cover'           => 'string',
         'left_plants_id'  => 'integer',
         'right_plants_id' => 'integer',
+        'user_id'         => 'integer',
     ];
 
     /**
@@ -83,6 +91,23 @@ class Hybrids extends Eloquent
     public function images()
     {
         return $this->hasMany(__NAMESPACE__ . '\\HybridsImages', 'hybrids_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function tagslink()
+    {
+        return $this->hasMany(__NAMESPACE__ . '\\TagsHybrids', 'hybrids_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function tags()
+    {
+        return $this->belongsToMany(__NAMESPACE__ . '\\Tags',
+            'link_tags_hybrids', 'hybrids_id', 'tags_id');
     }
 
 }

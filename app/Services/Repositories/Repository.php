@@ -68,6 +68,27 @@ abstract class Repository
     }
 
     /**
+     * @param array $queries
+     *
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function manyByBaseQueries(array $queries)
+    {
+        return $this->many(function ($Model) use ($queries) {
+            /** @var \Illuminate\Database\Query\Builder $Model */
+            foreach ($queries as $key => $value) {
+                if (is_array($value)) {
+                    $Model = $Model->whereIn($key, $value);
+                } else {
+                    $Model = $Model->where($key, $value);
+                }
+            }
+
+            return $Model;
+        });
+    }
+
+    /**
      * @param int $page
      * @param int $limit
      *

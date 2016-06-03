@@ -10,6 +10,7 @@ namespace App\Services\Works;
 
 use App\Services\Contracts\Selection;
 use App\Services\Contracts\Storage;
+use App\Services\Entities\SpeciesEntity;
 use App\Services\Works\Resources\PlantsEntities;
 use App\Services\Works\Resources\PlantsRepositories;
 
@@ -26,6 +27,11 @@ class Species extends Work implements Selection, Storage
     use PlantsRepositories, PlantsEntities;
 
     /**
+     * @var SpeciesEntity
+     */
+    protected $SpeciesEntity;
+
+    /**
      * @param int   $id
      * @param mixed $input
      *
@@ -35,7 +41,10 @@ class Species extends Work implements Selection, Storage
     {
         $Model = $this->speciesRepository()->oneById($id);
 
-        return $this->speciesEntity()->create($Model);
+        $SpeciesEntity = $this->speciesEntity()->create($Model);
+        $this->setSpeciesEntity($SpeciesEntity);
+
+        return $SpeciesEntity;
     }
 
     /**
@@ -62,7 +71,7 @@ class Species extends Work implements Selection, Storage
 
     /**
      *
-     * @param mixed $input
+     * @param array $input
      *
      * @return mixed
      */
@@ -72,29 +81,36 @@ class Species extends Work implements Selection, Storage
     }
 
     /**
-     * @param int   $speciesId
-     * @param mixed $input
+     * @param array $input
      *
      * @return bool
      */
-    public function edit($speciesId, ...$input)
+    public function edit(...$input)
     {
         $title = $input[0];
         $chineseTitle = $input[1];
         $description = $input[2];
 
-        return $this->speciesRepository()->edit($speciesId, $title, $chineseTitle, $description);
+        return $this->speciesRepository()->edit($this->SpeciesEntity->getId(), $title, $chineseTitle, $description);
     }
 
     /**
      * @param int   $dataId
-     * @param mixed $input
+     * @param array $input
      *
      * @return mixed
      */
     public function delete($dataId, ...$input)
     {
         // TODO: Implement delete() method.
+    }
+
+    /**
+     * @param SpeciesEntity $SpeciesEntity
+     */
+    public function setSpeciesEntity($SpeciesEntity)
+    {
+        $this->SpeciesEntity = $SpeciesEntity;
     }
 
 }

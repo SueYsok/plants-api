@@ -15,6 +15,7 @@ namespace App\Eloquent;
  * @package App\Eloquent
  * @author  sueysok
  * @property int                                      id
+ * @property int                                      user_id
  * @property string                                   title
  * @property int                                      count
  * @property \Carbon\Carbon                           created_at
@@ -51,6 +52,14 @@ class Tags extends Eloquent
     public function plants()
     {
         return $this->belongsToMany(__NAMESPACE__ . '\\Plants', 'link_tags_plants', 'tags_id', 'plants_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function hybrids()
+    {
+        return $this->belongsToMany(__NAMESPACE__ . '\\Hybrids', 'link_tags_hybrids', 'tags_id', 'hybrids_id');
     }
 
 }

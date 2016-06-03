@@ -65,12 +65,11 @@ class Images extends Work implements Storage
     }
 
     /**
-     * @param int   $id
      * @param mixed $input
      *
      * @return mixed
      */
-    public function edit($id, ...$input)
+    public function edit(...$input)
     {
         // TODO: Implement edit() method.
     }

@@ -49,21 +49,21 @@ class SpeciesEntity extends TypeSpeciesEntity
                 throw new EntityException(__CLASS__, get_class($Item), 'sub_process is not set');
             }
 
-            if (isset($Item->genus)) {
+            if ($Item->relationLoaded('genus')) {
                 $this->genus = (new GenusEntity)->create($Item->genus);
             }
 
-            if (isset($Item->plants)) {
+            if ($Item->relationLoaded('plants')) {
                 $this->plants = (new PlantsEntity)->create($Item->plants);
             }
 
             if ($this->subProcess) {
                 //有亚种
-                if (isset($Item->subspecies)) {
+                if ($Item->relationLoaded('subspecies')) {
                     $SubspeciesCollection = $Item->subspecies;
 
                     //有变种
-                    if (isset($Item->varietas)) {
+                    if ($Item->relationLoaded('varietas')) {
                         foreach ($SubspeciesCollection->all() as $key => $SubspeciesModel) {
                             /** @var \App\Eloquent\Subspecies $SubspeciesModel */
                             $SubspeciesModel->varietas = new ModelCollection;
@@ -91,7 +91,7 @@ class SpeciesEntity extends TypeSpeciesEntity
                 }
             } else {
                 //无亚种
-                if (isset($Item->varietas)) {
+                if ($Item->relationLoaded('varietas')) {
                     //种下有变种
                     $this->items = (new VarietasEntity)->create($Item->varietas);
                 } else {

@@ -66,15 +66,15 @@ class SubspeciesEntity extends Entity
                 }
             }
 
-            if (isset($Item->species)) {
+            if ($Item->relationLoaded('species')) {
                 $this->species = (new TypeSpeciesEntity)->create($Item->species);
             }
 
-            if (isset($Item->plants)) {
+            if ($Item->relationLoaded('plants')) {
                 $this->plants = (new PlantsEntity)->create($Item->plants);
             }
 
-            $this->varietas = (new VarietasEntity)->create(isset($Item->varietas) ? $Item->varietas : null);
+            $this->varietas = (new VarietasEntity)->create($Item->relationLoaded('varietas') ? $Item->varietas : null);
 
             return $this;
         } else {

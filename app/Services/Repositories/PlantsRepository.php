@@ -9,6 +9,8 @@
 namespace App\Services\Repositories;
 
 use App\Eloquent\Plants;
+use App\Eloquent\Tags;
+use App\Eloquent\TagsPlants;
 use Illuminate\Database\Eloquent\Builder;
 
 
@@ -17,9 +19,150 @@ use Illuminate\Database\Eloquent\Builder;
  *
  * @package App\Services\Repositories
  * @author  sueysok
+ * @property \App\Eloquent\Plants|\Illuminate\Database\Eloquent\Builder Model
  */
 class PlantsRepository extends Repository
 {
+
+    /**
+     * @param string      $title
+     * @param string|null $alias
+     * @param string|null $description
+     * @param string|null $content
+     * @param string|null $cover
+     * @param int         $familyId
+     * @param int         $genusId
+     * @param int         $speciesId
+     * @param int|null    $subspeciesId
+     * @param int|null    $varietasId
+     * @param array       $tagsIds
+     * @param int         $userId
+     *
+     * @return Plants|Builder
+     */
+    public function add(
+        $title,
+        $alias,
+        $description,
+        $content,
+        $cover,
+        $familyId,
+        $genusId,
+        $speciesId,
+        $subspeciesId,
+        $varietasId,
+        $tagsIds,
+        $userId
+    ) {
+        $this->Model->title = $title;
+        $this->Model->alias = $alias ?: null;
+        $this->Model->description = $description ?: null;
+        $this->Model->content = $content ?: null;
+        $this->Model->cover = $cover ?: null;
+        $this->Model->family_id = $familyId;
+        $this->Model->genus_id = $genusId;
+        $this->Model->species_id = $speciesId;
+        $this->Model->subspecies_id = $subspeciesId ?: null;
+        $this->Model->varietas_id = $varietasId ?: null;
+        $this->Model->user_id = $userId;
+
+        $this->Model->save();
+
+        $this->saveTagsLink($tagsIds);
+
+        return $this->Model;
+    }
+
+    /**
+     * @param int         $id
+     * @param string      $title
+     * @param string|null $alias
+     * @param string|null $description
+     * @param string|null $content
+     * @param string|null $cover
+     * @param int         $familyId
+     * @param int         $genusId
+     * @param int         $speciesId
+     * @param int|null    $subspeciesId
+     * @param int|null    $varietasId
+     * @param array       $tagsIds
+     *
+     * @return Plants|Builder
+     */
+    public function edit(
+        $id,
+        $title,
+        $alias,
+        $description,
+        $content,
+        $cover,
+        $familyId,
+        $genusId,
+        $speciesId,
+        $subspeciesId,
+        $varietasId,
+        $tagsIds
+    ) {
+        $this->Model = $this->Model
+            ->with('tagslink')
+            ->find($id);
+
+        if (is_null($this->Model)) {
+            $this->modelNotFound();
+        }
+
+        $this->Model->title = $title;
+        $this->Model->alias = $alias ?: null;
+        $this->Model->description = $description ?: null;
+        $this->Model->content = $content ?: null;
+        $this->Model->cover = $cover ?: null;
+        $this->Model->family_id = $familyId;
+        $this->Model->genus_id = $genusId;
+        $this->Model->species_id = $speciesId;
+        $this->Model->subspecies_id = $subspeciesId ?: null;
+        $this->Model->varietas_id = $varietasId ?: null;
+
+        $this->Model->save();
+
+        if (!$this->Model->tagslink->isEmpty()) {
+            /** @var \App\Eloquent\TagsPlants $TagsPlantsModel */
+            foreach ($this->Model->tagslink->all() as $TagsPlantsModel) {
+                if (!in_array($TagsPlantsModel->tags_id, $tagsIds)) {
+                    $TagsPlantsModel->delete();
+                    continue;
+                }
+                foreach ($tagsIds as $key => $tagsId) {
+                    if ($tagsId == $TagsPlantsModel->tags_id) {
+                        unset($tagsIds[$key]);
+                    }
+                }
+            }
+        }
+
+        $this->saveTagsLink($tagsIds);
+
+        return $this->Model;
+    }
+
+    /**
+     * @param int $id
+     */
+    public function deleteById($id)
+    {
+        $Model = $this->Model
+            ->with('tagslink')
+            ->find($id);
+
+        if ($Model instanceof Plants) {
+            if (!$Model->tagslink->isEmpty()) {
+                /** @var \App\Eloquent\TagsPlants $TagsPlantsModel */
+                foreach ($Model->tagslink->all() as $TagsPlantsModel) {
+                    $TagsPlantsModel->delete();
+                }
+            }
+            $Model->delete();
+        }
+    }
 
     /**
      * @param $id
@@ -140,6 +283,24 @@ class PlantsRepository extends Repository
             /** @var \App\Eloquent\BusinessesPlants|\Illuminate\Database\Eloquent\Builder $Model */
             $Model->where('businesses_id', '=', $businessesId);
         });
+    }
+
+    /**
+     * @param array $tagsIds
+     */
+    private function saveTagsLink(array $tagsIds)
+    {
+        $tagsLinkModels = [];
+        $TagsCollection = Tags::whereIn('id', $tagsIds)->get();
+        /** @var \App\Eloquent\Tags $TagsModel */
+        foreach ($TagsCollection as $TagsModel) {
+            array_push($tagsLinkModels, new TagsPlants([
+                'tags_id'    => $TagsModel->id,
+                'plants_id'  => $this->Model->id,
+                'tags_title' => $TagsModel->title,
+            ]));
+        }
+        $this->Model->tagslink()->saveMany($tagsLinkModels);
     }
 
 }

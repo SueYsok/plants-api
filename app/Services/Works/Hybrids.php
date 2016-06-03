@@ -9,6 +9,8 @@
 namespace App\Services\Works;
 
 use App\Services\Contracts\Selection;
+use App\Services\Contracts\Storage;
+use App\Services\Entities\HybridsEntity;
 use App\Services\Works\Resources\HybridsEntities;
 use App\Services\Works\Resources\HybridsRepositories;
 
@@ -19,10 +21,15 @@ use App\Services\Works\Resources\HybridsRepositories;
  * @package App\Services\Works
  * @author  sueysok
  */
-class Hybrids extends Work implements Selection
+class Hybrids extends Work implements Selection, Storage
 {
 
     use HybridsRepositories, HybridsEntities;
+
+    /**
+     * @var HybridsEntity
+     */
+    protected $HybridsEntity;
 
     /**
      * @param int   $id
@@ -34,7 +41,10 @@ class Hybrids extends Work implements Selection
     {
         $Model = $this->hybridsRepository()->oneById($id);
 
-        return $this->hybridsEntity()->create($Model);
+        $HybridsEntity = $this->hybridsEntity()->create($Model);
+        $this->setHybridsEntity($HybridsEntity);
+
+        return $HybridsEntity;
     }
 
     /**
@@ -66,4 +76,80 @@ class Hybrids extends Work implements Selection
     {
         // TODO: Implement id() method.
     }
+
+    /**
+     *
+     * @param array $input
+     *
+     * @return HybridsEntity
+     */
+    public function add(...$input)
+    {
+        $title = $input[0];
+        $alias = $input[1];
+        $description = $input[2];
+        $content = $input[3];
+        $cover = $input[4];
+        $leftPlantsId = isset($input[5][0]) ? $input[5][0] : null;
+        $rightPlantsId = isset($input[5][1]) ? $input[5][1] : null;
+        $tagsIds = $input[6];
+        $userId = $input[7];
+
+        $HybridsModel = $this->hybridsRepository()->add($title, $alias, $description, $content,
+            $cover, $leftPlantsId, $rightPlantsId, $tagsIds, $userId);
+
+        $HybridsEntity = $this->hybridsEntity()->create($HybridsModel);
+
+        $this->setHybridsEntity($HybridsEntity);
+
+        return $HybridsEntity;
+    }
+
+    /**
+     * @param array $input
+     *
+     * @return HybridsEntity
+     */
+    public function edit(...$input)
+    {
+        $title = $input[0];
+        $alias = $input[1];
+        $description = $input[2];
+        $content = $input[3];
+        $cover = $input[4];
+        $leftPlantsId = isset($input[5][0]) ? $input[5][0] : null;
+        $rightPlantsId = isset($input[5][1]) ? $input[5][1] : null;
+        $tagsIds = $input[6];
+
+        $HybridsModel = $this->hybridsRepository()->edit($this->HybridsEntity->getId(),
+            $title, $alias, $description, $content, $cover, $leftPlantsId, $rightPlantsId, $tagsIds);
+
+        $HybridsEntity = $this->hybridsEntity()->create($HybridsModel);
+
+        $this->setHybridsEntity($HybridsEntity);
+
+        return $HybridsEntity;
+    }
+
+    /**
+     * @param int   $hybridsId
+     * @param array $input
+     *
+     * @return bool
+     */
+    public function delete($hybridsId, ...$input)
+    {
+        $this->hybridsRepository()->deleteById($hybridsId);
+
+        return true;
+    }
+
+    /**
+     * @param HybridsEntity $HybridsEntity
+     */
+    public function setHybridsEntity($HybridsEntity)
+    {
+        $this->HybridsEntity = $HybridsEntity;
+    }
+
 }

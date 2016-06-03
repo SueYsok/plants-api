@@ -54,7 +54,7 @@ class HybridsImagesEntity extends Entity
                 }
             }
 
-            if (isset($Item->hybrids)) {
+            if ($Item->relationLoaded('hybrids')) {
                 $this->hybrids = (new HybridsEntity)->create($Item->hybrids);
             }
 

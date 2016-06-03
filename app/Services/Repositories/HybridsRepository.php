@@ -8,15 +8,142 @@
 
 namespace App\Services\Repositories;
 
+use App\Eloquent\Hybrids;
+use App\Eloquent\Tags;
+use App\Eloquent\TagsHybrids;
+
 
 /**
  * Class HybridsRepository
  *
  * @package App\Services\Repositories
  * @author  sueysok
+ * @property \App\Eloquent\Hybrids|\Illuminate\Database\Eloquent\Builder Model
  */
 class HybridsRepository extends Repository
 {
+
+    /**
+     * @param string      $title
+     * @param string|null $alias
+     * @param string|null $description
+     * @param string|null $content
+     * @param string|null $cover
+     * @param int|null    $leftPlantsIds
+     * @param int|null    $rightPlantsIds
+     * @param array|null  $tagsIds
+     * @param int         $userId
+     *
+     * @return \App\Eloquent\Hybrids|\Illuminate\Database\Eloquent\Builder
+     */
+    public function add(
+        $title,
+        $alias,
+        $description,
+        $content,
+        $cover,
+        $leftPlantsIds,
+        $rightPlantsIds,
+        $tagsIds,
+        $userId
+    ) {
+        $this->Model->title = $title;
+        $this->Model->alias = $alias ?: null;
+        $this->Model->description = $description ?: null;
+        $this->Model->content = $content ?: null;
+        $this->Model->cover = $cover ?: null;
+        $this->Model->left_plants_id = $leftPlantsIds;
+        $this->Model->right_plants_id = $rightPlantsIds;
+        $this->Model->user_id = $userId;
+
+        $this->Model->save();
+
+        $this->saveTagsLink($tagsIds);
+
+        return $this->Model;
+    }
+
+    /**
+     * @param int         $id
+     * @param string      $title
+     * @param string|null $alias
+     * @param string|null $description
+     * @param string|null $content
+     * @param string|null $cover
+     * @param int|null    $leftPlantsIds
+     * @param int|null    $rightPlantsIds
+     * @param array|null  $tagsIds
+     *
+     * @return Hybrids
+     */
+    public function edit(
+        $id,
+        $title,
+        $alias,
+        $description,
+        $content,
+        $cover,
+        $leftPlantsIds,
+        $rightPlantsIds,
+        $tagsIds
+    ) {
+        $this->Model = $this->Model
+            ->with('tagslink')
+            ->find($id);
+
+        if (is_null($this->Model)) {
+            $this->modelNotFound();
+        }
+
+        $this->Model->title = $title;
+        $this->Model->alias = $alias ?: null;
+        $this->Model->description = $description ?: null;
+        $this->Model->content = $content ?: null;
+        $this->Model->cover = $cover ?: null;
+        $this->Model->left_plants_id = $leftPlantsIds;
+        $this->Model->right_plants_id = $rightPlantsIds;
+
+        $this->Model->save();
+
+        if (!$this->Model->tagslink->isEmpty()) {
+            /** @var \App\Eloquent\TagsHybrids $TagsHybridsModel */
+            foreach ($this->Model->tagslink->all() as $TagsHybridsModel) {
+                if (!in_array($TagsHybridsModel->tags_id, $tagsIds)) {
+                    $TagsHybridsModel->delete();
+                    continue;
+                }
+                foreach ($tagsIds as $key => $tagsId) {
+                    if ($tagsId == $TagsHybridsModel->tags_id) {
+                        unset($tagsIds[$key]);
+                    }
+                }
+            }
+        }
+
+        $this->saveTagsLink($tagsIds);
+
+        return $this->Model;
+    }
+
+    /**
+     * @param int $id
+     */
+    public function deleteById($id)
+    {
+        $Model = $this->Model
+            ->with('tagslink')
+            ->find($id);
+
+        if ($Model instanceof Hybrids) {
+            if (!$Model->tagslink->isEmpty()) {
+                /** @var \App\Eloquent\TagsPlants $TagsHybridsModel */
+                foreach ($Model->tagslink->all() as $TagsHybridsModel) {
+                    $TagsHybridsModel->delete();
+                }
+            }
+            $Model->delete();
+        }
+    }
 
     /**
      * @param $id
@@ -29,6 +156,7 @@ class HybridsRepository extends Repository
             ->with('leftplants')
             ->with('rightplants')
             ->with('images')
+            ->with('tags')
             ->find($id);
         if (is_null($Model)) {
             $this->modelNotFound();
@@ -73,6 +201,24 @@ class HybridsRepository extends Repository
             ->with('leftplants')
             ->with('rightplants')
             ->get();
+    }
+
+    /**
+     * @param array $tagsIds
+     */
+    private function saveTagsLink(array $tagsIds)
+    {
+        $tagsLinkModels = [];
+        $TagsCollection = Tags::whereIn('id', $tagsIds)->get();
+        /** @var \App\Eloquent\Tags $TagsModel */
+        foreach ($TagsCollection as $TagsModel) {
+            array_push($tagsLinkModels, new TagsHybrids([
+                'tags_id'    => $TagsModel->id,
+                'hybrids_id'  => $this->Model->id,
+                'tags_title' => $TagsModel->title,
+            ]));
+        }
+        $this->Model->tagslink()->saveMany($tagsLinkModels);
     }
 
 }

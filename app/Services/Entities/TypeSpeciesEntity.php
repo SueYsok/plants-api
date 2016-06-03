@@ -82,11 +82,11 @@ class TypeSpeciesEntity extends Entity
                 $this->subProcess = $Item->sub_process ? true : false;
             }
 
-            if (isset($Item->genus)) {
+            if ($Item->relationLoaded('genus')) {
                 $this->genus = (new GenusEntity)->create($Item->genus);
             }
 
-            if (isset($Item->plants)) {
+            if ($Item->relationLoaded('plants')) {
                 $this->plants = (new PlantsEntity)->create($Item->plants);
             }
 

@@ -80,15 +80,15 @@ class GenusEntity extends Entity
                 $this->typeSpeciesId = $Item['species_id'];
             }
 
-            if (isset($Item->family)) {
+            if ($Item->relationLoaded('family')) {
                 $this->family = (new FamilyEntity)->create($Item->family);
             }
 
-            if (isset($Item->typeSpecies)) {
+            if ($Item->relationLoaded('typeSpecies')) {
                 $this->typeSpecies = (new TypeSpeciesEntity)->create($Item->typeSpecies);
             }
 
-            $this->species = (new SpeciesEntity)->create(isset($Item->species) ? $Item->species : null);
+            $this->species = (new SpeciesEntity)->create($Item->relationLoaded('species') ? $Item->species : null);
 
             return $this;
         } else {

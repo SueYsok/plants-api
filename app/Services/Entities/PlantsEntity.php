@@ -68,6 +68,10 @@ class PlantsEntity extends Entity
      */
     protected $varietasId;
     /**
+     * @var int
+     */
+    protected $userId;
+    /**
      * @var FamilyEntity
      */
     protected $family;
@@ -120,6 +124,7 @@ class PlantsEntity extends Entity
                          'species_id',
                          'subspecies_id',
                          'varietas_id',
+                         'user_id',
                          'created_at',
                          'updated_at',
                      ] as $value) {
@@ -128,32 +133,32 @@ class PlantsEntity extends Entity
                 }
             }
 
-            if (isset($Item->family)) {
+            if ($Item->relationLoaded('family')) {
                 $this->family = (new FamilyEntity)->create($Item->family);
             }
 
-            if (isset($Item->genus)) {
+            if ($Item->relationLoaded('genus')) {
                 $this->genus = (new GenusEntity)->create($Item->genus);
             }
 
-            if (isset($Item->species)) {
+            if ($Item->relationLoaded('species')) {
                 $this->species = (new TypeSpeciesEntity)->create($Item->species);
             }
 
-            if (isset($Item->subspecies)) {
+            if ($Item->relationLoaded('subspecies')) {
                 $this->subspecies = (new SubspeciesEntity)->create($Item->subspecies);
             }
 
-            if (isset($Item->varietas)) {
+            if ($Item->relationLoaded('varietas')) {
                 $this->varietas = (new VarietasEntity)->create($Item->varietas);
             }
 
-            $this->images = (new PlantsImagesEntity)->create(isset($Item->images) ? $Item->images : null);
+            $this->images = (new PlantsImagesEntity)->create($Item->relationLoaded('images') ? $Item->images : null);
 
-            $this->tags = (new TagsEntity)->create(isset($Item->tags) ? $Item->tags : null);
+            $this->tags = (new TagsEntity)->create($Item->relationLoaded('tags') ? $Item->tags : null);
 
             $SameCollection = new ModelCollection;
-            if (isset($Item->same)) {
+            if ($Item->relationLoaded('same')) {
                 /** @var \App\Eloquent\PlantsSame $Same */
                 foreach ($Item->same->same as $Same) {
                     $SameCollection->push($Same->plant);
@@ -167,6 +172,14 @@ class PlantsEntity extends Entity
 
             return $this->Collection;
         }
+    }
+
+    /**
+     * @return int
+     */
+    public function getUserId()
+    {
+        return $this->userId;
     }
 
     /**

@@ -42,6 +42,10 @@ class HybridsEntity extends Entity
     /**
      * @var string
      */
+    protected $content;
+    /**
+     * @var string
+     */
     protected $cover;
     /**
      * @var int
@@ -51,6 +55,10 @@ class HybridsEntity extends Entity
      * @var int
      */
     protected $rightPlantsId;
+    /**
+     * @var int
+     */
+    protected $userId;
     /**
      * @var PlantsEntity
      */
@@ -63,6 +71,10 @@ class HybridsEntity extends Entity
      * @var Collection
      */
     protected $images;
+    /**
+     * @var Collection
+     */
+    protected $tags;
 
     /**
      * @param ModelCollection|Model $Item
@@ -77,9 +89,11 @@ class HybridsEntity extends Entity
                          'title',
                          'alias',
                          'description',
+                         'content',
                          'cover',
                          'left_plants_id',
                          'right_plants_id',
+                         'user_id',
                          'created_at',
                          'updated_at',
                      ] as $value) {
@@ -88,15 +102,17 @@ class HybridsEntity extends Entity
                 }
             }
 
-            if (isset($Item->leftplants)) {
+            if ($Item->relationLoaded('leftplants')) {
                 $this->leftPlants = (new PlantsEntity)->create($Item->leftplants);
             }
 
-            if (isset($Item->rightplants)) {
+            if ($Item->relationLoaded('rightplants')) {
                 $this->rightPlants = (new PlantsEntity)->create($Item->rightplants);
             }
 
-            $this->images = (new HybridsImagesEntity)->create(isset($Item->images) ? $Item->images : null);
+            $this->images = (new HybridsImagesEntity)->create($Item->relationLoaded('images') ? $Item->images : null);
+
+            $this->tags = (new TagsEntity)->create($Item->relationLoaded('tags') ? $Item->tags : null);
 
             return $this;
         } else {
@@ -104,6 +120,14 @@ class HybridsEntity extends Entity
 
             return $this->Collection;
         }
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getTags()
+    {
+        return $this->tags;
     }
 
     /**
@@ -184,6 +208,22 @@ class HybridsEntity extends Entity
     public function getImages()
     {
         return $this->images;
+    }
+
+    /**
+     * @return string
+     */
+    public function getContent()
+    {
+        return $this->content;
+    }
+
+    /**
+     * @return int
+     */
+    public function getUserId()
+    {
+        return $this->userId;
     }
 
 }

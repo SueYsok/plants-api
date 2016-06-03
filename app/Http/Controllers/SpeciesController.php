@@ -77,7 +77,8 @@ class SpeciesController extends Controller
         $chineseTitle = $this->Request->get('chinese_title');
         $description = $this->Request->get('description');
 
-        if (!$this->Species->edit($speciesId, $title, $chineseTitle, $description)) {
+        $this->Species->one($speciesId);
+        if (!$this->Species->edit($title, $chineseTitle, $description)) {
             $this->response()->errorInternal();
         }
 

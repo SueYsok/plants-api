@@ -78,15 +78,15 @@ class BusinessesPlantsEntity extends Entity
                 }
             }
 
-            if (isset($Item->price)) {
+            if ($Item->relationLoaded('price')) {
                 $this->price = json_decode($Item->price, true);
             }
 
-            if (isset($Item->businesses)) {
+            if ($Item->relationLoaded('businesses')) {
                 $this->businesses = (new BusinessesEntity)->create($Item->businesses);
             }
 
-            if (isset($Item->plants)) {
+            if ($Item->relationLoaded('plants')) {
                 $this->plants = (new PlantsEntity)->create($Item->plants);
             }
 

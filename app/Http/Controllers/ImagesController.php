@@ -48,9 +48,9 @@ class ImagesController extends Controller
      *
      * @return \Dingo\Api\Http\Response
      */
-    public function addPlantsImages($plantsId)
+    public function addPlantImage($plantsId)
     {
-        return $this->addImages($plantsId, 'plants');
+        return $this->addImage($plantsId, 'plants');
     }
 
     /**
@@ -58,9 +58,9 @@ class ImagesController extends Controller
      *
      * @return \Dingo\Api\Http\Response
      */
-    public function destroyPlantsImages($imagesId)
+    public function destroyPlantImage($imagesId)
     {
-        return $this->destroyImages($imagesId, 'plants');
+        return $this->destroyImage($imagesId, 'plants');
     }
 
     /**
@@ -68,9 +68,9 @@ class ImagesController extends Controller
      *
      * @return \Dingo\Api\Http\Response|null
      */
-    public function addHybridsImages($hybridsId)
+    public function addHybridImage($hybridsId)
     {
-        return $this->addImages($hybridsId, 'hybrids');
+        return $this->addImage($hybridsId, 'hybrids');
     }
 
     /**
@@ -78,9 +78,9 @@ class ImagesController extends Controller
      *
      * @return \Dingo\Api\Http\Response
      */
-    public function destroyHybridsImages($imagesId)
+    public function destroyHybridImage($imagesId)
     {
-        return $this->destroyImages($imagesId, 'hybrids');
+        return $this->destroyImage($imagesId, 'hybrids');
     }
 
     /**
@@ -89,7 +89,7 @@ class ImagesController extends Controller
      *
      * @return \Dingo\Api\Http\Response|null
      */
-    private function addImages($objectId, $key)
+    private function addImage($objectId, $key)
     {
         $userId = $this->Authorizer->getResourceOwnerId();
         $image = $this->Request->file('image');
@@ -123,7 +123,7 @@ class ImagesController extends Controller
      *
      * @return \Dingo\Api\Http\Response
      */
-    private function destroyImages($imagesId, $key)
+    private function destroyImage($imagesId, $key)
     {
         try {
             $this->Images->delete($imagesId, $key);
