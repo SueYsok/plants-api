@@ -158,7 +158,7 @@ class PlantsEntity extends Entity
             $this->tags = (new TagsEntity)->create($Item->relationLoaded('tags') ? $Item->tags : null);
 
             $SameCollection = new ModelCollection;
-            if ($Item->relationLoaded('same')) {
+            if ($Item->relationLoaded('same') && !is_null($Item->same)) {
                 /** @var \App\Eloquent\PlantsSame $Same */
                 foreach ($Item->same->same as $Same) {
                     $SameCollection->push($Same->plant);
