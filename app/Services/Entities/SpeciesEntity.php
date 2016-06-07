@@ -66,7 +66,7 @@ class SpeciesEntity extends TypeSpeciesEntity
                     if ($Item->relationLoaded('varietas')) {
                         foreach ($SubspeciesCollection->all() as $key => $SubspeciesModel) {
                             /** @var \App\Eloquent\Subspecies $SubspeciesModel */
-                            $SubspeciesModel->varietas = new ModelCollection;
+                            $SubspeciesModel->setRelation('varietas', new ModelCollection);
 
                             //变种合并到亚种下
                             foreach ($Item->varietas->all() as $VarietasModel) {
@@ -74,11 +74,6 @@ class SpeciesEntity extends TypeSpeciesEntity
                                 if ($SubspeciesModel->id == $VarietasModel->subspecies_id) {
                                     $SubspeciesModel->varietas->push($VarietasModel);
                                 }
-                            }
-
-                            //此亚种下无变种
-                            if ($SubspeciesModel->varietas->isEmpty()) {
-                                $SubspeciesModel->varietas = null;
                             }
 
                             $SubspeciesCollection[$key] = $SubspeciesModel;
