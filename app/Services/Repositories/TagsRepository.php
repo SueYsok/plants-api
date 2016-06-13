@@ -56,6 +56,7 @@ class TagsRepository extends Repository
                 'plants' => function ($Model) {
                     /** @var \App\Eloquent\Plants $Model */
                     $Model
+                        ->orderBy('title')
                         ->with('family')
                         ->with('genus')
                         ->with('species')
