@@ -10,6 +10,8 @@ namespace App\Services\Works;
 
 use App\Exceptions\WorkException;
 use App\Services\Contracts\Storage;
+use App\Services\Works\Resources\HybridsEntities;
+use App\Services\Works\Resources\HybridsRepositories;
 use App\Services\Works\Resources\PlantsEntities;
 use App\Services\Works\Resources\PlantsRepositories;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -26,21 +28,22 @@ use Illuminate\Support\Facades\File;
 class Images extends Work implements Storage
 {
 
-    use PlantsRepositories, PlantsEntities;
+    use PlantsRepositories, PlantsEntities, HybridsRepositories, HybridsEntities;
 
     /**
      * @param mixed $input
      *
-     * @return \App\Services\Entities\PlantsImagesEntity
+     * @return \App\Services\Entities\PlantsImagesEntity|\App\Services\Entities\HybridsImagesEntity
      */
     function add(...$input)
     {
-        $plantsId = $input[0];
+        $objectId = $input[0];
         $userId = $input[1];
         $ImageFile = $input[2];
+        $key = $input[3];
 
         try {
-            $this->plantsRepository()->oneById($plantsId);
+            $this->plantsRepository()->oneById($objectId);
         } catch (ModelNotFoundException $e) {
             throw new WorkException(self::PLANTS_MODEL_NOT_FOUND);
         }
@@ -56,34 +59,36 @@ class Images extends Work implements Storage
 
         $image = '/' . Config::get('path.customer_images_path') . $userId . '/' . $fileName;
 
-        $ImagesModel = $this->imagesRepository()->add($plantsId, $userId, $image);
+        $ImagesModel = $this->{$key . 'ImagesRepository'}()->add($objectId, $userId, $image);
 
-        return $this->imagesEntity()->create($ImagesModel);
+        return $this->{$key . 'ImagesEntity'}()->create($ImagesModel);
     }
 
     /**
-     * @param int   $id
      * @param mixed $input
      *
      * @return mixed
      */
-    public function edit($id, ...$input)
+    public function edit(...$input)
     {
         // TODO: Implement edit() method.
     }
 
     /**
-     * @param int $id
+     * @param int   $id
+     * @param mixed $input
      */
-    public function delete($id)
+    public function delete($id, ...$input)
     {
-        $ImagesModel = $this->imagesRepository()->oneSimpleById($id);
+        $key = $input[0];
+
+        $ImagesModel = $this->{$key . 'ImagesRepository'}()->oneSimpleById($id);
         $fileName = Config::get('path.images_path') . $ImagesModel->image;
         if (!File::delete($fileName)) {
             throw new WorkException(self::NOT_DELETE_FILE);
         }
 
-        $this->imagesRepository()->destroy($id);
+        $this->{$key . 'ImagesRepository'}()->destroy($id);
     }
 
 }

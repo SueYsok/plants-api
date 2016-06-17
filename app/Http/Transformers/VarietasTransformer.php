@@ -8,6 +8,7 @@
 
 namespace App\Http\Transformers;
 
+use App\Services\Entities\PlantsEntity;
 use App\Services\Entities\TypeSpeciesEntity;
 use App\Services\Entities\VarietasEntity;
 use League\Fractal\TransformerAbstract;
@@ -28,6 +29,7 @@ class VarietasTransformer extends TransformerAbstract
     protected $availableIncludes = [
         'species',
         'subspecies',
+        'plants',
     ];
 
 
@@ -72,6 +74,20 @@ class VarietasTransformer extends TransformerAbstract
         }
 
         return null;
+    }
+
+    /**
+     * @param VarietasEntity $VarietasEntity
+     *
+     * @return \League\Fractal\Resource\Item|null
+     */
+    public function includePlants(VarietasEntity $VarietasEntity)
+    {
+        if ($VarietasEntity->getPlants() instanceof PlantsEntity) {
+            return $this->item($VarietasEntity->getPlants(), new PlantsTransformer);
+        } else {
+            return null;
+        }
     }
 
 }

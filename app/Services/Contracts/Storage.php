@@ -27,16 +27,18 @@ interface Storage
     public function add(...$input);
 
     /**
+     * @param mixed $input
+     *
+     * @return mixed
+     */
+    public function edit(...$input);
+
+    /**
      * @param int   $dataId
      * @param mixed $input
      *
      * @return mixed
      */
-    public function edit($dataId, ...$input);
-
-    /**
-     * @param int $dataId
-     */
-    public function delete($dataId);
+    public function delete($dataId, ...$input);
 
 }

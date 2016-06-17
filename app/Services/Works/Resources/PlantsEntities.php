@@ -86,7 +86,7 @@ trait PlantsEntities
     /**
      * @return PlantsImagesEntity
      */
-    protected function imagesEntity()
+    protected function plantsImagesEntity()
     {
         return new PlantsImagesEntity;
     }

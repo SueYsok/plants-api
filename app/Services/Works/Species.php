@@ -9,6 +9,8 @@
 namespace App\Services\Works;
 
 use App\Services\Contracts\Selection;
+use App\Services\Contracts\Storage;
+use App\Services\Entities\SpeciesEntity;
 use App\Services\Works\Resources\PlantsEntities;
 use App\Services\Works\Resources\PlantsRepositories;
 
@@ -19,10 +21,15 @@ use App\Services\Works\Resources\PlantsRepositories;
  * @package App\Services\Works
  * @author  sueysok
  */
-class Species extends Work implements Selection
+class Species extends Work implements Selection, Storage
 {
 
     use PlantsRepositories, PlantsEntities;
+
+    /**
+     * @var SpeciesEntity
+     */
+    protected $SpeciesEntity;
 
     /**
      * @param int   $id
@@ -34,7 +41,10 @@ class Species extends Work implements Selection
     {
         $Model = $this->speciesRepository()->oneById($id);
 
-        return $this->speciesEntity()->create($Model);
+        $SpeciesEntity = $this->speciesEntity()->create($Model);
+        $this->setSpeciesEntity($SpeciesEntity);
+
+        return $SpeciesEntity;
     }
 
     /**
@@ -60,27 +70,47 @@ class Species extends Work implements Selection
     }
 
     /**
-     * @param $id
      *
-     * @return \App\Services\Entities\TypeSpeciesEntity
+     * @param array $input
+     *
+     * @return mixed
      */
-    private function supraspecificBranch($id)
+    public function add(...$input)
     {
-        $Model = $this->speciesRepository()->oneWithSupById($id);
-
-        return $this->typeSpeciesEntity()->create($Model);
+        // TODO: Implement add() method.
     }
 
     /**
-     * @param $id
+     * @param array $input
      *
-     * @return \App\Services\Entities\SpeciesEntity
+     * @return bool
      */
-    private function infraspecificBranch($id)
+    public function edit(...$input)
     {
-        $Model = $this->speciesRepository()->oneWithInfById($id);
+        $title = $input[0];
+        $chineseTitle = $input[1];
+        $description = $input[2];
 
-        return $this->speciesEntity()->create($Model);
+        return $this->speciesRepository()->edit($this->SpeciesEntity->getId(), $title, $chineseTitle, $description);
+    }
+
+    /**
+     * @param int   $dataId
+     * @param array $input
+     *
+     * @return mixed
+     */
+    public function delete($dataId, ...$input)
+    {
+        // TODO: Implement delete() method.
+    }
+
+    /**
+     * @param SpeciesEntity $SpeciesEntity
+     */
+    public function setSpeciesEntity($SpeciesEntity)
+    {
+        $this->SpeciesEntity = $SpeciesEntity;
     }
 
 }

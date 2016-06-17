@@ -32,48 +32,19 @@ class SpeciesRepository extends Repository
                     $Model->with('family');
                 },
             ])
-            ->with('subspecies')
-            ->with('varietas')
-            ->find($id);
-        if (is_null($Model)) {
-            $this->modelNotFound();
-        }
-
-        return $Model;
-    }
-
-    /**
-     * @param int $id
-     *
-     * @return \App\Eloquent\Species
-     */
-    public function oneWithSupById($id)
-    {
-        $Model = $this->Model
             ->with([
-                'genus' => function ($Model) {
+                'subspecies' => function ($Model) {
                     /** @var \App\Eloquent\Genus $Model */
-                    $Model->with('family');
+                    $Model->with('plants');
                 },
             ])
-            ->find($id);
-        if (is_null($Model)) {
-            $this->modelNotFound();
-        }
-
-        return $Model;
-    }
-
-    /**
-     * @param int $id
-     *
-     * @return \App\Eloquent\Species
-     */
-    public function oneWithInfById($id)
-    {
-        $Model = $this->Model
-            ->with('subspecies')
-            ->with('varietas')
+            ->with([
+                'varietas' => function ($Model) {
+                    /** @var \App\Eloquent\Genus $Model */
+                    $Model->with('plants');
+                },
+            ])
+            ->with('plants')
             ->find($id);
         if (is_null($Model)) {
             $this->modelNotFound();
@@ -95,6 +66,29 @@ class SpeciesRepository extends Repository
         });
 
         return $Collection;
+    }
+
+    /**
+     * @param int    $speciesId
+     * @param string $title
+     * @param string $chineseTitle
+     * @param string $description
+     *
+     * @return bool
+     */
+    public function edit($speciesId, $title, $chineseTitle, $description)
+    {
+        /** @var \App\Eloquent\Species $Model */
+        $Model = $this->Model->find($speciesId);
+        if (is_null($Model)) {
+            $this->modelNotFound();
+        }
+
+        $Model->title = $title;
+        $Model->chinese_title = $chineseTitle;
+        $Model->description = $description;
+
+        return $Model->save();
     }
 
 }

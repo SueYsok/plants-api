@@ -44,6 +44,10 @@ class PlantsEntity extends Entity
      */
     protected $cover;
     /**
+     * @var string
+     */
+    protected $content;
+    /**
      * @var int
      */
     protected $familyId;
@@ -63,6 +67,10 @@ class PlantsEntity extends Entity
      * @var int
      */
     protected $varietasId;
+    /**
+     * @var int
+     */
+    protected $userId;
     /**
      * @var FamilyEntity
      */
@@ -110,11 +118,13 @@ class PlantsEntity extends Entity
                          'alias',
                          'description',
                          'cover',
+                         'content',
                          'family_id',
                          'genus_id',
                          'species_id',
                          'subspecies_id',
                          'varietas_id',
+                         'user_id',
                          'created_at',
                          'updated_at',
                      ] as $value) {
@@ -123,32 +133,32 @@ class PlantsEntity extends Entity
                 }
             }
 
-            if (isset($Item->family)) {
+            if ($Item->relationLoaded('family')) {
                 $this->family = (new FamilyEntity)->create($Item->family);
             }
 
-            if (isset($Item->genus)) {
+            if ($Item->relationLoaded('genus')) {
                 $this->genus = (new GenusEntity)->create($Item->genus);
             }
 
-            if (isset($Item->species)) {
+            if ($Item->relationLoaded('species')) {
                 $this->species = (new TypeSpeciesEntity)->create($Item->species);
             }
 
-            if (isset($Item->subspecies)) {
+            if ($Item->relationLoaded('subspecies')) {
                 $this->subspecies = (new SubspeciesEntity)->create($Item->subspecies);
             }
 
-            if (isset($Item->varietas)) {
+            if ($Item->relationLoaded('varietas')) {
                 $this->varietas = (new VarietasEntity)->create($Item->varietas);
             }
 
-            $this->images = (new PlantsImagesEntity)->create(isset($Item->images) ? $Item->images : null);
+            $this->images = (new PlantsImagesEntity)->create($Item->relationLoaded('images') ? $Item->images : null);
 
-            $this->tags = (new TagsEntity)->create(isset($Item->tags) ? $Item->tags : null);
+            $this->tags = (new TagsEntity)->create($Item->relationLoaded('tags') ? $Item->tags : null);
 
             $SameCollection = new ModelCollection;
-            if (isset($Item->same)) {
+            if ($Item->relationLoaded('same') && !is_null($Item->same)) {
                 /** @var \App\Eloquent\PlantsSame $Same */
                 foreach ($Item->same->same as $Same) {
                     $SameCollection->push($Same->plant);
@@ -162,6 +172,14 @@ class PlantsEntity extends Entity
 
             return $this->Collection;
         }
+    }
+
+    /**
+     * @return int
+     */
+    public function getUserId()
+    {
+        return $this->userId;
     }
 
     /**
@@ -306,6 +324,14 @@ class PlantsEntity extends Entity
     public function getTags()
     {
         return $this->tags;
+    }
+
+    /**
+     * @return string
+     */
+    public function getContent()
+    {
+        return $this->content;
     }
 
 }

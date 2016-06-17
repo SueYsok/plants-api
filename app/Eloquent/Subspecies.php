@@ -16,11 +16,13 @@ namespace App\Eloquent;
  * @author  sueysok
  * @property int                                      id
  * @property int                                      species_id
+ * @property int                                      plants_id
  * @property string                                   title
  * @property string                                   chinese_title
  * @property \Carbon\Carbon                           created_at
  * @property \Carbon\Carbon                           updated_at
  * @property Species                                  species
+ * @property Plants                                   plants
  * @property \Illuminate\Database\Eloquent\Collection varietas
  */
 class Subspecies extends Eloquent
@@ -33,7 +35,7 @@ class Subspecies extends Eloquent
     /**
      * @var array
      */
-    protected $fillable = ['species_id', 'title', 'chinese_title',];
+    protected $fillable = ['species_id', 'plants_id', 'title', 'chinese_title',];
     /**
      * @var array
      */
@@ -44,6 +46,7 @@ class Subspecies extends Eloquent
     protected $casts = [
         'id'            => 'integer',
         'species_id'    => 'integer',
+        'plants_id'     => 'integer',
         'title'         => 'string',
         'chinese_title' => 'string',
     ];
@@ -54,6 +57,14 @@ class Subspecies extends Eloquent
     public function species()
     {
         return $this->belongsTo(__NAMESPACE__ . '\\Species', 'species_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function plants()
+    {
+        return $this->belongsTo(__NAMESPACE__ . '\\Plants', 'plants_id');
     }
 
     /**

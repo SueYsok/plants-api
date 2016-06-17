@@ -66,4 +66,23 @@ class SpeciesController extends Controller
         return $this->response()->collection($SpeciesCollection, new SpeciesTransformer);
     }
 
+    /**
+     * @param int $speciesId
+     *
+     * @return \Dingo\Api\Http\Response
+     */
+    public function editSpecies($speciesId)
+    {
+        $title = $this->Request->get('title');
+        $chineseTitle = $this->Request->get('chinese_title');
+        $description = $this->Request->get('description');
+
+        $this->Species->one($speciesId);
+        if (!$this->Species->edit($title, $chineseTitle, $description)) {
+            $this->response()->errorInternal();
+        }
+
+        return $this->response()->noContent();
+    }
+
 }

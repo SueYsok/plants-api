@@ -12,6 +12,7 @@ use App\Eloquent\Family;
 use App\Eloquent\Genus;
 use App\Eloquent\Plants;
 use App\Eloquent\PlantsImages;
+use App\Eloquent\PlantsSame;
 use App\Eloquent\Species;
 use App\Eloquent\Subspecies;
 use App\Eloquent\Varietas;
@@ -19,6 +20,7 @@ use App\Services\Repositories\FamilyRepository;
 use App\Services\Repositories\GenusRepository;
 use App\Services\Repositories\PlantsImagesRepository;
 use App\Services\Repositories\PlantsRepository;
+use App\Services\Repositories\PlantsSameRepository;
 use App\Services\Repositories\SpeciesRepository;
 use App\Services\Repositories\SubspeciesRepository;
 use App\Services\Repositories\VarietasRepository;
@@ -61,6 +63,10 @@ trait PlantsRepositories
      * @var PlantsImagesRepository
      */
     private $Images;
+    /**
+     * @var PlantsSameRepository
+     */
+    private $Same;
 
     /**
      * @return FamilyRepository
@@ -113,9 +119,17 @@ trait PlantsRepositories
     /**
      * @return PlantsImagesRepository
      */
-    protected function imagesRepository()
+    protected function plantsImagesRepository()
     {
         return $this->Images ?: $this->Images = new PlantsImagesRepository(new PlantsImages);
+    }
+
+    /**
+     * @return PlantsSameRepository
+     */
+    protected function plantsSameRepository()
+    {
+        return $this->Same ?: $this->Same = new PlantsSameRepository(new PlantsSame);
     }
 
 }

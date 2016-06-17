@@ -20,11 +20,27 @@ $Router->version('v1', function ($Router) {
     $Router->group(['prefix' => 'species'], function ($Router) {
         /** @var \Illuminate\Routing\Router $Router */
 
-        $Router->get('{species_id}', [
-            'uses'        => 'App\Http\Controllers\SpeciesController@oneSpecies',
-            'no'          => 'PLANTS_001',
-            'description' => '种详细',
-        ])->where('id', '[0-9]+');
+        $Router->group([
+            'prefix' => '{species_id}',
+            'where'  => ['species_id' => '[0-9]+'],
+        ], function ($Router) {
+            /** @var \Illuminate\Routing\Router $Router */
+
+            $Router->get('/', [
+                'uses'        => 'App\Http\Controllers\SpeciesController@oneSpecies',
+                'no'          => 'PLANTS_001',
+                'description' => '种详细',
+            ]);
+
+            $Router->put('/', [
+                'uses'        => 'App\Http\Controllers\SpeciesController@editSpecies',
+                'middleware'  => 'api.auth',
+                'providers'   => ['oauth'],
+                'no'          => 'PLANTS_020',
+                'description' => '编辑种',
+            ]);
+
+        });
 
     });
 
@@ -123,6 +139,14 @@ $Router->version('v1', function ($Router) {
             'description' => '植物列表',
         ]);
 
+        $Router->post('/', [
+            'uses'        => 'App\Http\Controllers\PlantsController@addPlant',
+            'middleware'  => 'api.auth',
+            'providers'   => ['oauth'],
+            'no'          => 'PLANTS_021',
+            'description' => '添加植物',
+        ]);
+
         $Router->group([
             'prefix' => '{plants_id}',
             'where'  => ['plants_id' => '[0-9]+'],
@@ -135,8 +159,24 @@ $Router->version('v1', function ($Router) {
                 'description' => '植物详细',
             ]);
 
+            $Router->put('/', [
+                'uses'        => 'App\Http\Controllers\PlantsController@editPlant',
+                'middleware'  => 'api.auth',
+                'providers'   => ['oauth'],
+                'no'          => 'PLANTS_022',
+                'description' => '修改植物',
+            ]);
+
+            $Router->delete('/', [
+                'uses'        => 'App\Http\Controllers\PlantsController@destroyPlant',
+                'middleware'  => 'api.auth',
+                'providers'   => ['oauth'],
+                'no'          => 'PLANTS_023',
+                'description' => '删除植物',
+            ]);
+
             $Router->post('images', [
-                'uses'        => 'App\Http\Controllers\ImagesController@addPlantsImages',
+                'uses'        => 'App\Http\Controllers\ImagesController@addPlantImage',
                 'middleware'  => 'api.auth',
                 'providers'   => ['oauth'],
                 'no'          => 'PLANTS_014',
@@ -152,7 +192,7 @@ $Router->version('v1', function ($Router) {
             /** @var \Illuminate\Routing\Router $Router */
 
             $Router->delete('/', [
-                'uses'        => 'App\Http\Controllers\ImagesController@destroyPlantsImages',
+                'uses'        => 'App\Http\Controllers\ImagesController@destroyPlantImage',
                 'middleware'  => 'api.auth',
                 'providers'   => ['oauth'],
                 'no'          => 'PLANTS_015',
@@ -182,6 +222,79 @@ $Router->version('v1', function ($Router) {
                 'uses'        => 'App\Http\Controllers\TagsController@oneTag',
                 'no'          => 'PLANTS_013',
                 'description' => '标签详细',
+            ]);
+
+        });
+
+    });
+
+    $Router->group(['prefix' => 'hybrids'], function ($Router) {
+        /** @var \Illuminate\Routing\Router $Router */
+
+        $Router->get('/', [
+            'uses'        => 'App\Http\Controllers\HybridsController@allHybrids',
+            'no'          => 'PLANTS_016',
+            'description' => '杂交植物列表',
+        ]);
+
+        $Router->post('/', [
+            'uses'        => 'App\Http\Controllers\HybridsController@addHybrid',
+            'middleware'  => 'api.auth',
+            'providers'   => ['oauth'],
+            'no'          => 'PLANTS_024',
+            'description' => '添加杂交植物',
+        ]);
+
+        $Router->group([
+            'prefix' => '{hybrids_id}',
+            'where'  => ['hybrids_id' => '[0-9]+'],
+        ], function ($Router) {
+            /** @var \Illuminate\Routing\Router $Router */
+
+            $Router->get('/', [
+                'uses'        => 'App\Http\Controllers\HybridsController@oneHybrid',
+                'no'          => 'PLANTS_017',
+                'description' => '杂交植物详细',
+            ]);
+
+            $Router->put('/', [
+                'uses'        => 'App\Http\Controllers\HybridsController@editHybrid',
+                'middleware'  => 'api.auth',
+                'providers'   => ['oauth'],
+                'no'          => 'PLANTS_025',
+                'description' => '修改植物',
+            ]);
+
+            $Router->delete('/', [
+                'uses'        => 'App\Http\Controllers\HybridsController@destroyHybrid',
+                'middleware'  => 'api.auth',
+                'providers'   => ['oauth'],
+                'no'          => 'PLANTS_026',
+                'description' => '删除植物',
+            ]);
+
+            $Router->post('images', [
+                'uses'        => 'App\Http\Controllers\ImagesController@addHybridImage',
+                'middleware'  => 'api.auth',
+                'providers'   => ['oauth'],
+                'no'          => 'PLANTS_018',
+                'description' => '添加杂交植物图片',
+            ]);
+
+        });
+
+        $Router->group([
+            'prefix' => 'images/{images_id}',
+            'where'  => ['images_id' => '[0-9]+'],
+        ], function ($Router) {
+            /** @var \Illuminate\Routing\Router $Router */
+
+            $Router->delete('/', [
+                'uses'        => 'App\Http\Controllers\ImagesController@destroyHybridImage',
+                'middleware'  => 'api.auth',
+                'providers'   => ['oauth'],
+                'no'          => 'PLANTS_019',
+                'description' => '删除植物图片',
             ]);
 
         });

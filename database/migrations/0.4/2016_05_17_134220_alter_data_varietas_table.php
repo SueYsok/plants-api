@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AlterDataPlantsTable extends Migration
+class AlterDataVarietasTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,8 +12,8 @@ class AlterDataPlantsTable extends Migration
      */
     public function up()
     {
-        Schema::table('data_plants', function (Blueprint $table) {
-            $table->string('alias')->after('title');
+        Schema::table('data_varietas', function (Blueprint $table) {
+            $table->integer('plants_id')->unsigned()->nullable()->after('subspecies_id');
         });
     }
 
@@ -24,8 +24,8 @@ class AlterDataPlantsTable extends Migration
      */
     public function down()
     {
-        Schema::table('data_plants', function (Blueprint $table) {
-            $table->dropColumn('alias');
+        Schema::table('data_varietas', function (Blueprint $table) {
+            $table->dropColumn('plants_id');
         });
     }
 }

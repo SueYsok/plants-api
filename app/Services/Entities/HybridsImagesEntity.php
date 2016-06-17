@@ -2,25 +2,25 @@
 /**
  * Created by PhpStorm.
  * User: sueysok
- * Date: 15/11/3
- * Time: 下午3:16
+ * Date: 16/5/9
+ * Time: 下午5:00
  */
 
 namespace App\Services\Entities;
 
-use App\Eloquent\Family;
+use App\Eloquent\HybridsImages;
 use Illuminate\Database\Eloquent\Collection as ModelCollection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 
 
 /**
- * Class FamilyEntity
+ * Class HybridsImagesEntity
  *
  * @package App\Services\Entities
  * @author  sueysok
  */
-class FamilyEntity extends Entity
+class HybridsImagesEntity extends Entity
 {
 
     /**
@@ -28,33 +28,35 @@ class FamilyEntity extends Entity
      */
     protected $id;
     /**
-     * @var string
+     * @var int
      */
-    protected $title;
+    protected $hybridsId;
     /**
      * @var string
      */
-    protected $chineseTitle;
+    protected $image;
     /**
-     * @var Collection
+     * @var HybridsEntity
      */
-    protected $genus;
+    protected $hybrids;
 
     /**
      * @param ModelCollection|Model $Item
      *
-     * @return FamilyEntity|Collection
+     * @return HybridsImagesEntity|Collection
      */
     public function create($Item)
     {
-        if ($Item instanceof Family) {
-            foreach (['id', 'title', 'chinese_title', 'created_at', 'updated_at',] as $value) {
+        if ($Item instanceof HybridsImages) {
+            foreach (['id', 'hybrids_id', 'image', 'created_at', 'updated_at',] as $value) {
                 if (isset($Item->{$value})) {
                     $this->{camel_case($value)} = $Item->{$value};
                 }
             }
 
-            $this->genus = (new GenusEntity)->create($Item->relationLoaded('genus') ? $Item->genus : null);
+            if ($Item->relationLoaded('hybrids')) {
+                $this->hybrids = (new HybridsEntity)->create($Item->hybrids);
+            }
 
             return $this;
         } else {
@@ -73,27 +75,28 @@ class FamilyEntity extends Entity
     }
 
     /**
-     * @return string
+     * @return int
      */
-    public function getTitle()
+    public function getHybridsId()
     {
-        return $this->title;
+        return $this->hybridsId;
     }
 
     /**
      * @return string
      */
-    public function getChineseTitle()
+    public function getImage()
     {
-        return $this->chineseTitle;
+        return $this->image;
     }
 
     /**
-     * @return Collection
+     * @return HybridsEntity
      */
-    public function getGenus()
+    public function getHybrids()
     {
-        return $this->genus;
+        return $this->hybrids;
     }
 
 }
+

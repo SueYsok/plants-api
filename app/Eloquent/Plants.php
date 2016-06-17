@@ -15,13 +15,17 @@ namespace App\Eloquent;
  * @package App\Eloquent
  * @author  sueysok
  * @property int                                      id
+ * @property string                                   title
+ * @property string                                   alias
  * @property string                                   description
  * @property string                                   cover
+ * @property string                                   content
  * @property int                                      family_id
  * @property int                                      genus_id
  * @property int                                      species_id
  * @property int                                      subspecies_id
  * @property int                                      varietas_id
+ * @property int                                      user_id
  * @property \Carbon\Carbon                           created_at
  * @property \Carbon\Carbon                           updated_at
  * @property Family                                   family
@@ -32,6 +36,7 @@ namespace App\Eloquent;
  * @property \Illuminate\Database\Eloquent\Collection images
  * @property \Illuminate\Database\Eloquent\Collection tags
  * @property PlantsSame                               same
+ * @property \Illuminate\Database\Eloquent\Collection tagslink
  */
 class Plants extends Eloquent
 {
@@ -47,6 +52,7 @@ class Plants extends Eloquent
         'title',
         'description',
         'cover',
+        'content',
         'family_id',
         'genus_id',
         'species_id',
@@ -62,13 +68,17 @@ class Plants extends Eloquent
      */
     protected $casts = [
         'id'            => 'integer',
+        'title'         => 'string',
+        'alias'         => 'string',
         'description'   => 'string',
         'cover'         => 'string',
+        'content'       => 'string',
         'family_id'     => 'integer',
         'genus_id'      => 'integer',
         'species_id'    => 'integer',
         'subspecies_id' => 'integer',
         'varietas_id'   => 'integer',
+        'user_id'       => 'integer',
     ];
 
     /**

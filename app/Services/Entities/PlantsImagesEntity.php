@@ -54,7 +54,7 @@ class PlantsImagesEntity extends Entity
                 }
             }
 
-            if (isset($Item->plants)) {
+            if ($Item->relationLoaded('plants')) {
                 $this->plants = (new PlantsEntity)->create($Item->plants);
             }
 
