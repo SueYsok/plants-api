@@ -21,6 +21,7 @@ namespace App\Eloquent;
  * @property \Carbon\Carbon                           created_at
  * @property \Carbon\Carbon                           updated_at
  * @property \Illuminate\Database\Eloquent\Collection plants
+ * @property \Illuminate\Database\Eloquent\Collection hybrids
  */
 class Tags extends Eloquent
 {

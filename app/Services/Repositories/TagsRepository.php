@@ -65,6 +65,16 @@ class TagsRepository extends Repository
                         ->with('tags');
                 },
             ])
+            ->with([
+                'hybrids' => function ($Model) {
+                    /** @var \App\Eloquent\Hybrids $Model */
+                    $Model
+                        ->orderBy('title')
+                        ->with('leftplants')
+                        ->with('rightplants')
+                        ->with('tags');
+                }
+            ])
             ->find($id);
         if (is_null($Model)) {
             $this->modelNotFound();

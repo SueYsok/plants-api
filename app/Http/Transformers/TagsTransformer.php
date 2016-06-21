@@ -8,6 +8,7 @@
 
 namespace App\Http\Transformers;
 
+use App\Services\Entities\HybridsEntity;
 use App\Services\Entities\PlantsEntity;
 use App\Services\Entities\TagsEntity;
 use League\Fractal\TransformerAbstract;
@@ -27,6 +28,7 @@ class TagsTransformer extends TransformerAbstract
      */
     protected $availableIncludes = [
         'plants',
+        'hybrids',
     ];
 
     /**
@@ -53,6 +55,20 @@ class TagsTransformer extends TransformerAbstract
     {
         if ($TagsEntity->getPlants()->first() instanceof PlantsEntity) {
             return $this->collection($TagsEntity->getPlants(), new PlantsTransformer);
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * @param TagsEntity $TagsEntity
+     *
+     * @return \League\Fractal\Resource\Collection|null
+     */
+    public function includeHybrids(TagsEntity $TagsEntity)
+    {
+        if ($TagsEntity->getHybrids()->first() instanceof HybridsEntity) {
+            return $this->collection($TagsEntity->getHybrids(), new HybridsTransformer);
         } else {
             return null;
         }

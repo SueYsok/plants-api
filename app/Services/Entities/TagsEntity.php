@@ -39,6 +39,10 @@ class TagsEntity extends Entity
      * @var Collection
      */
     protected $plants;
+    /**
+     * @var Collection
+     */
+    protected $hybrids;
 
     /**
      * @param ModelCollection|Model $Item
@@ -55,6 +59,8 @@ class TagsEntity extends Entity
             }
 
             $this->plants = (new PlantsEntity)->create($Item->relationLoaded('plants') ? $Item->plants : null);
+
+            $this->hybrids = (new HybridsEntity)->create($Item->relationLoaded('hybrids') ? $Item->hybrids : null);
 
             return $this;
         } else {
@@ -94,6 +100,14 @@ class TagsEntity extends Entity
     public function getPlants()
     {
         return $this->plants;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getHybrids()
+    {
+        return $this->hybrids;
     }
 
 }
