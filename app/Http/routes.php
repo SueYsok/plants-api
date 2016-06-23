@@ -301,4 +301,42 @@ $Router->version('v1', function ($Router) {
 
     });
 
+    $Router->group([
+        'prefix' => 'kk',
+    ], function ($Router) {
+        /** @var \Illuminate\Routing\Router $Router */
+
+        $Router->get('news', [
+            'uses'        => 'App\Http\Controllers\KKController@news',
+            //'middleware'  => 'api.auth',
+            //'providers'   => ['oauth'],
+            'no'          => 'PLANTS_027',
+            'description' => 'KK最新更新列表',
+        ]);
+
+        $Router->group([
+            'prefix' => 'dates',
+        ], function ($Router) {
+            /** @var \Illuminate\Routing\Router $Router */
+
+            $Router->get('/', [
+                'uses'        => 'App\Http\Controllers\KKController@dates',
+                //'middleware'  => 'api.auth',
+                //'providers'   => ['oauth'],
+                'no'          => 'PLANTS_028',
+                'description' => 'KK更新日期列表',
+            ]);
+
+            $Router->get('{date}/seeds', [
+                'uses'        => 'App\Http\Controllers\KKController@dateSeeds',
+                //'middleware'  => 'api.auth',
+                //'providers'   => ['oauth'],
+                'no'          => 'PLANTS_029',
+                'description' => 'KK种子列表',
+            ]);
+
+        });
+
+    });
+
 });
