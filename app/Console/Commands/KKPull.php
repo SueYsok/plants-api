@@ -8,12 +8,12 @@ use simplehtmldom_1_5\simple_html_dom_node;
 use Sunra\PhpSimple\HtmlDomParser;
 
 /**
- * Class KK
+ * Class KKPull
  *
  * @package App\Console\Commands
  * @author  sueysok
  */
-class KK extends Command
+class KKPull extends Command
 {
     /**
      * The name and signature of the console command.
@@ -45,9 +45,12 @@ class KK extends Command
     public function handle()
     {
         $t1 = microtime(true);
+
+        $ch = $this->curlInit();
+
         $urls = [];
 
-        $Index = HtmlDomParser::str_get_html(file_get_contents('http://www.koehres-kaktus.de/shop/'));
+        $Index = HtmlDomParser::str_get_html($this->curlExec($ch, 'http://www.koehres-kaktus.de/shop/'));
         $date = $Index->find('.lastmodi', 0)->plaintext;
         preg_match("/\d{2}.\d{2}.\d{4}/", $date, $m);
         $date = date('Y-m-d', strtotime($m[0]));
@@ -82,7 +85,7 @@ class KK extends Command
         foreach ($pages as $page) {
             $this->info($page['url']);
 
-            $Dom = HtmlDomParser::str_get_html(file_get_contents($page['url']));
+            $Dom = HtmlDomParser::str_get_html($this->curlExec($ch, $page['url']));
 
             foreach ($Dom->find('table', 2)->find('.submoduleRow') as $key => $Element) {
                 $A = $Element->find('a', 0);
@@ -101,7 +104,7 @@ class KK extends Command
         foreach ($urls as $key => $url) {
             $this->info($url['category_home']);
 
-            $Dom = HtmlDomParser::str_get_html(file_get_contents($url['category_home']));
+            $Dom = HtmlDomParser::str_get_html($this->curlExec($ch, $url['category_home']));
 
             $Point = $Dom->find('#productliste', 0)->find('tr', 0);
             $as = $Point->find('tr', 1)->find('a');
@@ -118,7 +121,7 @@ class KK extends Command
             foreach ($url['pages'] as $pageUrl) {
                 $this->info($pageUrl);
 
-                $Dom = HtmlDomParser::str_get_html(file_get_contents($pageUrl));
+                $Dom = HtmlDomParser::str_get_html($this->curlExec($ch, $pageUrl));
 
                 $Point = $Dom->find('#productliste', 0)->find('tr', 0);
                 $urls[$key]['seeds'] = array_merge($urls[$key]['seeds'], $this->seeds($Point));
@@ -153,6 +156,9 @@ class KK extends Command
             'created_at' => $createdAt,
             'updated_at' => $createdAt,
         ]);
+
+        $this->curlClose($ch);
+
         $this->comment('耗时' . round($t2 - $t1, 3) . '秒');
 
         $this->comment('done!');
@@ -184,4 +190,40 @@ class KK extends Command
 
         return $temp;
     }
+
+    /**
+     * @return resource
+     */
+    private function curlInit()
+    {
+        return curl_init();
+    }
+
+    /**
+     * @param $ch
+     */
+    private function curlClose($ch)
+    {
+        curl_close($ch);
+    }
+
+    /**
+     * @param $ch
+     * @param $url
+     *
+     * @return mixed
+     */
+    private function curlExec($ch, $url)
+    {
+        curl_setopt($ch, CURLOPT_AUTOREFERER, true);
+        curl_setopt($ch, CURLOPT_HEADER, 0);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+
+        $data = curl_exec($ch);
+
+        return $data;
+    }
+
 }
