@@ -22,24 +22,28 @@ class KKSeedsTransformer extends TransformerAbstract
 {
 
     /**
-     * @param KKSeeds $KKSeeds
+     * @param \ArrayAccess $KKSeeds
      *
      * @return array
      */
-    public function transform(KKSeeds $KKSeeds)
+    public function transform($KKSeeds)
     {
+        if ($KKSeeds instanceof KKSeeds) {
+            $KKSeeds->toArray();
+        }
+
         return [
             'kind'       => 'kk_seeds',
-            'id'         => $KKSeeds->id,
-            'number'     => $KKSeeds->number,
-            'title'      => $KKSeeds->title,
-            'spec_pkt'   => $KKSeeds->spec_pkt,
-            'spec_100'   => $KKSeeds->spec_100,
-            'spec_1000'  => $KKSeeds->spec_1000,
-            'spec_10000' => $KKSeeds->spec_10000,
-            'date'       => $KKSeeds->date->toDateString(),
-            'class_1'    => $KKSeeds->class_1,
-            'class_2'    => $KKSeeds->class_2,
+            'id'         => $KKSeeds['id'],
+            'number'     => $KKSeeds['number'],
+            'title'      => $KKSeeds['title'],
+            'spec_pkt'   => $KKSeeds['spec_pkt'],
+            'spec_100'   => $KKSeeds['spec_100'],
+            'spec_1000'  => $KKSeeds['spec_1000'],
+            'spec_10000' => $KKSeeds['spec_10000'],
+            'date'       => rtrim($KKSeeds['date'], ' 00:00:00'),
+            'class_1'    => $KKSeeds['class_1'],
+            'class_2'    => $KKSeeds['class_2'],
         ];
     }
 

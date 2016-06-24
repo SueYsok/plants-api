@@ -8,6 +8,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Transformers\KKChangesTransformer;
 use App\Http\Transformers\KKDatesTransformer;
 use App\Http\Transformers\KKSeedsTransformer;
 use App\Services\Works\KK;
@@ -43,9 +44,19 @@ class KKController extends Controller
         $this->KK = $KK;
     }
 
+    /**
+     * @return \Dingo\Api\Http\Response
+     */
     public function news()
     {
+        $DatesCollection = $this->KK->manyDates();
 
+        $SeedsChanges = $this->KK->changes(
+            $DatesCollection->shift()->date->toDateString(),
+            $DatesCollection->shift()->date->toDateString()
+        );
+
+        return $this->response->item($SeedsChanges, new KKChangesTransformer);
     }
 
     /**

@@ -31,4 +31,17 @@ class KKSeedsRepository extends Repository
         return parent::manyByBaseQueries($queries);
     }
 
+    /**
+     * @param string $date1
+     * @param string $date2
+     *
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function manyBy2Date($date1, $date2)
+    {
+        return $this->Model
+            ->whereIn('date', [$date1, $date2])
+            ->get();
+    }
+
 }

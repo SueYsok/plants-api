@@ -8,6 +8,7 @@
 
 namespace App\Services\Works;
 
+use App\Services\Works\Resources\KKEntities;
 use App\Services\Works\Resources\KKRepositories;
 
 
@@ -20,7 +21,7 @@ use App\Services\Works\Resources\KKRepositories;
 class KK extends Work
 {
 
-    use KKRepositories;
+    use KKRepositories, KKEntities;
 
     /**
      * @param array ...$input
@@ -61,6 +62,19 @@ class KK extends Work
     public function manyDates()
     {
         return $this->datesRepository()->many();
+    }
+
+    /**
+     * @param string $new
+     * @param string $old
+     *
+     * @return \App\Services\Entities\KKSeedsChangesEntity
+     */
+    public function changes($new, $old)
+    {
+        $SeedsCollection = $this->seedsRepository()->manyBy2Date($new, $old);
+
+        return $this->seedsChangesEntity()->create($SeedsCollection);
     }
 
 }
