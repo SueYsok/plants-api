@@ -26,7 +26,7 @@ class KKSeedsRepository extends Repository
      */
     public function manyByBaseQueries(array $queries)
     {
-        $this->Model = $this->Model->orderBy('class_2')->orderBy('title')->orderBy('date', 'desc');
+        $this->Model = $this->Model->orderBy('class_2')->orderBy('title');
 
         return parent::manyByBaseQueries($queries);
     }

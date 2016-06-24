@@ -36,7 +36,7 @@ class KKSeedsTransformer extends TransformerAbstract
             'spec_pkt'   => $KKSeeds->spec_pkt,
             'spec_100'   => $KKSeeds->spec_100,
             'spec_1000'  => $KKSeeds->spec_1000,
-            'spec_10000' => $KKSeeds->spec_1000,
+            'spec_10000' => $KKSeeds->spec_10000,
             'date'       => $KKSeeds->date->toDateString(),
             'class_1'    => $KKSeeds->class_1,
             'class_2'    => $KKSeeds->class_2,

@@ -46,14 +46,15 @@ class KKSeeds extends Eloquent
      * @var array
      */
     protected $casts = [
-        'id'        => 'integer',
-        'class_1'   => 'string',
-        'class_2'   => 'string',
-        'title'     => 'string',
-        'number'    => 'int',
-        'spec_pkt'  => 'bool',
-        'spec_100'  => 'bool',
-        'spec_1000' => 'bool',
+        'id'         => 'integer',
+        'class_1'    => 'string',
+        'class_2'    => 'string',
+        'title'      => 'string',
+        'number'     => 'int',
+        'spec_pkt'   => 'bool',
+        'spec_100'   => 'bool',
+        'spec_1000'  => 'bool',
+        'spec_10000' => 'bool',
     ];
 
 }
