@@ -16,6 +16,7 @@ use App\Services\Entities\SubspeciesEntity;
 use App\Services\Entities\TagsEntity;
 use App\Services\Entities\TypeSpeciesEntity;
 use App\Services\Entities\VarietasEntity;
+use Illuminate\Support\Facades\Config;
 use League\Fractal\TransformerAbstract;
 
 
@@ -60,6 +61,13 @@ class PlantsTransformer extends TransformerAbstract
             'title'         => $PlantsEntity->getTitle(),
             'alias'         => $PlantsEntity->getAlias(),
             'description'   => $PlantsEntity->getDescription(),
+            'cover'         => call_user_func(function ($path) {
+                if ($path) {
+                    return 'http://' . Config::get('path.images_domain') . $path;
+                } else {
+                    return null;
+                }
+            }, $PlantsEntity->getCover()),
         ];
     }
 
