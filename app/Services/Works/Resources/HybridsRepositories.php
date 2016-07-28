@@ -9,7 +9,9 @@
 namespace App\Services\Works\Resources;
 
 use App\Eloquent\Hybrids;
+use App\Eloquent\HybridsCovers;
 use App\Eloquent\HybridsImages;
+use App\Services\Repositories\HybridsCoversRepository;
 use App\Services\Repositories\HybridsImagesRepository;
 use App\Services\Repositories\HybridsRepository;
 
@@ -31,6 +33,10 @@ trait HybridsRepositories
      * @var HybridsImagesRepository
      */
     private $Images;
+    /**
+     * @var HybridsCoversRepository
+     */
+    private $Covers;
 
     /**
      * @return HybridsRepository
@@ -46,6 +52,14 @@ trait HybridsRepositories
     protected function hybridsImagesRepository()
     {
         return $this->Images ?: $this->Images = new HybridsImagesRepository(new HybridsImages);
+    }
+
+    /**
+     * @return hybridsCoversRepository
+     */
+    protected function hybridsCoversRepository()
+    {
+        return $this->Covers ?: $this->Covers = new HybridsCoversRepository(new HybridsCovers);
     }
 
 }

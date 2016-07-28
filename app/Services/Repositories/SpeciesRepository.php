@@ -35,16 +35,31 @@ class SpeciesRepository extends Repository
             ->with([
                 'subspecies' => function ($Model) {
                     /** @var \App\Eloquent\Genus $Model */
-                    $Model->with('plants');
+                    $Model->with([
+                        'plants' => function ($Model) {
+                            /** @var \App\Eloquent\Plants $Model */
+                            $Model->with('cover');
+                        },
+                    ]);
                 },
             ])
             ->with([
                 'varietas' => function ($Model) {
                     /** @var \App\Eloquent\Genus $Model */
-                    $Model->with('plants');
+                    $Model->with([
+                        'plants' => function ($Model) {
+                            /** @var \App\Eloquent\Plants $Model */
+                            $Model->with('cover');
+                        },
+                    ]);
                 },
             ])
-            ->with('plants')
+            ->with([
+                'plants' => function ($Model) {
+                    /** @var \App\Eloquent\Plants $Model */
+                    $Model->with('cover');
+                },
+            ])
             ->find($id);
         if (is_null($Model)) {
             $this->modelNotFound();

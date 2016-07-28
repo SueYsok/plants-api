@@ -11,6 +11,7 @@ namespace App\Services\Works\Resources;
 use App\Eloquent\Family;
 use App\Eloquent\Genus;
 use App\Eloquent\Plants;
+use App\Eloquent\PlantsCovers;
 use App\Eloquent\PlantsImages;
 use App\Eloquent\PlantsSame;
 use App\Eloquent\Species;
@@ -18,6 +19,7 @@ use App\Eloquent\Subspecies;
 use App\Eloquent\Varietas;
 use App\Services\Repositories\FamilyRepository;
 use App\Services\Repositories\GenusRepository;
+use App\Services\Repositories\PlantsCoversRepository;
 use App\Services\Repositories\PlantsImagesRepository;
 use App\Services\Repositories\PlantsRepository;
 use App\Services\Repositories\PlantsSameRepository;
@@ -63,6 +65,10 @@ trait PlantsRepositories
      * @var PlantsImagesRepository
      */
     private $Images;
+    /**
+     * @var PlantsCoversRepository
+     */
+    private $Covers;
     /**
      * @var PlantsSameRepository
      */
@@ -122,6 +128,14 @@ trait PlantsRepositories
     protected function plantsImagesRepository()
     {
         return $this->Images ?: $this->Images = new PlantsImagesRepository(new PlantsImages);
+    }
+
+    /**
+     * @return PlantsCoversRepository
+     */
+    protected function plantsCoversRepository()
+    {
+        return $this->Covers ?: $this->Covers = new PlantsCoversRepository(new PlantsCovers);
     }
 
     /**

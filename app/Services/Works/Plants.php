@@ -108,7 +108,7 @@ class Plants extends Work implements Selection, Storage
         $alias = $input[1] ?: null;
         $description = $input[2] ?: null;
         $content = $input[3] ?: null;
-        $cover = $input[4] ?: null;
+        $coversId = $input[4] ?: null;
         $familyId = $input[5];
         $genusId = $input[6];
         $speciesId = $input[7];
@@ -118,7 +118,7 @@ class Plants extends Work implements Selection, Storage
         $userId = $input[11];
 
         $PlantsModel = $this->plantsRepository()->add($title, $alias, $description, $content,
-            $cover, $familyId, $genusId, $speciesId, $subspeciesId, $varietasId,
+            $coversId, $familyId, $genusId, $speciesId, $subspeciesId, $varietasId,
             $tagsIds, $userId);
 
         $PlantsEntity = $this->plantsEntity()->create($PlantsModel);
@@ -139,7 +139,7 @@ class Plants extends Work implements Selection, Storage
         $alias = $input[1];
         $description = $input[2];
         $content = $input[3];
-        $cover = $input[4];
+        $coversId = $input[4];
         $familyId = $input[5];
         $genusId = $input[6];
         $speciesId = $input[7];
@@ -148,7 +148,7 @@ class Plants extends Work implements Selection, Storage
         $tagsIds = $input[10];
 
         $PlantsModel = $this->plantsRepository()->edit($this->PlantsEntity->getId(),
-            $title, $alias, $description, $content, $cover, $familyId, $genusId,
+            $title, $alias, $description, $content, $coversId, $familyId, $genusId,
             $speciesId, $subspeciesId, $varietasId, $tagsIds);
 
         $PlantsEntity = $this->plantsEntity()->create($PlantsModel);
@@ -181,6 +181,9 @@ class Plants extends Work implements Selection, Storage
             ->add($this->PlantsEntity->getId(), $samePlantsId);
     }
 
+    /**
+     *
+     */
     public function unbindSames()
     {
         $this->plantsSameRepository()->destroy($this->PlantsEntity->getId());

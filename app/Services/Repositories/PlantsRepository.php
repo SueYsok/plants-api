@@ -29,7 +29,7 @@ class PlantsRepository extends Repository
      * @param string|null $alias
      * @param string|null $description
      * @param string|null $content
-     * @param string|null $cover
+     * @param int|null    $coversId
      * @param int         $familyId
      * @param int         $genusId
      * @param int         $speciesId
@@ -45,7 +45,7 @@ class PlantsRepository extends Repository
         $alias,
         $description,
         $content,
-        $cover,
+        $coversId,
         $familyId,
         $genusId,
         $speciesId,
@@ -58,7 +58,7 @@ class PlantsRepository extends Repository
         $this->Model->alias = $alias ?: null;
         $this->Model->description = $description ?: null;
         $this->Model->content = $content ?: null;
-        $this->Model->cover = $cover ?: null;
+        $this->Model->covers_id = $coversId ?: null;
         $this->Model->family_id = $familyId;
         $this->Model->genus_id = $genusId;
         $this->Model->species_id = $speciesId;
@@ -79,7 +79,7 @@ class PlantsRepository extends Repository
      * @param string|null $alias
      * @param string|null $description
      * @param string|null $content
-     * @param string|null $cover
+     * @param int|null    $coversId
      * @param int         $familyId
      * @param int         $genusId
      * @param int         $speciesId
@@ -95,7 +95,7 @@ class PlantsRepository extends Repository
         $alias,
         $description,
         $content,
-        $cover,
+        $coversId,
         $familyId,
         $genusId,
         $speciesId,
@@ -115,7 +115,7 @@ class PlantsRepository extends Repository
         $this->Model->alias = $alias ?: null;
         $this->Model->description = $description ?: null;
         $this->Model->content = $content ?: null;
-        $this->Model->cover = $cover ?: null;
+        $this->Model->covers_id = $coversId ?: null;
         $this->Model->family_id = $familyId;
         $this->Model->genus_id = $genusId;
         $this->Model->species_id = $speciesId;
@@ -172,6 +172,7 @@ class PlantsRepository extends Repository
     public function oneById($id)
     {
         $Model = $this->Model
+            ->with('cover')
             ->with('family')
             ->with('genus')
             ->with('species')
@@ -185,7 +186,12 @@ class PlantsRepository extends Repository
                     $Model->with([
                         'same' => function ($Model) {
                             /** @var \App\Eloquent\PlantsSame $Model */
-                            $Model->with('plant');
+                            $Model->with([
+                                'plants' => function ($Model) {
+                                    /** @var \App\Eloquent\Plants $Model */
+                                    $Model->with('cover');
+                                },
+                            ]);
                         },
                     ]);
                 },
@@ -244,6 +250,7 @@ class PlantsRepository extends Repository
         }
 
         return $Model
+            ->with('cover')
             ->with('family')
             ->with('genus')
             ->with('species')
@@ -254,10 +261,24 @@ class PlantsRepository extends Repository
     }
 
     /**
+     * @param int $coversId
+     */
+    public function resetCoversId($coversId)
+    {
+        $Collection = $this->Model->where('covers_id', $coversId)->get();
+
+        /** @var \App\Eloquent\Plants $Model */
+        foreach ($Collection->all() as $Model) {
+            $Model->covers_id = null;
+            $Model->save();
+        }
+    }
+
+    /**
      * @param array          $query
      * @param Builder|Plants $Model
      *
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @return Plants
      */
     private function tagsQuery(array $query, $Model)
     {
@@ -275,7 +296,7 @@ class PlantsRepository extends Repository
      * @param int            $businessesId
      * @param Builder|Plants $Model
      *
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @return Plants
      */
     private function businessesQuery($businessesId, $Model)
     {

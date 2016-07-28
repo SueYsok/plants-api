@@ -57,6 +57,7 @@ class TagsRepository extends Repository
                     /** @var \App\Eloquent\Plants $Model */
                     $Model
                         ->orderBy('title')
+                        ->with('cover')
                         ->with('family')
                         ->with('genus')
                         ->with('species')
@@ -70,6 +71,7 @@ class TagsRepository extends Repository
                     /** @var \App\Eloquent\Hybrids $Model */
                     $Model
                         ->orderBy('title')
+                        ->with('cover')
                         ->with('leftplants')
                         ->with('rightplants')
                         ->with('tags');

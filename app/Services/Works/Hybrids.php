@@ -89,14 +89,14 @@ class Hybrids extends Work implements Selection, Storage
         $alias = $input[1];
         $description = $input[2];
         $content = $input[3];
-        $cover = $input[4];
+        $coversId = $input[4];
         $leftPlantsId = isset($input[5][0]) ? $input[5][0] : null;
         $rightPlantsId = isset($input[5][1]) ? $input[5][1] : null;
         $tagsIds = $input[6];
         $userId = $input[7];
 
         $HybridsModel = $this->hybridsRepository()->add($title, $alias, $description, $content,
-            $cover, $leftPlantsId, $rightPlantsId, $tagsIds, $userId);
+            $coversId, $leftPlantsId, $rightPlantsId, $tagsIds, $userId);
 
         $HybridsEntity = $this->hybridsEntity()->create($HybridsModel);
 
@@ -116,13 +116,13 @@ class Hybrids extends Work implements Selection, Storage
         $alias = $input[1];
         $description = $input[2];
         $content = $input[3];
-        $cover = $input[4];
+        $coversId = $input[4];
         $leftPlantsId = isset($input[5][0]) ? $input[5][0] : null;
         $rightPlantsId = isset($input[5][1]) ? $input[5][1] : null;
         $tagsIds = $input[6];
 
         $HybridsModel = $this->hybridsRepository()->edit($this->HybridsEntity->getId(),
-            $title, $alias, $description, $content, $cover, $leftPlantsId, $rightPlantsId, $tagsIds);
+            $title, $alias, $description, $content, $coversId, $leftPlantsId, $rightPlantsId, $tagsIds);
 
         $HybridsEntity = $this->hybridsEntity()->create($HybridsModel);
 

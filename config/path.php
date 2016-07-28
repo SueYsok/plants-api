@@ -8,8 +8,8 @@
 
 return [
 
-    'images_domain'        => env('IMAGE_DOMAIN', 'localhost'),
-    'images_path'          => env('IMAGE_PATH', app_path()),
-    'customer_images_path' => 'customer/',
+    'images_domain'           => env('IMAGE_DOMAIN', 'localhost'),
+    'images_path'             => env('IMAGE_PATH', app_path()),
+    'customer_images_path'    => 'customer/',
 
 ];

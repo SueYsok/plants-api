@@ -112,7 +112,7 @@ class HybridsController extends Controller
         $alias = $this->Request->input('alias');
         $description = $this->Request->input('description');
         $content = $this->Request->input('content');
-        $cover = $this->Request->input('cover');
+        $coversId = $this->Request->input('covers_id');
         $plantsIds = json_decode($this->Request->input('plants_ids'), true) ?: [];
         $tagsIds = json_decode($this->Request->input('tags_ids'), true) ?: [];
         $tagsTitles = json_decode($this->Request->input('tags_title'), true) ?: [];
@@ -123,7 +123,7 @@ class HybridsController extends Controller
 
             $oldTagsIds = array_pluck($HybridsEntity->getTags()->toArray(), 'id');
 
-            $this->Hybrids->edit($title, $alias, $description, $content, $cover, $plantsIds, $tagsIds);
+            $this->Hybrids->edit($title, $alias, $description, $content, $coversId, $plantsIds, $tagsIds);
 
             if (!empty($oldTagsIds)) {
                 $this->Tags->decMany($oldTagsIds);

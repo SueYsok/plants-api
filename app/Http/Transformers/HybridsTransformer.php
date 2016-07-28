@@ -13,6 +13,7 @@ use App\Services\Entities\HybridsImagesEntity;
 use App\Services\Entities\PlantsEntity;
 use App\Services\Entities\TagsEntity;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Config;
 use League\Fractal\TransformerAbstract;
 
 
@@ -55,6 +56,13 @@ class HybridsTransformer extends TransformerAbstract
             'title'       => $HybridsEntity->getTitle(),
             'alias'       => $HybridsEntity->getAlias(),
             'description' => $HybridsEntity->getDescription(),
+            'cover'       => call_user_func(function ($path) {
+                if ($path) {
+                    return 'http://' . Config::get('path.images_domain') . $path;
+                } else {
+                    return null;
+                }
+            }, $HybridsEntity->getCover()),
             'plants_ids'  => $plantsIds,
         ];
     }

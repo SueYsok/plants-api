@@ -27,17 +27,17 @@ $Router->version('v1', function ($Router) {
             /** @var \Illuminate\Routing\Router $Router */
 
             $Router->get('/', [
-                'uses'        => 'App\Http\Controllers\SpeciesController@oneSpecies',
-                'no'          => 'PLANTS_001',
-                'description' => '种详细',
+                'uses' => 'App\Http\Controllers\SpeciesController@oneSpecies',
+                'no'   => 'PLANTS_001',
+                'as'   => '种详细',
             ]);
 
             $Router->put('/', [
-                'uses'        => 'App\Http\Controllers\SpeciesController@editSpecies',
-                'middleware'  => 'api.auth',
-                'providers'   => ['oauth'],
-                'no'          => 'PLANTS_020',
-                'description' => '编辑种',
+                'uses'       => 'App\Http\Controllers\SpeciesController@editSpecies',
+                'middleware' => 'api.auth',
+                'providers'  => ['oauth'],
+                'no'         => 'PLANTS_020',
+                'as'         => '编辑种',
             ]);
 
         });
@@ -54,15 +54,15 @@ $Router->version('v1', function ($Router) {
             /** @var \Illuminate\Routing\Router $Router */
 
             $Router->get('/', [
-                'uses'        => 'App\Http\Controllers\GenusController@oneGenus',
-                'no'          => 'PLANTS_002',
-                'description' => '属详细',
+                'uses' => 'App\Http\Controllers\GenusController@oneGenus',
+                'no'   => 'PLANTS_002',
+                'as'   => '属详细',
             ]);
 
             $Router->get('species', [
-                'uses'        => 'App\Http\Controllers\SpeciesController@allSpecies',
-                'no'          => 'PLANTS_003',
-                'description' => '属下种列表',
+                'uses' => 'App\Http\Controllers\SpeciesController@allSpecies',
+                'no'   => 'PLANTS_003',
+                'as'   => '属下种列表',
             ]);
         });
 
@@ -72,9 +72,9 @@ $Router->version('v1', function ($Router) {
         /** @var \Illuminate\Routing\Router $Router */
 
         $Router->get('/', [
-            'uses'        => 'App\Http\Controllers\FamilyController@allFamily',
-            'no'          => 'PLANTS_004',
-            'description' => '科列表',
+            'uses' => 'App\Http\Controllers\FamilyController@allFamily',
+            'no'   => 'PLANTS_004',
+            'as'   => '科列表',
         ]);
 
         $Router->group([
@@ -84,15 +84,15 @@ $Router->version('v1', function ($Router) {
             /** @var \Illuminate\Routing\Router $Router */
 
             $Router->get('/', [
-                'uses'        => 'App\Http\Controllers\FamilyController@oneFamily',
-                'no'          => 'PLANTS_005',
-                'description' => '科详细',
+                'uses' => 'App\Http\Controllers\FamilyController@oneFamily',
+                'no'   => 'PLANTS_005',
+                'as'   => '科详细',
             ]);
 
             $Router->get('genus', [
-                'uses'        => 'App\Http\Controllers\GenusController@allGenus',
-                'no'          => 'PLANTS_006',
-                'description' => '科下属列表',
+                'uses' => 'App\Http\Controllers\GenusController@allGenus',
+                'no'   => 'PLANTS_006',
+                'as'   => '科下属列表',
             ]);
 
         });
@@ -103,9 +103,9 @@ $Router->version('v1', function ($Router) {
         /** @var \Illuminate\Routing\Router $Router */
 
         $Router->get('/', [
-            'uses'        => 'App\Http\Controllers\BusinessesController@allBusinesses',
-            'no'          => 'PLANTS_007',
-            'description' => '商家列表',
+            'uses' => 'App\Http\Controllers\BusinessesController@allBusinesses',
+            'no'   => 'PLANTS_007',
+            'as'   => '商家列表',
         ]);
 
         $Router->group([
@@ -115,15 +115,15 @@ $Router->version('v1', function ($Router) {
             /** @var \Illuminate\Routing\Router $Router */
 
             $Router->get('/', [
-                'uses'        => 'App\Http\Controllers\BusinessesController@oneBusiness',
-                'no'          => 'PLANTS_008',
-                'description' => '商家详细',
+                'uses' => 'App\Http\Controllers\BusinessesController@oneBusiness',
+                'no'   => 'PLANTS_008',
+                'as'   => '商家详细',
             ]);
 
             $Router->get('plants', [
-                'uses'        => 'App\Http\Controllers\BusinessesPlantsController@allPlants',
-                'no'          => 'PLANTS_009',
-                'description' => '商家植物列表',
+                'uses' => 'App\Http\Controllers\BusinessesPlantsController@allPlants',
+                'no'   => 'PLANTS_009',
+                'as'   => '商家植物列表',
             ]);
 
         });
@@ -134,17 +134,17 @@ $Router->version('v1', function ($Router) {
         /** @var \Illuminate\Routing\Router $Router */
 
         $Router->get('/', [
-            'uses'        => 'App\Http\Controllers\PlantsController@allPlants',
-            'no'          => 'PLANTS_010',
-            'description' => '植物列表',
+            'uses' => 'App\Http\Controllers\PlantsController@allPlants',
+            'no'   => 'PLANTS_010',
+            'as'   => '植物列表',
         ]);
 
         $Router->post('/', [
-            'uses'        => 'App\Http\Controllers\PlantsController@addPlant',
-            'middleware'  => 'api.auth',
-            'providers'   => ['oauth'],
-            'no'          => 'PLANTS_021',
-            'description' => '添加植物',
+            'uses'       => 'App\Http\Controllers\PlantsController@addPlant',
+            'middleware' => 'api.auth',
+            'providers'  => ['oauth'],
+            'no'         => 'PLANTS_021',
+            'as'         => '添加植物',
         ]);
 
         $Router->group([
@@ -154,33 +154,41 @@ $Router->version('v1', function ($Router) {
             /** @var \Illuminate\Routing\Router $Router */
 
             $Router->get('/', [
-                'uses'        => 'App\Http\Controllers\PlantsController@onePlant',
-                'no'          => 'PLANTS_011',
-                'description' => '植物详细',
+                'uses' => 'App\Http\Controllers\PlantsController@onePlant',
+                'no'   => 'PLANTS_011',
+                'as'   => '植物详细',
             ]);
 
             $Router->put('/', [
-                'uses'        => 'App\Http\Controllers\PlantsController@editPlant',
-                'middleware'  => 'api.auth',
-                'providers'   => ['oauth'],
-                'no'          => 'PLANTS_022',
-                'description' => '修改植物',
+                'uses'       => 'App\Http\Controllers\PlantsController@editPlant',
+                'middleware' => 'api.auth',
+                'providers'  => ['oauth'],
+                'no'         => 'PLANTS_022',
+                'as'         => '修改植物',
             ]);
 
             $Router->delete('/', [
-                'uses'        => 'App\Http\Controllers\PlantsController@destroyPlant',
-                'middleware'  => 'api.auth',
-                'providers'   => ['oauth'],
-                'no'          => 'PLANTS_023',
-                'description' => '删除植物',
+                'uses'       => 'App\Http\Controllers\PlantsController@destroyPlant',
+                'middleware' => 'api.auth',
+                'providers'  => ['oauth'],
+                'no'         => 'PLANTS_023',
+                'as'         => '删除植物',
             ]);
 
             $Router->post('images', [
-                'uses'        => 'App\Http\Controllers\ImagesController@addPlantImage',
-                'middleware'  => 'api.auth',
-                'providers'   => ['oauth'],
-                'no'          => 'PLANTS_014',
-                'description' => '添加植物图片',
+                'uses'       => 'App\Http\Controllers\ImagesController@addPlantImage',
+                'middleware' => 'api.auth',
+                'providers'  => ['oauth'],
+                'no'         => 'PLANTS_014',
+                'as'         => '添加植物图片',
+            ]);
+
+            $Router->post('covers', [
+                'uses'       => 'App\Http\Controllers\ImagesController@addPlantCover',
+                'middleware' => 'api.auth',
+                'providers'  => ['oauth'],
+                'no'         => 'PLANTS_030',
+                'as'         => '添加植物封面',
             ]);
 
         });
@@ -192,12 +200,34 @@ $Router->version('v1', function ($Router) {
             /** @var \Illuminate\Routing\Router $Router */
 
             $Router->delete('/', [
-                'uses'        => 'App\Http\Controllers\ImagesController@destroyPlantImage',
-                'middleware'  => 'api.auth',
-                'providers'   => ['oauth'],
-                'no'          => 'PLANTS_015',
-                'description' => '删除植物图片',
+                'uses'       => 'App\Http\Controllers\ImagesController@destroyPlantImage',
+                'middleware' => 'api.auth',
+                'providers'  => ['oauth'],
+                'no'         => 'PLANTS_015',
+                'as'         => '删除植物图片',
             ]);
+
+        });
+
+        $Router->group([
+            'prefix' => 'covers/{covers_id}',
+            'where'  => ['covers_id' => '[0-9]+'],
+        ], function ($Router) {
+            /** @var \Illuminate\Routing\Router $Router */
+
+            //$Router->delete('/', [
+            //    'uses'       => 'App\Http\Controllers\ImagesController@destroyPlantCover',
+            //    'middleware' => 'api.auth',
+            //    'providers'  => ['oauth'],
+            //    'no'         => 'PLANTS_032',
+            //    'as'         => '删除植物封面',
+            //]);
+            //
+            //$Router->get('/', [
+            //    'uses'        => 'App\Http\Controllers\PlantsController@allCovers',
+            //    'no'          => 'PLANTS_033',
+            //    'as' => '植物封面列表',
+            //]);
 
         });
 
@@ -207,9 +237,9 @@ $Router->version('v1', function ($Router) {
         /** @var \Illuminate\Routing\Router $Router */
 
         $Router->get('/', [
-            'uses'        => 'App\Http\Controllers\TagsController@allTags',
-            'no'          => 'PLANTS_012',
-            'description' => '标签列表',
+            'uses' => 'App\Http\Controllers\TagsController@allTags',
+            'no'   => 'PLANTS_012',
+            'as'   => '标签列表',
         ]);
 
         $Router->group([
@@ -219,9 +249,9 @@ $Router->version('v1', function ($Router) {
             /** @var \Illuminate\Routing\Router $Router */
 
             $Router->get('/', [
-                'uses'        => 'App\Http\Controllers\TagsController@oneTag',
-                'no'          => 'PLANTS_013',
-                'description' => '标签详细',
+                'uses' => 'App\Http\Controllers\TagsController@oneTag',
+                'no'   => 'PLANTS_013',
+                'as'   => '标签详细',
             ]);
 
         });
@@ -232,17 +262,17 @@ $Router->version('v1', function ($Router) {
         /** @var \Illuminate\Routing\Router $Router */
 
         $Router->get('/', [
-            'uses'        => 'App\Http\Controllers\HybridsController@allHybrids',
-            'no'          => 'PLANTS_016',
-            'description' => '杂交植物列表',
+            'uses' => 'App\Http\Controllers\HybridsController@allHybrids',
+            'no'   => 'PLANTS_016',
+            'as'   => '杂交植物列表',
         ]);
 
         $Router->post('/', [
-            'uses'        => 'App\Http\Controllers\HybridsController@addHybrid',
-            'middleware'  => 'api.auth',
-            'providers'   => ['oauth'],
-            'no'          => 'PLANTS_024',
-            'description' => '添加杂交植物',
+            'uses'       => 'App\Http\Controllers\HybridsController@addHybrid',
+            'middleware' => 'api.auth',
+            'providers'  => ['oauth'],
+            'no'         => 'PLANTS_024',
+            'as'         => '添加杂交植物',
         ]);
 
         $Router->group([
@@ -252,33 +282,41 @@ $Router->version('v1', function ($Router) {
             /** @var \Illuminate\Routing\Router $Router */
 
             $Router->get('/', [
-                'uses'        => 'App\Http\Controllers\HybridsController@oneHybrid',
-                'no'          => 'PLANTS_017',
-                'description' => '杂交植物详细',
+                'uses' => 'App\Http\Controllers\HybridsController@oneHybrid',
+                'no'   => 'PLANTS_017',
+                'as'   => '杂交植物详细',
             ]);
 
             $Router->put('/', [
-                'uses'        => 'App\Http\Controllers\HybridsController@editHybrid',
-                'middleware'  => 'api.auth',
-                'providers'   => ['oauth'],
-                'no'          => 'PLANTS_025',
-                'description' => '修改植物',
+                'uses'       => 'App\Http\Controllers\HybridsController@editHybrid',
+                'middleware' => 'api.auth',
+                'providers'  => ['oauth'],
+                'no'         => 'PLANTS_025',
+                'as'         => '修改植物',
             ]);
 
             $Router->delete('/', [
-                'uses'        => 'App\Http\Controllers\HybridsController@destroyHybrid',
-                'middleware'  => 'api.auth',
-                'providers'   => ['oauth'],
-                'no'          => 'PLANTS_026',
-                'description' => '删除植物',
+                'uses'       => 'App\Http\Controllers\HybridsController@destroyHybrid',
+                'middleware' => 'api.auth',
+                'providers'  => ['oauth'],
+                'no'         => 'PLANTS_026',
+                'as'         => '删除植物',
             ]);
 
             $Router->post('images', [
-                'uses'        => 'App\Http\Controllers\ImagesController@addHybridImage',
-                'middleware'  => 'api.auth',
-                'providers'   => ['oauth'],
-                'no'          => 'PLANTS_018',
-                'description' => '添加杂交植物图片',
+                'uses'       => 'App\Http\Controllers\ImagesController@addHybridImage',
+                'middleware' => 'api.auth',
+                'providers'  => ['oauth'],
+                'no'         => 'PLANTS_018',
+                'as'         => '添加杂交植物图片',
+            ]);
+
+            $Router->post('covers', [
+                'uses'       => 'App\Http\Controllers\ImagesController@addHybridCover',
+                'middleware' => 'api.auth',
+                'providers'  => ['oauth'],
+                'no'         => 'PLANTS_031',
+                'as'         => '添加杂交植物封面',
             ]);
 
         });
@@ -290,12 +328,34 @@ $Router->version('v1', function ($Router) {
             /** @var \Illuminate\Routing\Router $Router */
 
             $Router->delete('/', [
-                'uses'        => 'App\Http\Controllers\ImagesController@destroyHybridImage',
-                'middleware'  => 'api.auth',
-                'providers'   => ['oauth'],
-                'no'          => 'PLANTS_019',
-                'description' => '删除植物图片',
+                'uses'       => 'App\Http\Controllers\ImagesController@destroyHybridImage',
+                'middleware' => 'api.auth',
+                'providers'  => ['oauth'],
+                'no'         => 'PLANTS_019',
+                'as'         => '删除杂交植物图片',
             ]);
+
+        });
+
+        $Router->group([
+            'prefix' => 'covers/{covers_id}',
+            'where'  => ['covers_id' => '[0-9]+'],
+        ], function ($Router) {
+            /** @var \Illuminate\Routing\Router $Router */
+
+            //$Router->delete('/', [
+            //    'uses'       => 'App\Http\Controllers\ImagesController@destroyHybridCover',
+            //    'middleware' => 'api.auth',
+            //    'providers'  => ['oauth'],
+            //    'no'         => 'PLANTS_034',
+            //    'as'         => '删除杂交植物封面',
+            //]);
+            //
+            //$Router->get('/', [
+            //    'uses'        => 'App\Http\Controllers\HybridsController@allCovers',
+            //    'no'          => 'PLANTS_035',
+            //    'as' => '杂交植物封面列表',
+            //]);
 
         });
 
@@ -307,11 +367,11 @@ $Router->version('v1', function ($Router) {
         /** @var \Illuminate\Routing\Router $Router */
 
         $Router->get('news', [
-            'uses'        => 'App\Http\Controllers\KKController@news',
+            'uses' => 'App\Http\Controllers\KKController@news',
             //'middleware'  => 'api.auth',
             //'providers'   => ['oauth'],
-            'no'          => 'PLANTS_027',
-            'description' => 'KK最新更新列表',
+            'no'   => 'PLANTS_027',
+            'as'   => 'KK最新更新列表',
         ]);
 
         $Router->group([
@@ -320,19 +380,19 @@ $Router->version('v1', function ($Router) {
             /** @var \Illuminate\Routing\Router $Router */
 
             $Router->get('/', [
-                'uses'        => 'App\Http\Controllers\KKController@dates',
+                'uses' => 'App\Http\Controllers\KKController@dates',
                 //'middleware'  => 'api.auth',
                 //'providers'   => ['oauth'],
-                'no'          => 'PLANTS_028',
-                'description' => 'KK更新日期列表',
+                'no'   => 'PLANTS_028',
+                'as'   => 'KK更新日期列表',
             ]);
 
             $Router->get('{date}/seeds', [
-                'uses'        => 'App\Http\Controllers\KKController@dateSeeds',
+                'uses' => 'App\Http\Controllers\KKController@dateSeeds',
                 //'middleware'  => 'api.auth',
                 //'providers'   => ['oauth'],
-                'no'          => 'PLANTS_029',
-                'description' => 'KK种子列表',
+                'no'   => 'PLANTS_029',
+                'as'   => 'KK种子列表',
             ]);
 
         });

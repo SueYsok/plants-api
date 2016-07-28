@@ -50,6 +50,10 @@ class HybridsEntity extends Entity
     /**
      * @var int
      */
+    protected $coversId;
+    /**
+     * @var int
+     */
     protected $leftPlantsId;
     /**
      * @var int
@@ -75,6 +79,10 @@ class HybridsEntity extends Entity
      * @var Collection
      */
     protected $tags;
+    /**
+     * @var Collection
+     */
+    protected $covers;
 
     /**
      * @param ModelCollection|Model $Item
@@ -90,7 +98,7 @@ class HybridsEntity extends Entity
                          'alias',
                          'description',
                          'content',
-                         'cover',
+                         'covers_id',
                          'left_plants_id',
                          'right_plants_id',
                          'user_id',
@@ -100,6 +108,14 @@ class HybridsEntity extends Entity
                 if (isset($Item->{$value})) {
                     $this->{camel_case($value)} = $Item->{$value};
                 }
+            }
+
+            if ($Item->relationLoaded('cover') && $Item->cover) {
+                $this->cover = $Item->cover->image;
+            }
+
+            if ($Item->relationLoaded('covers')) {
+                $this->covers = $Item->covers;
             }
 
             if ($Item->relationLoaded('leftplants')) {
@@ -224,6 +240,22 @@ class HybridsEntity extends Entity
     public function getUserId()
     {
         return $this->userId;
+    }
+
+    /**
+     * @return int
+     */
+    public function getCoversId()
+    {
+        return $this->coversId;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getCovers()
+    {
+        return $this->covers;
     }
 
 }

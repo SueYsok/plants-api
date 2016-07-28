@@ -28,7 +28,7 @@ class HybridsRepository extends Repository
      * @param string|null $alias
      * @param string|null $description
      * @param string|null $content
-     * @param string|null $cover
+     * @param int|null    $coversId
      * @param int|null    $leftPlantsIds
      * @param int|null    $rightPlantsIds
      * @param array|null  $tagsIds
@@ -41,7 +41,7 @@ class HybridsRepository extends Repository
         $alias,
         $description,
         $content,
-        $cover,
+        $coversId,
         $leftPlantsIds,
         $rightPlantsIds,
         $tagsIds,
@@ -51,7 +51,7 @@ class HybridsRepository extends Repository
         $this->Model->alias = $alias ?: null;
         $this->Model->description = $description ?: null;
         $this->Model->content = $content ?: null;
-        $this->Model->cover = $cover ?: null;
+        $this->Model->covers_id = $coversId ?: null;
         $this->Model->left_plants_id = $leftPlantsIds;
         $this->Model->right_plants_id = $rightPlantsIds;
         $this->Model->user_id = $userId;
@@ -69,7 +69,7 @@ class HybridsRepository extends Repository
      * @param string|null $alias
      * @param string|null $description
      * @param string|null $content
-     * @param string|null $cover
+     * @param int|null    $coversId
      * @param int|null    $leftPlantsIds
      * @param int|null    $rightPlantsIds
      * @param array|null  $tagsIds
@@ -82,7 +82,7 @@ class HybridsRepository extends Repository
         $alias,
         $description,
         $content,
-        $cover,
+        $coversId,
         $leftPlantsIds,
         $rightPlantsIds,
         $tagsIds
@@ -99,7 +99,7 @@ class HybridsRepository extends Repository
         $this->Model->alias = $alias ?: null;
         $this->Model->description = $description ?: null;
         $this->Model->content = $content ?: null;
-        $this->Model->cover = $cover ?: null;
+        $this->Model->covers_id = $coversId ?: null;
         $this->Model->left_plants_id = $leftPlantsIds;
         $this->Model->right_plants_id = $rightPlantsIds;
 
@@ -148,11 +148,12 @@ class HybridsRepository extends Repository
     /**
      * @param $id
      *
-     * @return \App\Eloquent\Hybrids
+     * @return \App\Eloquent\Hybrids|\Illuminate\Database\Eloquent\Builder
      */
     public function oneById($id)
     {
         $Model = $this->Model
+            ->with('cover')
             ->with('leftplants')
             ->with('rightplants')
             ->with('images')
@@ -198,9 +199,24 @@ class HybridsRepository extends Repository
         }
 
         return $Model
+            ->with('cover')
             ->with('leftplants')
             ->with('rightplants')
             ->get();
+    }
+
+    /**
+     * @param int $coversId
+     */
+    public function resetCoversId($coversId)
+    {
+        $Collection = $this->Model->where('covers_id', $coversId)->get();
+
+        /** @var \App\Eloquent\Hybrids $Model */
+        foreach ($Collection->all() as $Model) {
+            $Model->covers_id = null;
+            $Model->save();
+        }
     }
 
     /**
@@ -214,7 +230,7 @@ class HybridsRepository extends Repository
         foreach ($TagsCollection as $TagsModel) {
             array_push($tagsLinkModels, new TagsHybrids([
                 'tags_id'    => $TagsModel->id,
-                'hybrids_id'  => $this->Model->id,
+                'hybrids_id' => $this->Model->id,
                 'tags_title' => $TagsModel->title,
             ]));
         }

@@ -19,7 +19,7 @@ namespace App\Eloquent;
  * @property string                                   alias
  * @property string                                   description
  * @property string                                   content
- * @property string                                   cover
+ * @property int                                      covers_id
  * @property int                                      left_plants_id
  * @property int                                      right_plants_id
  * @property int                                      user_id
@@ -30,6 +30,8 @@ namespace App\Eloquent;
  * @property HybridsImages                            images
  * @property \Illuminate\Database\Eloquent\Collection tagslink
  * @property \Illuminate\Database\Eloquent\Collection tags
+ * @property HybridsCovers                            cover
+ * @property \Illuminate\Database\Eloquent\Collection covers
  */
 class Hybrids extends Eloquent
 {
@@ -45,7 +47,7 @@ class Hybrids extends Eloquent
         'title',
         'description',
         'content',
-        'cover',
+        'covers_id',
         'left_plants_id',
         'right_plants_id',
         'user_id',
@@ -63,7 +65,7 @@ class Hybrids extends Eloquent
         'alias'           => 'string',
         'description'     => 'string',
         'content'         => 'string',
-        'cover'           => 'string',
+        'covers_id'       => 'integer',
         'left_plants_id'  => 'integer',
         'right_plants_id' => 'integer',
         'user_id'         => 'integer',
@@ -108,6 +110,22 @@ class Hybrids extends Eloquent
     {
         return $this->belongsToMany(__NAMESPACE__ . '\\Tags',
             'link_tags_hybrids', 'hybrids_id', 'tags_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function cover()
+    {
+        return $this->belongsTo(__NAMESPACE__ . '\\HybridsCovers', 'covers_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function covers()
+    {
+        return $this->hasMany(__NAMESPACE__ . '\\HybridsCovers', 'hybrids_id');
     }
 
 }

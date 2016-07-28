@@ -9,6 +9,7 @@
 namespace App\Services\Entities;
 
 use App\Eloquent\Plants;
+use App\Eloquent\PlantsCovers;
 use Illuminate\Database\Eloquent\Collection as ModelCollection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
@@ -43,6 +44,10 @@ class PlantsEntity extends Entity
      * @var string
      */
     protected $cover;
+    /**
+     * @var int
+     */
+    protected $coversId;
     /**
      * @var string
      */
@@ -103,6 +108,10 @@ class PlantsEntity extends Entity
      * @var Collection
      */
     protected $plants;
+    /**
+     * @var Collection
+     */
+    protected $covers;
 
     /**
      * @param ModelCollection|Model $Item
@@ -117,7 +126,7 @@ class PlantsEntity extends Entity
                          'title',
                          'alias',
                          'description',
-                         'cover',
+                         'covers_id',
                          'content',
                          'family_id',
                          'genus_id',
@@ -131,6 +140,14 @@ class PlantsEntity extends Entity
                 if (isset($Item->{$value})) {
                     $this->{camel_case($value)} = $Item->{$value};
                 }
+            }
+
+            if ($Item->relationLoaded('cover') && $Item->cover) {
+                $this->cover = $Item->cover->image;
+            }
+
+            if ($Item->relationLoaded('covers')) {
+                $this->covers = $Item->covers;
             }
 
             if ($Item->relationLoaded('family')) {
@@ -332,6 +349,22 @@ class PlantsEntity extends Entity
     public function getContent()
     {
         return $this->content;
+    }
+
+    /**
+     * @return int
+     */
+    public function getCoversId()
+    {
+        return $this->coversId;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getCovers()
+    {
+        return $this->covers;
     }
 
 }

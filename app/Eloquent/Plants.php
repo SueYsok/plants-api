@@ -18,7 +18,7 @@ namespace App\Eloquent;
  * @property string                                   title
  * @property string                                   alias
  * @property string                                   description
- * @property string                                   cover
+ * @property int                                      covers_id
  * @property string                                   content
  * @property int                                      family_id
  * @property int                                      genus_id
@@ -37,6 +37,8 @@ namespace App\Eloquent;
  * @property \Illuminate\Database\Eloquent\Collection tags
  * @property PlantsSame                               same
  * @property \Illuminate\Database\Eloquent\Collection tagslink
+ * @property PlantsCovers                             cover
+ * @property \Illuminate\Database\Eloquent\Collection covers
  */
 class Plants extends Eloquent
 {
@@ -51,7 +53,7 @@ class Plants extends Eloquent
     protected $fillable = [
         'title',
         'description',
-        'cover',
+        'covers_id',
         'content',
         'family_id',
         'genus_id',
@@ -71,7 +73,7 @@ class Plants extends Eloquent
         'title'         => 'string',
         'alias'         => 'string',
         'description'   => 'string',
-        'cover'         => 'string',
+        'covers_id'     => 'integer',
         'content'       => 'string',
         'family_id'     => 'integer',
         'genus_id'      => 'integer',
@@ -106,7 +108,7 @@ class Plants extends Eloquent
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function subspecies()
     {
@@ -114,7 +116,7 @@ class Plants extends Eloquent
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function varietas()
     {
@@ -169,6 +171,22 @@ class Plants extends Eloquent
     public function businesseslink()
     {
         return $this->hasMany(__NAMESPACE__ . '\\BusinessesPlants', 'plants_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function cover()
+    {
+        return $this->belongsTo(__NAMESPACE__ . '\\PlantsCovers', 'covers_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function covers()
+    {
+        return $this->hasMany(__NAMESPACE__ . '\\PlantsCovers', 'plants_id');
     }
 
 }

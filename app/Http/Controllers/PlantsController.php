@@ -129,7 +129,7 @@ class PlantsController extends Controller
         $alias = $this->Request->input('alias');
         $description = $this->Request->input('description');
         $content = $this->Request->input('content');
-        $cover = $this->Request->input('cover');
+        $coversId = $this->Request->input('covers_id');
         $familyId = $this->Request->input('family_id');
         $genusId = $this->Request->input('genus_id');
         $speciesId = $this->Request->input('species_id');
@@ -144,7 +144,7 @@ class PlantsController extends Controller
 
             $oldTagsIds = array_pluck($PlantsEntity->getTags()->toArray(), 'id');
 
-            $this->Plants->edit($title, $alias, $description, $content, $cover,
+            $this->Plants->edit($title, $alias, $description, $content, $coversId,
                 $familyId, $genusId, $speciesId, $subspeciesId, $varietasId, $tagsIds);
 
             if (!empty($oldTagsIds)) {

@@ -84,6 +84,26 @@ class ImagesController extends Controller
     }
 
     /**
+     * @param int $plantsId
+     *
+     * @return \Dingo\Api\Http\Response
+     */
+    public function addPlantCover($plantsId)
+    {
+        return $this->addCover($plantsId, 'plants');
+    }
+
+    /**
+     * @param int $hybridsId
+     *
+     * @return \Dingo\Api\Http\Response|null
+     */
+    public function addHybridCover($hybridsId)
+    {
+        return $this->addCover($hybridsId, 'hybrids');
+    }
+
+    /**
      * @param int    $objectId
      * @param string $key
      *
@@ -92,15 +112,7 @@ class ImagesController extends Controller
     private function addImage($objectId, $key)
     {
         $userId = $this->Authorizer->getResourceOwnerId();
-        $image = $this->Request->file('image');
-
-        try {
-            $ImageFile = app('image')->make($image);
-        } catch (\Exception $e) {
-            $this->response()->errorBadRequest();
-
-            return null;
-        }
+        $ImageFile = $this->imageFile();
 
         try {
             $this->Images->add($objectId, $userId, $ImageFile, $key);
@@ -138,6 +150,48 @@ class ImagesController extends Controller
         }
 
         return $this->response()->noContent();
+    }
+
+    /**
+     * @param int    $objectId
+     * @param string $key
+     *
+     * @return \Dingo\Api\Http\Response|null
+     */
+    private function addCover($objectId, $key)
+    {
+        $userId = $this->Authorizer->getResourceOwnerId();
+        $ImageFile = $this->imageFile();
+
+        try {
+            $this->Images->addCover($objectId, $userId, $ImageFile, $key);
+        } catch (WorkException $e) {
+            switch ($e->getCode()) {
+                case Work::PLANTS_MODEL_NOT_FOUND:
+                    $this->response()->errorBadRequest();
+                    break;
+                default:
+                    $this->response()->errorForbidden();
+            }
+        }
+
+        return $this->response()->noContent();
+    }
+
+    /**
+     * @return mixed|null
+     */
+    private function imageFile()
+    {
+        $image = $this->Request->file('image');
+
+        try {
+            return app('image')->make($image);
+        } catch (\Exception $e) {
+            $this->response()->errorBadRequest();
+
+            return null;
+        }
     }
 
 }
