@@ -22,8 +22,8 @@ namespace App\Eloquent;
  * @property string         price
  * @property \Carbon\Carbon created_at
  * @property \Carbon\Carbon updated_at
- * @property Businesses     businesses
- * @property Plants         plants
+ * @property Businesses     business
+ * @property Plants         plant
  */
 class BusinessesPlants extends Eloquent
 {
@@ -53,17 +53,17 @@ class BusinessesPlants extends Eloquent
     ];
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function businesses()
+    public function business()
     {
         return $this->belongsTo(__NAMESPACE__ . '\\Businesses', 'businesses_id');
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function plants()
+    public function plant()
     {
         return $this->belongsTo(__NAMESPACE__ . '\\Plants', 'plants_id');
     }

@@ -45,7 +45,7 @@ class PlantsSame extends Eloquent
     ];
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function plant()
     {

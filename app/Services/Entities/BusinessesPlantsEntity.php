@@ -50,11 +50,11 @@ class BusinessesPlantsEntity extends Entity
     /**
      * @var BusinessesEntity
      */
-    protected $businesses;
+    protected $business;
     /**
      * @var PlantsEntity
      */
-    protected $plants;
+    protected $plant;
 
     /**
      * @param ModelCollection|Model $Item
@@ -82,12 +82,12 @@ class BusinessesPlantsEntity extends Entity
                 $this->price = json_decode($Item->price, true);
             }
 
-            if ($Item->relationLoaded('businesses')) {
-                $this->businesses = (new BusinessesEntity)->create($Item->businesses);
+            if ($Item->relationLoaded('business')) {
+                $this->business = (new BusinessesEntity)->create($Item->business);
             }
 
-            if ($Item->relationLoaded('plants')) {
-                $this->plants = (new PlantsEntity)->create($Item->plants);
+            if ($Item->relationLoaded('plant')) {
+                $this->plant = (new PlantsEntity)->create($Item->plant);
             }
 
             return $this;
@@ -149,17 +149,17 @@ class BusinessesPlantsEntity extends Entity
     /**
      * @return BusinessesEntity
      */
-    public function getBusinesses()
+    public function getBusiness()
     {
-        return $this->businesses;
+        return $this->business;
     }
 
     /**
      * @return PlantsEntity
      */
-    public function getPlants()
+    public function getPlant()
     {
-        return $this->plants;
+        return $this->plant;
     }
 
 }

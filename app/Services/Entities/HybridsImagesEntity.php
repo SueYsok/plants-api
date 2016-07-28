@@ -38,7 +38,7 @@ class HybridsImagesEntity extends Entity
     /**
      * @var HybridsEntity
      */
-    protected $hybrids;
+    protected $hybrid;
 
     /**
      * @param ModelCollection|Model $Item
@@ -54,8 +54,8 @@ class HybridsImagesEntity extends Entity
                 }
             }
 
-            if ($Item->relationLoaded('hybrids')) {
-                $this->hybrids = (new HybridsEntity)->create($Item->hybrids);
+            if ($Item->relationLoaded('hybrid')) {
+                $this->hybrid = (new HybridsEntity)->create($Item->hybrid);
             }
 
             return $this;
@@ -93,9 +93,9 @@ class HybridsImagesEntity extends Entity
     /**
      * @return HybridsEntity
      */
-    public function getHybrids()
+    public function getHybrid()
     {
-        return $this->hybrids;
+        return $this->hybrid;
     }
 
 }

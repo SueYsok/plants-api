@@ -20,7 +20,7 @@ namespace App\Eloquent;
  * @property string         image
  * @property \Carbon\Carbon created_at
  * @property \Carbon\Carbon updated_at
- * @property Hybrids        hybrids
+ * @property Hybrids        hybrid
  */
 class HybridsImages extends Eloquent
 {
@@ -47,9 +47,9 @@ class HybridsImages extends Eloquent
     ];
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function hybrids()
+    public function hybrid()
     {
         return $this->belongsTo(__NAMESPACE__ . '\\Hybrids', 'hybrids_id');
     }

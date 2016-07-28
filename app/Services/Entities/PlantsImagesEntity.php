@@ -38,7 +38,7 @@ class PlantsImagesEntity extends Entity
     /**
      * @var PlantsEntity
      */
-    protected $plants;
+    protected $plant;
 
     /**
      * @param ModelCollection|Model $Item
@@ -54,8 +54,8 @@ class PlantsImagesEntity extends Entity
                 }
             }
 
-            if ($Item->relationLoaded('plants')) {
-                $this->plants = (new PlantsEntity)->create($Item->plants);
+            if ($Item->relationLoaded('plant')) {
+                $this->plant = (new PlantsEntity)->create($Item->plant);
             }
 
             return $this;
@@ -93,9 +93,9 @@ class PlantsImagesEntity extends Entity
     /**
      * @return PlantsEntity
      */
-    public function getPlants()
+    public function getPlant()
     {
-        return $this->plants;
+        return $this->plant;
     }
 
 }

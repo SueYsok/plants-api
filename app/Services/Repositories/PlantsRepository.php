@@ -167,7 +167,7 @@ class PlantsRepository extends Repository
     /**
      * @param $id
      *
-     * @return \App\Eloquent\Plants
+     * @return Builder|\App\Eloquent\Plants
      */
     public function oneById($id)
     {
@@ -187,7 +187,7 @@ class PlantsRepository extends Repository
                         'same' => function ($Model) {
                             /** @var \App\Eloquent\PlantsSame $Model */
                             $Model->with([
-                                'plants' => function ($Model) {
+                                'plant' => function ($Model) {
                                     /** @var \App\Eloquent\Plants $Model */
                                     $Model->with('cover');
                                 },

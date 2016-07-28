@@ -20,7 +20,7 @@ namespace App\Eloquent;
  * @property string         image
  * @property \Carbon\Carbon created_at
  * @property \Carbon\Carbon updated_at
- * @property Plants         plants
+ * @property Plants         plant
  */
 class PlantsImages extends Eloquent
 {
@@ -47,9 +47,9 @@ class PlantsImages extends Eloquent
     ];
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function plants()
+    public function plant()
     {
         return $this->belongsTo(__NAMESPACE__ . '\\Plants', 'plants_id');
     }

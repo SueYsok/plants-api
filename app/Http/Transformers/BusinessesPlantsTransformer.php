@@ -54,8 +54,8 @@ class BusinessesPlantsTransformer extends TransformerAbstract
      */
     public function includeBusiness(BusinessesPlantsEntity $BusinessesPlantsEntity)
     {
-        if ($BusinessesPlantsEntity->getBusinesses() instanceof BusinessesEntity) {
-            return $this->item($BusinessesPlantsEntity->getBusinesses(), new BusinessesTransformer);
+        if ($BusinessesPlantsEntity->getBusiness() instanceof BusinessesEntity) {
+            return $this->item($BusinessesPlantsEntity->getBusiness(), new BusinessesTransformer);
         }
 
         return null;
@@ -68,8 +68,8 @@ class BusinessesPlantsTransformer extends TransformerAbstract
      */
     public function includePlant(BusinessesPlantsEntity $BusinessesPlantsEntity)
     {
-        if ($BusinessesPlantsEntity->getPlants() instanceof PlantsEntity) {
-            return $this->item($BusinessesPlantsEntity->getPlants(), new PlantsTransformer);
+        if ($BusinessesPlantsEntity->getPlant() instanceof PlantsEntity) {
+            return $this->item($BusinessesPlantsEntity->getPlant(), new PlantsTransformer);
         }
 
         return null;
