@@ -72,10 +72,6 @@ class KKPull extends Command
                 'url'   => 'http://www.koehres-kaktus.de/shop/Succulent-seeds---2.html?language=en',
             ],
             [
-                'title' => 'Indoor plants',
-                'url'   => 'http://www.koehres-kaktus.de/shop/Indoor-plants-seeds---3.html?language=en',
-            ],
-            [
                 'title' => 'Mesembryanthemum',
                 'url'   => 'http://www.koehres-kaktus.de/shop/Mesembryanthemum-seeds---4.html?language=en',
             ],
