@@ -8,8 +8,7 @@
 
 namespace App\Services\Entities;
 
-use App\Exceptions\EntityException;
-use Illuminate\Database\Eloquent\Collection as ModelCollection;
+use App\Eloquent\KKNews;
 use Illuminate\Support\Collection;
 
 
@@ -44,53 +43,17 @@ class KKSeedsChangesEntity extends Entity
     protected $changes;
 
     /**
-     * @param ModelCollection $Collection
+     * @param KKNews $NewsModel
      *
      * @return KKSeedsChangesEntity
      */
-    public function create($Collection)
+    public function create($NewsModel)
     {
-        $dates = $Collection->pluck('date')->unique()->toArray();
-
-        if (count($dates) != 2) {
-            throw new EntityException(__CLASS__, get_class($Collection->first()), 'date not usable');
-        }
-
-        /** @var \Carbon\Carbon $New */
-        /** @var \Carbon\Carbon $Old */
-        $this->newDate = head($dates);
-        $this->oldDate = last($dates);
-        if ($this->newDate->lt($this->oldDate)) {
-            $temp = $this->newDate;
-            $this->newDate = $this->oldDate;
-            $this->oldDate = $temp;
-        }
-
-        $NewCollection = $Collection->whereLoose('date', $this->newDate);
-        $OldCollection = $Collection->whereLoose('date', $this->oldDate);
-
-        $this->changes = new Collection;
-
-        $newArray = $NewCollection->toArray();
-        $oldArray = $OldCollection->toArray();
-        foreach ($oldArray as $oldKey => $old) {
-            foreach ($newArray as $newKey => $new) {
-                if ($new['number'] == $old['number']) {
-                    if ($new['spec_pkt'] != $old['spec_pkt']
-                        || $new['spec_100'] != $old['spec_100']
-                        || $new['spec_1000'] != $old['spec_1000']
-                        || $new['spec_10000'] != $old['spec_10000']
-                    ) {
-                        $this->changes->push($new);
-                    }
-                    unset($newArray[$newKey]);
-                    unset($oldArray[$oldKey]);
-                }
-            }
-        }
-
-        $this->news = new Collection($newArray);
-        $this->soldOud = new Collection($oldArray);
+        $this->newDate = $NewsModel->new_date;
+        $this->oldDate = $NewsModel->old_date;
+        $this->changes = $NewsModel->changeSeeds ?: new Collection;
+        $this->news = $NewsModel->newsSeeds ?: new Collection;
+        $this->soldOud = $NewsModel->soldOutSeeds ?: new Collection;
 
         return $this;
     }

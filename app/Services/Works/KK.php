@@ -8,8 +8,11 @@
 
 namespace App\Services\Works;
 
+use App\Exceptions\WorkException;
 use App\Services\Works\Resources\KKEntities;
 use App\Services\Works\Resources\KKRepositories;
+use Carbon\Carbon;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 
 /**
@@ -65,16 +68,97 @@ class KK extends Work
     }
 
     /**
-     * @param string $new
-     * @param string $old
+     * @return \App\Eloquent\KKDates
+     */
+    public function lastDates()
+    {
+        return $this->datesRepository()->last();
+    }
+
+    /**
+     * @param string $date
      *
      * @return \App\Services\Entities\KKSeedsChangesEntity
      */
-    public function changes($new, $old)
+    public function changes($date)
     {
-        $SeedsCollection = $this->seedsRepository()->manyBy2Date($new, $old);
+        if (!$date) {
+            $DatesModel = $this->datesRepository()->last();
+            $date = $DatesModel->date->toDateString();
+        }
 
-        return $this->seedsChangesEntity()->create($SeedsCollection);
+        $NewsModel = $this->newsRepository()->oneByNewDate($date);
+
+        return $this->seedsChangesEntity()->create($NewsModel);
+    }
+
+    /**
+     * @return \App\Services\Entities\KKSeedsChangesEntity
+     */
+    public function generateNews()
+    {
+        $date = $this->lastDates()->date->toDateString();
+
+        try {
+            $NewsModel = $this->newsRepository()->oneByNewDate($date);
+        } catch (ModelNotFoundException $e) {
+            $NewDatesModel = $this->datesRepository()->last();
+            if ($NewDatesModel->date->ne(new Carbon($date))) {
+                throw new WorkException(self::HAS_NO_DATE);
+            }
+
+            $OldDatesModel = $this->datesRepository()->lastBeforeDate($date);
+
+            $SeedsCollection = $this->seedsRepository()->manyBy2Date($date, $OldDatesModel->date->toDateString());
+
+            $dates = $SeedsCollection->pluck('date')->unique()->toArray();
+
+            if (count($dates) != 2) {
+                throw new WorkException(self::HAS_NO_DATE);
+            }
+
+            /** @var Carbon $NewDate */
+            $NewDate = head($dates);
+            /** @var Carbon $OldDate */
+            $OldDate = last($dates);
+            if ($NewDate->lt($OldDate)) {
+                $temp = $NewDate;
+                $NewDate = $OldDate;
+                $OldDate = $temp;
+            }
+
+            $NewCollection = $SeedsCollection->whereLoose('date', $NewDate);
+            $OldCollection = $SeedsCollection->whereLoose('date', $OldDate);
+
+            $changes = [];
+            $news = $NewCollection->toArray();
+            $olds = $OldCollection->toArray();
+            foreach ($olds as $oldKey => $old) {
+                foreach ($news as $newKey => $new) {
+                    if ($new['number'] == $old['number']) {
+                        if ($new['spec_pkt'] != $old['spec_pkt']
+                            || $new['spec_100'] != $old['spec_100']
+                            || $new['spec_1000'] != $old['spec_1000']
+                            || $new['spec_10000'] != $old['spec_10000']
+                        ) {
+                            array_push($changes, $new);
+                        }
+                        unset($news[$newKey]);
+                        unset($olds[$oldKey]);
+                    }
+                }
+            }
+
+            $NewsModel = $this->newsRepository()->add(
+                $NewDate->toDateString(),
+                $OldDate->toDateString(),
+                array_pluck($news, 'id'),
+                array_pluck($olds, 'id'),
+                array_pluck($changes, 'id')
+            );
+        }
+
+        return $this->seedsChangesEntity()->create($NewsModel);
     }
 
 }

@@ -39,8 +39,6 @@ class KKPull extends Command
 
     /**
      * Execute the console command.
-     *
-     * @return mixed
      */
     public function handle()
     {
@@ -131,17 +129,21 @@ class KKPull extends Command
         foreach ($urls as $cate) {
             foreach ($cate['seeds'] as $seed) {
                 array_push($data, [
-                    'class_1'    => $cate['class_1'],
-                    'class_2'    => $cate['class_2'],
-                    'title'      => $seed['title'],
-                    'number'     => $seed['number'],
-                    'spec_pkt'   => $seed['spec_pkt'],
-                    'spec_100'   => $seed['spec_100'],
-                    'spec_1000'  => $seed['spec_1000'],
-                    'spec_10000' => $seed['spec_10000'],
-                    'date'       => $cate['date'],
-                    'created_at' => $createdAt,
-                    'updated_at' => $createdAt,
+                    'class_1'          => $cate['class_1'],
+                    'class_2'          => $cate['class_2'],
+                    'title'            => $seed['title'],
+                    'number'           => $seed['number'],
+                    'spec_pkt'         => $seed['spec_pkt'],
+                    'spec_100'         => $seed['spec_100'],
+                    'spec_1000'        => $seed['spec_1000'],
+                    'spec_10000'       => $seed['spec_10000'],
+                    'spec_pkt_price'   => $seed['spec_pkt_price'],
+                    'spec_100_price'   => $seed['spec_100_price'],
+                    'spec_1000_price'  => $seed['spec_1000_price'],
+                    'spec_10000_price' => $seed['spec_10000_price'],
+                    'date'             => $cate['date'],
+                    'created_at'       => $createdAt,
+                    'updated_at'       => $createdAt,
                 ]);
             }
         }
@@ -154,6 +156,8 @@ class KKPull extends Command
         ]);
 
         $this->curlClose($ch);
+
+        $this->call('kk:news');
 
         $this->comment('耗时' . round($t2 - $t1, 3) . '秒');
 
@@ -170,18 +174,34 @@ class KKPull extends Command
         $temp = [];
         $forms = $Dom->next_sibling()->find('form');
         foreach ($forms as $Form) {
-            array_push($temp, [
-                'title'      => trim($Form->find('strong', 0)->plaintext),
-                'number'     => $Form->find('tr', 1)->find('td', 0)->children(1)->value,
-                'spec_pkt'   => $Form->find('tr', 1)->find('td', 0)->children(0)->find('table', 0)->find('td',
-                    0)->find('input', 0) ? 1 : 0,
-                'spec_100'   => $Form->find('tr', 1)->find('td', 0)->children(0)->find('table', 0)->find('td',
-                    1)->find('input', 0) ? 1 : 0,
-                'spec_1000'  => $Form->find('tr', 1)->find('td', 0)->children(0)->find('table', 0)->find('td',
-                    2)->find('input', 0) ? 1 : 0,
-                'spec_10000' => $Form->find('tr', 1)->find('td', 0)->children(0)->find('table', 0)->find('td',
-                    3)->find('input', 0) ? 1 : 0,
-            ]);
+            $item = [
+                'title'            => trim($Form->find('strong', 0)->plaintext),
+                'number'           => rtrim(ltrim($Form->find('em', 0)->plaintext, '('), ')'),
+                'spec_pkt'         => $Form->find('tr', 1)->find('td', 0)->children(0)->find('table', 0)
+                    ->find('td', 0)->find('input', 0) ? 1 : 0,
+                'spec_100'         => $Form->find('tr', 1)->find('td', 0)->children(0)->find('table', 0)
+                    ->find('td', 1)->find('input', 0) ? 1 : 0,
+                'spec_1000'        => $Form->find('tr', 1)->find('td', 0)->children(0)->find('table', 0)
+                    ->find('td', 2)->find('input', 0) ? 1 : 0,
+                'spec_10000'       => $Form->find('tr', 1)->find('td', 0)->children(0)->find('table', 0)
+                    ->find('td', 3)->find('input', 0) ? 1 : 0,
+                'spec_pkt_price'   => trim($Form->find('tr', 1)->find('td', 0)->children(0)->find('table', 1)
+                    ->find('td', 0)->plaintext),
+                'spec_100_price'   => trim($Form->find('tr', 1)->find('td', 0)->children(0)->find('table', 1)
+                    ->find('td', 1)->plaintext),
+                'spec_1000_price'  => trim($Form->find('tr', 1)->find('td', 0)->children(0)->find('table', 1)
+                    ->find('td', 2)->plaintext),
+                'spec_10000_price' => trim($Form->find('tr', 1)->find('td', 0)->children(0)->find('table', 1)
+                    ->find('td', 3)->plaintext),
+            ];
+
+            foreach (['spec_pkt_price', 'spec_100_price', 'spec_1000_price', 'spec_10000_price'] as $key) {
+                if ($item[$key] == '&nbsp;') {
+                    $item[$key] = null;
+                }
+            }
+
+            array_push($temp, $item);
         }
 
         return $temp;

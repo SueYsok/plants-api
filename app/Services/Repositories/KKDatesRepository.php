@@ -8,6 +8,8 @@
 
 namespace App\Services\Repositories;
 
+use App\Eloquent\KKDates;
+
 
 /**
  * Class KKDatesRepository
@@ -34,6 +36,44 @@ class KKDatesRepository extends Repository
         }
 
         return parent::many($callback);
+    }
+
+    /**
+     * @return KKDates
+     */
+    public function last()
+    {
+        /** @var KKDates $Model */
+        $Model = parent::one(function ($Model) {
+            /** @var \Illuminate\Database\Query\Builder $Model */
+            return $Model->orderBy('date', 'desc');
+        });
+
+        if (is_null($Model)) {
+            $this->modelNotFound();
+        }
+
+        return $Model;
+    }
+
+    /**
+     * @param string $date
+     *
+     * @return KKDates
+     */
+    public function lastBeforeDate($date)
+    {
+        /** @var KKDates $Model */
+        $Model = parent::one(function ($Model) use ($date) {
+            /** @var \Illuminate\Database\Query\Builder $Model */
+            return $Model->where('date', '<', $date)->orderBy('date', 'desc');
+        });
+
+        if (is_null($Model)) {
+            $this->modelNotFound();
+        }
+
+        return $Model;
     }
 
 }

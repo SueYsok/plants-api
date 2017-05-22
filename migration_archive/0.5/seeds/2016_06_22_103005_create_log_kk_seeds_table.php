@@ -15,7 +15,7 @@ class CreateLogKkSeedsTable extends Migration
      */
     public function up()
     {
-        Schema::create('log_kk_seeds', function (Blueprint $table) {
+        Schema::connection('mysql_v1_seeds')->create('log_kk_seeds', function (Blueprint $table) {
             $table->increments('id');
 
             $table->string('class_1');
@@ -39,6 +39,6 @@ class CreateLogKkSeedsTable extends Migration
      */
     public function down()
     {
-        Schema::drop('log_kk_seeds');
+        Schema::connection('mysql_v1_seeds')->drop('log_kk_seeds');
     }
 }

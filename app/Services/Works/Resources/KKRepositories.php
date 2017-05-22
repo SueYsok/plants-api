@@ -9,7 +9,9 @@
 namespace App\Services\Works\Resources;
 
 use App\Eloquent\KKDates;
+use App\Eloquent\KKNews;
 use App\Eloquent\KKSeeds;
+use App\Services\Repositories\KKNewsRepository;
 use App\Services\Repositories\KKSeedsRepository;
 use App\Services\Repositories\KKDatesRepository;
 
@@ -31,6 +33,10 @@ trait KKRepositories
      * @var KKDatesRepository
      */
     private $KKDates;
+    /**
+     * @var KKNewsRepository
+     */
+    private $KKNews;
 
     /**
      * @return KKSeedsRepository
@@ -46,6 +52,14 @@ trait KKRepositories
     protected function datesRepository()
     {
         return $this->KKDates ?: $this->KKDates = new KKDatesRepository(new KKDates);
+    }
+
+    /**
+     * @return KKNewsRepository
+     */
+    protected function newsRepository()
+    {
+        return $this->KKNews ?: $this->KKNews = new KKNewsRepository(new KKNews);
     }
 
 }

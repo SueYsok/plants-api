@@ -2,20 +2,26 @@
 
 namespace App\Console;
 
+use App\Console\Commands\Inspire;
+use App\Console\Commands\KKNews;
+use App\Console\Commands\KKPull;
+use App\Console\Commands\KKRefresh;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
 class Kernel extends ConsoleKernel
 {
+
     /**
      * The Artisan commands provided by your application.
      *
      * @var array
      */
     protected $commands = [
-        \App\Console\Commands\Inspire::class,
-        \App\Console\Commands\KKPull::class,
-        \App\Console\Commands\KKRefresh::class,
+        Inspire::class,
+        KKNews::class,
+        KKPull::class,
+        KKRefresh::class,
     ];
 
     /**
@@ -30,4 +36,5 @@ class Kernel extends ConsoleKernel
         $schedule->command('inspire')
             ->hourly();
     }
+
 }

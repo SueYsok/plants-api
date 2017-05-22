@@ -26,5 +26,9 @@ abstract class Work
      *
      */
     const NOT_DELETE_FILE = 1;
+    /**
+     *
+     */
+    const HAS_NO_DATE = 2;
 
 }

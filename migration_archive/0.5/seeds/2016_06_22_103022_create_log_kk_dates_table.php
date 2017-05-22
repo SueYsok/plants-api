@@ -15,7 +15,7 @@ class CreateLogKkDatesTable extends Migration
      */
     public function up()
     {
-        Schema::create('log_kk_dates', function (Blueprint $table) {
+        Schema::connection('mysql_v1_seeds')->create('log_kk_dates', function (Blueprint $table) {
             $table->increments('id');
 
             $table->date('date');
@@ -31,6 +31,6 @@ class CreateLogKkDatesTable extends Migration
      */
     public function down()
     {
-        Schema::drop('log_kk_dates');
+        Schema::connection('mysql_v1_seeds')->drop('log_kk_dates');
     }
 }

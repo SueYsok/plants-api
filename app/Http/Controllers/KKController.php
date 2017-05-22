@@ -49,12 +49,9 @@ class KKController extends Controller
      */
     public function news()
     {
-        $DatesCollection = $this->KK->manyDates();
+        $date = $this->Request->get('date');
 
-        $SeedsChanges = $this->KK->changes(
-            $DatesCollection->shift()->date->toDateString(),
-            $DatesCollection->shift()->date->toDateString()
-        );
+        $SeedsChanges = $this->KK->changes($date);
 
         return $this->response->item($SeedsChanges, new KKChangesTransformer);
     }

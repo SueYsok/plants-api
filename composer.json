@@ -7,6 +7,12 @@
   ],
   "license": "MIT",
   "type": "project",
+  "repositories": {
+    "packagist": {
+      "type": "composer",
+      "url": "https://packagist.org/"
+    }
+  },
   "require": {
     "php": ">=5.5.9",
     "laravel/framework": "5.2.*",
