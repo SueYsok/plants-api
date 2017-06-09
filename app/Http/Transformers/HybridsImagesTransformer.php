@@ -40,7 +40,7 @@ class HybridsImagesTransformer extends TransformerAbstract
         return [
             'kind' => 'hybrids_images',
             'id'   => $HybridsImagesEntity->getId(),
-            'url'  => 'http://' . Config::get('path.images_domain') . $HybridsImagesEntity->getImage(),
+            'url'  => 'https://' . Config::get('path.images_domain') . $HybridsImagesEntity->getImage(),
         ];
     }
 

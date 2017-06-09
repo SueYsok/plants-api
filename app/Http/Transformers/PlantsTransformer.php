@@ -63,7 +63,7 @@ class PlantsTransformer extends TransformerAbstract
             'description'   => $PlantsEntity->getDescription(),
             'cover'         => call_user_func(function ($path) {
                 if ($path) {
-                    return 'http://' . Config::get('path.images_domain') . $path;
+                    return 'https://' . Config::get('path.images_domain') . $path;
                 } else {
                     return null;
                 }

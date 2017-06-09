@@ -40,7 +40,7 @@ class PlantsImagesTransformer extends TransformerAbstract
         return [
             'kind' => 'plants_images',
             'id'   => $PlantsImagesEntity->getId(),
-            'url'  => 'http://' . Config::get('path.images_domain') . $PlantsImagesEntity->getImage(),
+            'url'  => 'https://' . Config::get('path.images_domain') . $PlantsImagesEntity->getImage(),
         ];
     }
 
